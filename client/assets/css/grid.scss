@@ -1,0 +1,14 @@
+@use 'sass:math';
+$column_count: 12;
+$column_gap: 20;
+.row {
+  display: grid;
+  gap: #{$column_gap}px;
+  grid-template-columns: repeat($column_count, 1fr);
+}
+
+@for $i from 1 through $column_count {
+  .col-#{$i} {
+    grid-column-start: span $i;
+  }
+}
