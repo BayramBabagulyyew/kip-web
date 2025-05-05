@@ -18,7 +18,7 @@ import { ImagesModule } from './images/images.module';
     }),
     ServeStaticModule.forRoot({
       rootPath: join(resolve(__dirname, '..', `${process.env.STATIC_FOLDER}`)),
-      serveRoot: '/dshbrd',
+      serveRoot: '/site',
     }),
     UsersModule,
     PrismaModule,

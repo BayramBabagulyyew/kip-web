@@ -75,7 +75,7 @@ export default {
       const options =
         {
           rootMargin: "0px 0px 0px 0px",
-          threshold: 0.4,
+          threshold: 0.2,
         } || {};
       this.observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -104,7 +104,7 @@ export default {
     margin-bottom: 20px;
     transition: 0.3s;
     @media (max-width: 767px) {
-      font-size: 22px;
+      font-size: 20px;
       margin-bottom: 12px;
     }
   }
@@ -146,7 +146,9 @@ export default {
     letter-spacing: 0.33px;
     text-transform: capitalize;
     display: inline-block;
-
+    @media (max-width: 767px) {
+      margin-bottom: 20px;
+    }
     &::after {
       content: "";
       bottom: 0;

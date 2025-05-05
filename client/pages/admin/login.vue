@@ -3,7 +3,7 @@
     <div class="login__wrapper">
       <div class="login__box">
         <div class="login__logo">
-          <img src="@/assets/img/kip-logo_2.svg" alt="" />
+          <img src="@/assets/img/fb.svg" alt="" />
         </div>
         <h1 class="login__title">Welcome</h1>
         <p class="login__description">Hoş geldiň sapa geldiňiz!</p>
@@ -38,7 +38,7 @@ export default {
   middleware: ["auth-admin"],
   data() {
     return {
-      form: { username: "kip-admin", password: "P@ssword123" },
+      form: { username: "kip-admin ", password: "password" },
       activePupUp: false,
       errorPupUp: false,
     };
@@ -88,7 +88,7 @@ export default {
   }
 
   &__box {
-    padding: 40px 20px;
+    padding: 30px 20px;
     border-radius: 20px;
     border: 1px solid #e9e7fd;
     background: #fff;
@@ -99,7 +99,14 @@ export default {
   }
 
   &__logo {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    width: 200px;
+    border-radius: 50%;
+    img {
+      width: 100%;
+      object-fit: contain;
+      border-radius: 50%;
+    }
   }
 
   &__title {

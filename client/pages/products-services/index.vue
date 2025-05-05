@@ -26,7 +26,7 @@
               <img :src="`${imageURL}${item?.logo}`" alt="" />
             </div>
             <!-- <p>{{ translateName(item) }}</p> -->
-            <p style="color: #183a60; font-size: large; font-weight: 600">
+            <p style="color: #183a60; font-size: large; font-weight: 600; text-transform: initial;">
               {{ translateName(item) }}
             </p>
           </div>

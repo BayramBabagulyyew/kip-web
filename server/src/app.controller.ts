@@ -27,7 +27,7 @@ import {
 import { AuthGuard } from './auth/auth.guard';
 import { RequestWithUser } from './utils/request-with-user';
 import { responseInterceptor } from './utils/response.interceptor';
-import { FakeGuard } from './auth/facke.guard';
+import { FackeGuard } from './auth/facke.guard';
 
 @UseInterceptors(responseInterceptor)
 @Controller()

@@ -17,7 +17,7 @@ import {
   upsertProjectDto,
 } from './projects.dto';
 import { RequestWithUser } from 'src/utils/request-with-user';
-import { FakeGuard } from 'src/auth/facke.guard';
+import { FackeGuard } from 'src/auth/facke.guard';
 import { responseInterceptor } from 'src/utils/response.interceptor';
 
 @UseInterceptors(responseInterceptor)

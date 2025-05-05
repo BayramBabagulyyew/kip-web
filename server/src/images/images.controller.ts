@@ -11,7 +11,7 @@ import { ImagesService } from './images.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { fetchGallaryDto, upsertGallaryDto } from './dto/gallery.dto';
 import { RequestWithUser } from 'src/utils/request-with-user';
-import { FakeGuard } from 'src/auth/facke.guard';
+import { FackeGuard } from 'src/auth/facke.guard';
 import { responseInterceptor } from 'src/utils/response.interceptor';
 import { upsertPartnersDto } from './dto/partners.dto';
 
@@ -38,7 +38,7 @@ export class ImagesController {
     );
   }
 
-  @UseGuards(FakeGuard)
+  @UseGuards(FackeGuard)
   @Post('/gallery/all')
   fetchGallary(@Body() dto: fetchGallaryDto, @Req() req: RequestWithUser) {
     return this.imagesService.fetchGallary(dto, req?.id ? req?.id : '');

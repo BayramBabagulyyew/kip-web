@@ -149,9 +149,9 @@ export default {
 
 <style lang="scss" scoped>
 .ehs {
-  padding: 70px 300px;
+  padding: 70px 300px 20px;
   @media (max-width: 767px) {
-    padding: 60px 20px 30px;
+    padding: 60px 20px 20px;
   }
   &__back {
     width: 50px;
@@ -190,7 +190,7 @@ export default {
     color: var(--primary);
     font-size: 34px;
     font-weight: 700;
-    text-transform: uppercase;
+    text-transform: initial;
     margin-bottom: 14px;
     text-align: center;
     @media (max-width: 767px) {
@@ -228,15 +228,15 @@ export default {
     color: #383838;
     font-size: 18px;
     font-weight: 400;
-    overflow: hidden;
     text-indent: 2em;
     line-height: 1.2em;
     text-align: justify;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 7;
-    line-clamp: 7;
-    -webkit-box-orient: vertical;
+    // overflow: hidden;
+    // text-overflow: ellipsis;
+    // display: -webkit-box;
+    // -webkit-line-clamp: 7;
+    // line-clamp: 7;
+    // -webkit-box-orient: vertical;
     @media (max-width: 767px) {
       font-size: 18px;
     }

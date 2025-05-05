@@ -14,7 +14,7 @@ import {
   upsetAboutDto,
 } from './utils/app.dto';
 import { PrismaService } from './prisma/prisma.service';
-// import { ecology } from '@prisma/client';
+const nodemailer = require('nodemailer');
 
 @Injectable()
 export class AppService {
@@ -560,6 +560,39 @@ export class AppService {
           name: dto.name,
           fileUrl: dto?.fileUrl ? dto?.fileUrl : null,
         },
+      });
+      var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+          user: 'payhasmerkezi@gmail.com',
+          pass: 'vgay kuuo xtec cfrj',
+        },
+      });
+
+      let _text = `
+        name: ${dto.name}, \n
+        email: ${dto.email},\n
+        text: ${dto.comment},\n
+      `;
+      if (dto?.fileUrl?.length > 0) {
+        _text = _text + `file: https://kip.tm/site/${dto.fileUrl}`;
+      }
+      let details = {
+        from: 'payhasmerkezi@gmail.com',
+        to: ['09merdan10@gmail.com', 'info@kip.tm'],
+        subject: 'KIP feedback',
+        text: _text,
+      };
+      transporter.sendMail(details, (err) => {
+        if (err) {
+          console.log(err);
+          console.log('>>>>>>>>>>>>>>>>>>>>>> error');
+        } else {
+          console.log('OK');
+        }
       });
       return { message: 'mail send successfully' };
     } catch (err) {
@@ -1217,3 +1250,4 @@ export class AppService {
     }
   }
 }
+

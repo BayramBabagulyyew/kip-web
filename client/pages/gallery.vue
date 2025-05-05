@@ -28,7 +28,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { GET_GALLERY } from "../api/home.api";
+import { GET_ALL_GALLERY, GET_GALLERY } from "../api/home.api";
 
 export default {
   computed: {
@@ -84,7 +84,7 @@ export default {
     },
     async fetchGallery() {
       try {
-        const { data, statusCode } = await GET_GALLERY();
+        const { data, statusCode } = await GET_ALL_GALLERY();
         if (statusCode) {
           this.gallery = data || [];
         }

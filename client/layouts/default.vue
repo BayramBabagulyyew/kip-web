@@ -29,7 +29,7 @@ export default {
 .wrapper {
   overflow: hidden;
   scroll-behavior: smooth !important;
-  cursor: url("../assets/img/cursor-circle.svg") 20 20, pointer;
+  // cursor: url("../assets/img/cursor-circle.svg") 20 20, pointer;  // disabled cursor-circle
   @media (max-width: 767px) {
     cursor: auto;
   }
