@@ -15,7 +15,7 @@ import {
   upsetAboutDto,
 } from './utils/app.dto';
 // import { ecology } from '@prisma/client';
-
+import * as nodemailer from 'nodemailer';
 @Injectable()
 export class AppService {
   constructor(private readonly prismaService: PrismaService) { }
