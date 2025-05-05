@@ -1,24 +1,21 @@
 import {
   Body,
   Controller,
-  Get,
   Param,
   Post,
   Req,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ProjectsService } from './projects.service';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { RequestWithUser } from 'src/utils/request-with-user';
+import { responseInterceptor } from 'src/utils/response.interceptor';
 import {
   fetchCategoryProjectsDto,
   fetchProjectsDto,
-  upsertProjectCategoryDto,
   upsertProjectDto,
 } from './projects.dto';
-import { RequestWithUser } from 'src/utils/request-with-user';
-import { FakeGuard } from 'src/auth/facke.guard';
-import { responseInterceptor } from 'src/utils/response.interceptor';
+import { ProjectsService } from './projects.service';
 
 @UseInterceptors(responseInterceptor)
 @Controller('projects')

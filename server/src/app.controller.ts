@@ -1,22 +1,22 @@
 import {
+  Body,
   Controller,
   Get,
-  Post,
-  UseInterceptors,
-  UploadedFile,
-  UploadedFiles,
-  Body,
-  UseGuards,
-  Req,
   Param,
   Patch,
+  Post,
+  Req,
+  UploadedFile,
+  UploadedFiles,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
-import { AppService } from './app.service';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { AppService } from './app.service';
+import { AuthGuard } from './auth/auth.guard';
 import {
   contactDto,
   fetchNewsDto,
-  findServiceDto,
   informationDto,
   sendMailDto,
   upsertCatalogDto,
@@ -24,10 +24,8 @@ import {
   upsertServiceDto,
   upsetAboutDto,
 } from './utils/app.dto';
-import { AuthGuard } from './auth/auth.guard';
 import { RequestWithUser } from './utils/request-with-user';
 import { responseInterceptor } from './utils/response.interceptor';
-import { FakeGuard } from './auth/facke.guard';
 
 @UseInterceptors(responseInterceptor)
 @Controller()

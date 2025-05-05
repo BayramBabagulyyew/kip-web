@@ -1,7 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { join, extname, resolve } from 'path';
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
+import { extname, join, resolve } from 'path';
 import { v4 } from 'uuid';
-import { existsSync, mkdirSync, writeFileSync, writeFile } from 'fs';
+import { PrismaService } from './prisma/prisma.service';
 import {
   contactDto,
   fetchNewsDto,
@@ -13,12 +14,11 @@ import {
   upsertServiceDto,
   upsetAboutDto,
 } from './utils/app.dto';
-import { PrismaService } from './prisma/prisma.service';
 // import { ecology } from '@prisma/client';
 
 @Injectable()
 export class AppService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) { }
 
   async fetchHomeOnly() {
     try {
@@ -192,7 +192,7 @@ export class AppService {
           contentEn: true,
           createdAt: true,
         },
-        orderBy: { priority: 'desc' },
+        orderBy: { createdAt: 'desc' },
         take: 3,
       });
       return { mainNews, news };
@@ -328,7 +328,7 @@ export class AppService {
 
   async fetchProductServices() {
     try {
-      let products = await this.prismaService.productServices.findMany({
+      const products = await this.prismaService.productServices.findMany({
         where: { deletedAt: null, type: 'product' },
         select: {
           id: true,
@@ -343,7 +343,7 @@ export class AppService {
         take: 3,
         orderBy: [{ priority: 'asc' }, { createdAt: 'desc' }],
       });
-      let services = await this.prismaService.productServices.findMany({
+      const services = await this.prismaService.productServices.findMany({
         where: { deletedAt: null, type: 'service' },
         select: {
           id: true,
@@ -576,7 +576,7 @@ export class AppService {
 
   async fetchMails(dto: fetchNewsDto, userId: string) {
     try {
-      let user = await this.prismaService.users.findFirst({
+      const user = await this.prismaService.users.findFirst({
         where: { userId: userId },
       });
       if (!user?.userId) {
@@ -585,13 +585,13 @@ export class AppService {
           HttpStatus.BAD_REQUEST,
         );
       }
-      let limit: number = dto.limit || 10;
-      let page: number = dto.page || 1;
-      let skip: number = Number(page) * Number(limit) - Number(limit);
-      let count: number = await this.prismaService.mails.count({
+      const limit: number = dto.limit || 10;
+      const page: number = dto.page || 1;
+      const skip: number = Number(page) * Number(limit) - Number(limit);
+      const count: number = await this.prismaService.mails.count({
         where: { deletedAt: null },
       });
-      let pageCount = Math.ceil(count / limit);
+      const pageCount = Math.ceil(count / limit);
       const rows = await this.prismaService.mails.findMany({
         where: { deletedAt: null },
         select: {
@@ -622,7 +622,7 @@ export class AppService {
 
   async fetchOneMail(mailId: string, userId: string) {
     try {
-      let user = await this.prismaService.users.findFirst({
+      const user = await this.prismaService.users.findFirst({
         where: { userId: userId },
       });
       if (!user?.userId) {
@@ -670,7 +670,7 @@ export class AppService {
 
   async upsertAbout(dto: upsetAboutDto, userId: string) {
     try {
-      let condidate = await this.prismaService.about.findFirst({
+      const condidate = await this.prismaService.about.findFirst({
         where: { deletedAt: null },
       });
       const about = await this.prismaService.about.upsert({
@@ -716,7 +716,7 @@ export class AppService {
 
   async upsertContact(dto: contactDto) {
     try {
-      let item = await this.prismaService.contact.upsert({
+      const item = await this.prismaService.contact.upsert({
         where: {
           contactId: dto?.contactId ? dto?.contactId : '',
         },
@@ -756,7 +756,7 @@ export class AppService {
 
   async upsertInformation(dto: informationDto) {
     try {
-      let item = await this.prismaService.information.upsert({
+      const item = await this.prismaService.information.upsert({
         where: { infoId: dto?.info1 ? dto?.infoId : '' },
         create: {
           info1: { ...dto.info1 },
@@ -786,9 +786,9 @@ export class AppService {
 
   async upsertEcology(dto: upsertEcologyDto) {
     try {
-      let condidate = await this.prismaService.ecology.findFirst();
+      const condidate = await this.prismaService.ecology.findFirst();
       if (condidate?.ecologyId) {
-        let item = await this.prismaService.ecology.update({
+        const item = await this.prismaService.ecology.update({
           where: { ecologyId: condidate?.ecologyId },
           data: {
             titleTm: dto.titleTm,
@@ -803,7 +803,7 @@ export class AppService {
         });
         return item;
       }
-      let item = await this.prismaService.ecology.create({
+      const item = await this.prismaService.ecology.create({
         data: {
           titleTm: dto.titleTm,
           titleEn: dto.titleEn,
@@ -859,11 +859,11 @@ export class AppService {
 
   async removeEcologyFile(filename: string) {
     try {
-      let condidate = await this.prismaService.ecology.findFirst({});
+      const condidate = await this.prismaService.ecology.findFirst({});
       if (!condidate?.ecologyId) {
         return { message: 'file not found' };
       }
-      let arr = condidate.images.filter(function (item) {
+      const arr = condidate.images.filter(function (item) {
         return item !== filename;
       });
       await this.prismaService.ecology.update({
@@ -911,13 +911,13 @@ export class AppService {
 
   async uploadMany(files: Express.Multer.File[]): Promise<string[]> {
     try {
-      let uploadedFiles = new Array<string>();
+      const uploadedFiles = new Array<string>();
       const filePath = resolve(__dirname, '..', `${process.env.STATIC_FOLDER}`);
       if (!existsSync(filePath)) {
         mkdirSync(filePath, { recursive: true });
       }
-      for (let file of files) {
-        let fileName = v4() + `${extname(file.originalname).toLowerCase()}`;
+      for (const file of files) {
+        const fileName = v4() + `${extname(file.originalname).toLowerCase()}`;
         writeFileSync(join(filePath, fileName), file.buffer);
         uploadedFiles.push(fileName);
       }
@@ -1020,7 +1020,7 @@ export class AppService {
 
   async upsertService(dto: upsertServiceDto) {
     try {
-      let condidate = await this.prismaService.productServices.findFirst({
+      const condidate = await this.prismaService.productServices.findFirst({
         where: {
           AND: [{ priority: dto?.priority }, { priority: { not: null } }],
           deletedAt: null,
@@ -1132,13 +1132,13 @@ export class AppService {
 
   async findServices(dto: fetchNewsDto) {
     try {
-      let limit: number = dto.limit || 10;
-      let page: number = dto.page || 1;
-      let skip: number = Number(page) * Number(limit) - Number(limit);
-      let count: number = await this.prismaService.productServices.count({
+      const limit: number = dto.limit || 10;
+      const page: number = dto.page || 1;
+      const skip: number = Number(page) * Number(limit) - Number(limit);
+      const count: number = await this.prismaService.productServices.count({
         where: { deletedAt: null },
       });
-      let pageCount = Math.ceil(count / limit);
+      const pageCount = Math.ceil(count / limit);
       const rows = await this.prismaService.productServices.findMany({
         where: { deletedAt: null },
         select: {

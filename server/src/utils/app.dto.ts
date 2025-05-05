@@ -13,7 +13,6 @@ import {
 import { Type } from 'class-transformer';
 import { catalogTypeEnum, productServicesTypeEnum } from 'generated/client';
 
-
 export class fetchNewsDto {
   @IsOptional()
   @IsNumber()

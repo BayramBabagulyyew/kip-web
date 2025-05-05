@@ -3,7 +3,6 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import {
   fetchCategoryProjectsDto,
   fetchProjectsDto,
-  upsertProjectCategoryDto,
   upsertProjectDto,
 } from './projects.dto';
 
@@ -14,14 +13,14 @@ export class ProjectsService {
   /* PROJECTS BEGIN */
   async upsertProject(dto: upsertProjectDto, userId: string) {
     try {
-      let userExists = await this._userExists(userId);
+      const userExists = await this._userExists(userId);
       if (!userExists) {
         throw new HttpException(
           { statusCode: 602, success: false, message: `user is not exists` },
           HttpStatus.BAD_REQUEST,
         );
       }
-      let condidate = await this.prismaService.projects.findFirst({
+      const condidate = await this.prismaService.projects.findFirst({
         where: {
           AND: [{ priority: dto.priority }, { priority: { not: null } }],
         },
@@ -86,7 +85,7 @@ export class ProjectsService {
 
   async removeProject(projectId: string, userId: string) {
     try {
-      let exists = await this._userExists(userId);
+      const exists = await this._userExists(userId);
       console.log(exists);
 
       if (!exists) {
@@ -95,7 +94,7 @@ export class ProjectsService {
           HttpStatus.BAD_REQUEST,
         );
       }
-      let project = await this.prismaService.projects.findFirst({
+      const project = await this.prismaService.projects.findFirst({
         where: { projectId: projectId, deletedAt: null },
       });
       if (!project?.projectId) {
@@ -124,14 +123,14 @@ export class ProjectsService {
   async fetchCategoryProjects(dto: fetchCategoryProjectsDto) {
     // for client only
     try {
-      let limit: number = dto.limit || 10;
-      let page: number = dto.page || 1;
-      let skip: number = Number(page) * Number(limit) - Number(limit);
-      let count: number = await this.prismaService.projects.count({
+      const limit: number = dto.limit || 10;
+      const page: number = dto.page || 1;
+      const skip: number = Number(page) * Number(limit) - Number(limit);
+      const count: number = await this.prismaService.projects.count({
         where: { deletedAt: null },
       });
-      let pageCount = Math.ceil(count / limit);
-      let rows = await this.prismaService.projects.findMany({
+      const pageCount = Math.ceil(count / limit);
+      const rows = await this.prismaService.projects.findMany({
         where: { deletedAt: null },
         select: {
           projectId: true,
@@ -172,23 +171,23 @@ export class ProjectsService {
   async fetchProjects(dto: fetchProjectsDto, userId: string) {
     // for admin only
     try {
-      let exists = await this._userExists(userId);
+      const exists = await this._userExists(userId);
       if (!exists) {
         throw new HttpException(
           { statusCode: 602, success: false, message: `user is not exists` },
           HttpStatus.BAD_REQUEST,
         );
       }
-      let limit: number = dto.limit || 10;
-      let page: number = dto.page || 1;
-      let skip: number = Number(page) * Number(limit) - Number(limit);
-      let count: number = await this.prismaService.projects.count({
+      const limit: number = dto.limit || 10;
+      const page: number = dto.page || 1;
+      const skip: number = Number(page) * Number(limit) - Number(limit);
+      const count: number = await this.prismaService.projects.count({
         where: {
           deletedAt: dto?.deleted == true ? { not: null } : null,
         },
       });
-      let pageCount = Math.ceil(count / limit);
-      let rows = await this.prismaService.projects.findMany({
+      const pageCount = Math.ceil(count / limit);
+      const rows = await this.prismaService.projects.findMany({
         where: {
           deletedAt: dto?.deleted == true ? { not: null } : null,
         },
@@ -264,8 +263,8 @@ export class ProjectsService {
 
   /* PROJECTS END */
 
-  private async _userExists(userId: string): Promise<Boolean> {
-    let user = await this.prismaService.users.findFirst({
+  private async _userExists(userId: string): Promise<boolean> {
+    const user = await this.prismaService.users.findFirst({
       where: { userId: userId, deletedAt: null },
     });
     if (user?.userId) {

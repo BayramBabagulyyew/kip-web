@@ -5,7 +5,7 @@
         <base-icon @clicked="$emit('clicked')" icon="closeIcon2" />
       </div>
       <div
-        class="gallery-popup__swiper-top gallery-popup-top swiper mySwiper2"
+        class="gallery-popup__swiper-top gallery-popup-top swiper"
         ref="swiperTop"
       >
         <div class="gallery-popup-top__wrapper swiper-wrapper">
@@ -27,9 +27,8 @@
         </div>
       </div>
       <div
-        class="gallery-popup__swiper-mini gallery-popup-mini swiper mySwiper"
-        ref="mySwiperSmall"
-        :options="swiperSmallOptions"
+        class="gallery-popup__swiper-mini gallery-popup-mini swiper"
+        ref="swiperThumbs"
       >
         <div class="gallery-popup-mini__wrapper swiper-wrapper">
           <div
@@ -44,86 +43,49 @@
         </div>
       </div>
     </div>
-    <!-- <div class="gallery-popup__text" v-html="datas?.description"></div> -->
   </div>
 </template>
 
 <script>
-import Swiper from "@/plugins/thumbs";
+import Swiper from "swiper";
 import { mapGetters } from "vuex";
+
 export default {
   props: {
-    datas: {
-      type: Object,
-      default: () => {},
-    },
     items: {
       type: Array,
       default: () => [],
     },
-  },
-  data() {
-    return {
-      swiperSmallOptions: null,
-      swiperOptionThumbs: {
-        spaceBetween: 20,
-        slidesPerView: 5,
-        speed: 1500,
-        watchSlidesProgress: true,
-        slideToClickedSlide: true,
-        loop: true,
-      },
-      swiperOptionTop: {
-        slidesPerView: 1,
-        loop: true,
-        speed: 1500,
-        pagination: {
-          el: ".swiper-pagination",
-          clickable: true,
-        },
-        navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
-        },
-      },
-    };
+    initialSlide: {
+      type: Number,
+      default: 0,
+    },
   },
   computed: {
-    swiperSmall() {
-      return this.$refs.mySwiperSmall.$swiper;
-    },
     ...mapGetters(["imageURL"]),
   },
   mounted() {
-    this.swiperMainMini();
-    this.swiperMainBig();
+    this.initSwipers();
   },
   methods: {
-    swiperMainMini() {
-      this.swiperSmallOptions = new Swiper(".gallery-popup-mini", {
+    initSwipers() {
+      const thumbsSwiper = new Swiper(this.$refs.swiperThumbs, {
         spaceBetween: 20,
         slidesPerView: 5,
-        speed: 1500,
+        freeMode: true,
         watchSlidesProgress: true,
         slideToClickedSlide: true,
-        loop: true,
       });
-    },
-    swiperMainBig() {
-      this.swiperSmallOptions = new Swiper(".gallery-popup-top", {
+
+      this.mainSwiper = new Swiper(this.$refs.swiperTop, {
         slidesPerView: 1,
-        speed: 1500,
-        loop: true,
-        pagination: {
-          el: ".swiper-pagination",
-          clickable: true,
-        },
+        initialSlide: this.initialSlide,
         navigation: {
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev",
         },
         thumbs: {
-          swiper: this.swiperSmallOptions,
+          swiper: thumbsSwiper,
         },
       });
     },

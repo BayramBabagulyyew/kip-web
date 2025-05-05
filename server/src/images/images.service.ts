@@ -10,7 +10,7 @@ export class ImagesService {
   /* GALLARY BEGIN */
   async upsertGallary(dto: upsertGallaryDto, userId: string) {
     try {
-      let user = await this._userExists(userId);
+      const user = await this._userExists(userId);
       if (!user?.userId) {
         throw new HttpException(
           { statusCode: 602, success: false, message: `user is not exists` },
@@ -18,7 +18,7 @@ export class ImagesService {
         );
       }
       if (dto?.priority > 0) {
-        let condidate = await this.prismaService.gallery.findFirst({
+        const condidate = await this.prismaService.gallery.findFirst({
           where: { priority: dto?.priority },
         });
         if (condidate?.galleryId != dto?.galleryId) {
@@ -61,7 +61,7 @@ export class ImagesService {
 
   async removeGallaryItem(galleryId: string, userId: string) {
     try {
-      let user = await this._userExists(userId);
+      const user = await this._userExists(userId);
       if (!user?.userId) {
         throw new HttpException(
           { statusCode: 602, success: false, message: `user is not exists` },
@@ -87,17 +87,17 @@ export class ImagesService {
 
   async fetchGallary(dto: fetchGallaryDto, userId: string) {
     try {
-      let limit: number = dto.limit || 10;
-      let page: number = dto.page || 1;
-      let skip: number = Number(page) * Number(limit) - Number(limit);
-      let user = await this._userExists(userId);
+      const limit: number = dto.limit || 10;
+      const page: number = dto.page || 1;
+      const skip: number = Number(page) * Number(limit) - Number(limit);
+      const user = await this._userExists(userId);
       if (!user?.userId) {
         // web client
-        let count: number = await this.prismaService.gallery.count({
+        const count: number = await this.prismaService.gallery.count({
           where: { deletedAt: dto?.deleted ? { not: null } : null },
         });
-        let pageCount = Math.ceil(count / limit);
-        let rows = await this.prismaService.gallery.findMany({
+        const pageCount = Math.ceil(count / limit);
+        const rows = await this.prismaService.gallery.findMany({
           where: { deletedAt: null },
           select: {
             galleryId: true,
@@ -112,11 +112,11 @@ export class ImagesService {
         return { count, pageCount, rows };
       }
       // admin
-      let count: number = await this.prismaService.gallery.count({
+      const count: number = await this.prismaService.gallery.count({
         where: { deletedAt: dto?.deleted ? { not: null } : null },
       });
-      let pageCount = Math.ceil(count / limit);
-      let rows = await this.prismaService.gallery.findMany({
+      const pageCount = Math.ceil(count / limit);
+      const rows = await this.prismaService.gallery.findMany({
         where: { deletedAt: dto?.deleted ? { not: null } : null },
         select: {
           galleryId: true,
@@ -146,7 +146,7 @@ export class ImagesService {
 
   async upsertPartners(dto: upsertPartnersDto, userId: string) {
     try {
-      let user = await this._userExists(userId);
+      const user = await this._userExists(userId);
       if (!user?.userId) {
         throw new HttpException(
           { statusCode: 602, success: false, message: `user is not exists` },
@@ -154,7 +154,7 @@ export class ImagesService {
         );
       }
       if (String(dto?.partnerId)?.length > 0 || Number(dto?.priority) > 0) {
-        let condidate = await this.prismaService.partners.findFirst({
+        const condidate = await this.prismaService.partners.findFirst({
           where: { priority: dto?.priority },
         });
         if (
@@ -205,7 +205,7 @@ export class ImagesService {
 
   async removePartners(partnerId: string, userId: string) {
     try {
-      let user = await this._userExists(userId);
+      const user = await this._userExists(userId);
       if (!user?.userId) {
         throw new HttpException(
           { statusCode: 602, success: false, message: `user is not exists` },
@@ -275,7 +275,7 @@ export class ImagesService {
   }
 
   private async _userExists(userId: string) {
-    let user = await this.prismaService.users.findFirst({
+    const user = await this.prismaService.users.findFirst({
       where: { userId: userId, deletedAt: null },
     });
     return user;

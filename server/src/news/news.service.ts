@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import {
   UpsertNewsDto,
   changeIsMainDto,
   changePriorityDto,
   fetchAdminNewsDto,
 } from './news.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class NewsService {
@@ -13,7 +13,7 @@ export class NewsService {
 
   async upsertNews(dto: UpsertNewsDto, userId: string) {
     try {
-      let condidate = await this.prismaService.news.findFirst({
+      const condidate = await this.prismaService.news.findFirst({
         where: {
           AND: [{ priority: dto?.priority }, { priority: { not: null } }],
         },
@@ -79,14 +79,14 @@ export class NewsService {
 
   async removeNews(newsId: string, userId: string) {
     try {
-      let user = await this._userExists(userId);
+      const user = await this._userExists(userId);
       if (!user?.userId) {
         throw new HttpException(
           { statusCode: 602, success: false, message: `user is not exists` },
           HttpStatus.BAD_REQUEST,
         );
       }
-      let condidate = await this.prismaService.news.findUnique({
+      const condidate = await this.prismaService.news.findUnique({
         where: { newsId: newsId },
       });
       if (!condidate?.newsId) {
@@ -114,17 +114,17 @@ export class NewsService {
 
   async fetchAdminNews(dto: fetchAdminNewsDto, userId: string) {
     try {
-      let limit: number = dto.limit || 10;
-      let page: number = dto.page || 1;
-      let skip: number = Number(page) * Number(limit) - Number(limit);
-      let user = await this._userExists(userId);
+      const limit: number = dto.limit || 10;
+      const page: number = dto.page || 1;
+      const skip: number = Number(page) * Number(limit) - Number(limit);
+      const user = await this._userExists(userId);
       if (user?.userId?.length > 0) {
         /// request send by admin panel
-        let count: number = await this.prismaService.news.count({
+        const count: number = await this.prismaService.news.count({
           where: { deletedAt: dto?.deleted ? { not: null } : null },
         });
-        let pageCount = Math.ceil(count / limit);
-        let rows = await this.prismaService.news.findMany({
+        const pageCount = Math.ceil(count / limit);
+        const rows = await this.prismaService.news.findMany({
           where: { deletedAt: dto?.deleted ? { not: null } : null },
           select: {
             newsId: true,
@@ -145,11 +145,11 @@ export class NewsService {
         return { count, pageCount, rows };
       }
       // request send by client
-      let count: number = await this.prismaService.news.count({
+      const count: number = await this.prismaService.news.count({
         where: { deletedAt: null },
       });
-      let pageCount = Math.ceil(count / limit);
-      let rows = await this.prismaService.news.findMany({
+      const pageCount = Math.ceil(count / limit);
+      const rows = await this.prismaService.news.findMany({
         where: { deletedAt: null },
         select: {
           newsId: true,
@@ -182,9 +182,9 @@ export class NewsService {
 
   async fetchOneNews(newsId: string, userId: string) {
     try {
-      let user = await this._userExists(userId);
+      const user = await this._userExists(userId);
       if (user?.userId?.length > 0) {
-        let news = await this.prismaService.news.findFirst({
+        const news = await this.prismaService.news.findFirst({
           where: { newsId: newsId },
           select: {
             newsId: true,
@@ -213,7 +213,7 @@ export class NewsService {
         });
         return news;
       }
-      let news = await this.prismaService.news.findFirst({
+      const news = await this.prismaService.news.findFirst({
         where: { newsId: newsId, deletedAt: null },
         select: {
           newsId: true,
@@ -249,7 +249,7 @@ export class NewsService {
   async changePriority(dto: changePriorityDto) {
     // todo nuzhno budet obdumat logiku!
     try {
-      let condidate = await this.prismaService.news.findFirst({
+      const condidate = await this.prismaService.news.findFirst({
         where: { priority: dto.priority },
       });
       if (!condidate?.newsId) {
@@ -304,7 +304,7 @@ export class NewsService {
     }
   }
 
-  async publishNews(dto: changeIsMainDto, userId: string) {
+  async publishNews(dto: changeIsMainDto) {
     try {
       await this.prismaService.news.update({
         where: { newsId: dto.newsId },
@@ -324,7 +324,7 @@ export class NewsService {
   }
 
   private async _userExists(userId: string) {
-    let user = await this.prismaService.users.findFirst({
+    const user = await this.prismaService.users.findFirst({
       where: { userId: userId, deletedAt: null },
     });
     return user;

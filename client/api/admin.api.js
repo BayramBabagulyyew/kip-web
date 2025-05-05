@@ -1,7 +1,7 @@
 import { request } from "./generic.api";
 
 export const LOGIN = ({ data }) =>
-  request({ url: `/auth/signin`, data, method: "post" });
+  request({ url: `auth/signin`, data, method: "post" });
 
 export const ADD_ABOUT = ({ data }) =>
   request({ url: `about/upsert`, data, method: "post" });

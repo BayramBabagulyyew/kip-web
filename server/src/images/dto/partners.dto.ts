@@ -4,7 +4,6 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
-  NotEquals,
 } from 'class-validator';
 import { partnerTypeEnum } from 'generated/client';
 

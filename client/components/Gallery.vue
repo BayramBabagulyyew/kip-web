@@ -4,13 +4,19 @@
       <div class="gallery__title-wrapper">
         <h1 class="gallery__title">{{ $t("gallery") }}</h1>
       </div>
-      <gallery-popup v-if="isImage" :items="gallery" @clicked="closeGallery" />
+      <gallery-popup
+        v-if="isImage"
+        :items="gallery"
+        :initialSlide="currentSlideIndex"
+        @clicked="closeGallery"
+        ref="galleryPopup"
+      />
       <div class="gallery__images" ref="images">
         <div
-          v-for="item in gallery"
+          v-for="(item, index) in gallery"
           :key="item.galleryId"
           class="gallery__image"
-          @click="showGallery"
+          @click="showGallery(index)"
         >
           <img :src="`${imageURL}${item?.image}`" alt="" />
         </div>
@@ -42,42 +48,40 @@ export default {
   },
   data() {
     return {
+      currentSlideIndex: 0,
       observer: null,
       isImage: false,
     };
   },
   mounted() {
     if (this.$refs.aos) {
-      const options =
-        {
-          rootMargin: "0px 0px 0px 0px",
-          threshold: 0.4,
-        } || {};
+      const options = {
+        rootMargin: "0px 0px 0px 0px",
+        threshold: 0.4,
+      };
       this.observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry && entry.isIntersecting) {
             this.$refs.images.classList.add("aos");
-            const elemAos = document.querySelectorAll(".aos");
           }
         });
       }, options);
+      this.observer.observe(this.$refs.aos);
     }
-    this.observer.observe(this.$refs.aos);
   },
-  destroyed() {
-    this.observer.disconnect();
+  beforeDestroy() {
+    if (this.observer) {
+      this.observer.disconnect();
+    }
   },
   methods: {
-    showGallery() {
-      if (document.querySelector(".wrapper").classList.contains("_lock")) {
-        document.querySelector(".wrapper").classList.remove("_lock");
-      } else {
-        document.querySelector(".wrapper").classList.add("_lock");
-      }
-      this.isImage = !this.isImage;
+    showGallery(index) {
+      this.currentSlideIndex = index;
+      document.body.classList.add("no-scroll");
+      this.isImage = true;
     },
     closeGallery() {
-      document.querySelector(".wrapper").classList.remove("_lock");
+      document.body.classList.remove("no-scroll");
       this.isImage = false;
     },
   },

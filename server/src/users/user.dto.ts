@@ -1,10 +1,4 @@
-import {
-  IsNotEmpty,
-  IsString,
-  IsNumber,
-  IsStrongPassword,
-  Min,
-} from 'class-validator';
+import { IsNotEmpty, IsString, IsStrongPassword } from 'class-validator';
 
 export class singUpDto {
   @IsNotEmpty()
