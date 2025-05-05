@@ -1,5 +1,5 @@
 <template>
-  <div class="news" ref="aos" style="margin-top: 90px;">
+  <div class="news" ref="aos" style="margin-top: 90px">
     <div class="news__row" ref="row">
       <div class="news__left">
         <div class="news__left-items">
@@ -20,10 +20,18 @@
                 class="news__left-item-description"
                 v-html="translateContent(item)"
               ></p>
-              <p class="news__left-item-date">{{ new Date(item.createdAt).toLocaleDateString() }}</p>
+              <p class="news__left-item-date">
+                {{ new Date(item.createdAt).toLocaleDateString() }}
+              </p>
             </div>
           </div>
         </div>
+        <button
+          @click="$router.push('/news')"
+          class="news__watch-button mobile"
+        >
+          {{ $t("seeAll") }}
+        </button>
       </div>
       <div class="news__center">
         <div class="news__center-image">
@@ -37,7 +45,9 @@
             class="news__center-description"
             v-html="translateContent(news?.mainNews)"
           ></p>
-          <p class="news__center-date">{{ new Date(news?.mainNews?.createdAt).toLocaleDateString() }}</p>
+          <p class="news__center-date">
+            {{ new Date(news?.mainNews?.createdAt).toLocaleDateString() }}
+          </p>
         </div>
       </div>
       <div class="news__right">
@@ -45,9 +55,9 @@
 
         <!-- <h2 class="news__right-subtitle">{{ $t("newsCompany") }}</h2> -->
 
-        <!-- <button @click="$router.push('/news')" class="news__watch-button">
+        <button @click="$router.push('/news')" class="news__watch-button">
           {{ $t("seeAll") }}
-        </button> -->
+        </button>
       </div>
     </div>
   </div>
@@ -295,7 +305,7 @@ export default {
 
   &__center-title {
     color: var(--text2);
-    font-size: 26px;
+    font-size: 22px;
     font-weight: 600;
     line-height: 120%;
     letter-spacing: 0.39px;
@@ -305,7 +315,7 @@ export default {
 
   &__center-description {
     color: var(--text3);
-    font-size: 16px;
+    font-size: 15px;
     text-align: justify;
     text-indent: 2em;
     font-weight: 500;
@@ -351,7 +361,6 @@ export default {
     }
     @media (max-width: 767px) {
       order: 1;
-      margin-bottom: 30px;
     }
   }
 
@@ -433,10 +442,17 @@ export default {
     &:hover {
       transform: scale(1.05);
     }
+    &.mobile {
+      display: none;
+    }
     @media (max-width: 767px) {
-      position: relative;
-      right: auto;
-      bottom: auto;
+      display: none;
+      &.mobile {
+        display: block;
+        margin: 20px auto 0;
+        position: relative;
+        right: auto;
+      }
     }
   }
 }

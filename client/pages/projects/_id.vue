@@ -11,7 +11,7 @@
       <div class="projects-id__project">
         <div class="projects-id__project-image" style="margin-right: 15px;">
           <!-- <img src="@/assets/img/mennan.svg" alt="" /> -->
-          <img :src="`${imageURL}${project.cover}`" alt="" />
+          <img :src="`${imageURL}${project.cover}`" alt="" @click="openModal(`${imageURL}${project.cover}`)" />
         </div>
         <div class="projects-id__project-content">
           <p class="projects-id__project-text">
@@ -46,6 +46,7 @@
           </p>
         </div>
       </div>
+      <!-- <ImagePreviewModal :imageUrl="selectedImage" :isVisible="isModalVisible" @close="closeModal" /> -->
       <div class="projects-id__description-wrapper">
         <h1 class="projects-id__description-title">{{ $t("description") }}</h1>
         <p
@@ -60,21 +61,27 @@
             class="projects-id__images-img"
             v-for="photo in project?.images"
             :key="photo"
+            @click="openModal(`${imageURL}${photo}`)"
           >
             <img :src="`${imageURL}${photo}`" alt="" />
           </div>
         </div>
       </div>
+      <ImagePreviewModal :imageUrl="selectedImage" :isVisible="isModalVisible" @close="closeModal" />
     </div>
   </div>
 </template>
 
 <script>
+import ImagePreviewModal from '~/components/ImagePreviewModal.vue';
 import { GET_PROJECT_ONE } from "@/api/home.api";
 import translate from "@/mixins/translate";
 import { mapGetters } from "vuex";
 
 export default {
+  components: {
+    ImagePreviewModal,
+  },
   mixins: [translate],
   computed: {
     ...mapGetters(["imageURL"]),
@@ -87,6 +94,8 @@ export default {
           default: () => [],
         },
       },
+      isModalVisible: false,
+      selectedImage: '',
     };
   },
   async mounted() {
@@ -126,6 +135,14 @@ export default {
       } catch (error) {
         console.error(error);
       }
+    },
+    openModal(imageUrl) {
+      this.selectedImage = imageUrl;
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
+      this.selectedImage = '';
     },
   },
 };
@@ -198,7 +215,7 @@ export default {
     font-size: 16px;
     font-weight: 400;
     line-height: normal;
-    text-transform: capitalize;
+    text-transform: initial;
   }
 
   &__project-span {

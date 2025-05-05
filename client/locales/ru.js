@@ -17,7 +17,7 @@ export default {
   downloadCatalog: "Скачать",
   catalog: "Презентация",
   introTitle: "ХО “КОПУГУРЛЫ ИНЖЕНЕРЧИЛИК ПАЙХАСЛАРЫ”",
-  dealership: "Дилерство",
+  dealership: "Представительство",
   readMore: "Читать дальше",
   information: "Инфо",
   informationAboutUs: "Информация о нас",

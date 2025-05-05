@@ -16,13 +16,40 @@ export default {
         { charset: "utf-8" },
         {
           name: "viewport",
-          content:
-            "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0",
+          content: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0",
+        },
+        { 
+          hid: 'инжиниринговые услуги туркменистан', 
+          name: 'инжиниринговые услуги туркменистан', 
+          content: 'инжиниринговые услуги туркменистан',
+          description: 'инжиниринговые услуги туркменистан',
+          keyword: 'инжиниринговые услуги туркменистан',
+        },
+        { 
+          hid: 'og:description', 
+          name: 'инжиниринговые услуги туркменистан', 
+          content: 'инжиниринговые услуги туркменистан',
+          description: 'инжиниринговые услуги туркменистан',
+          keyword: 'инжиниринговые услуги туркменистан',
+        },
+        { 
+          hid: 'инжиниринг туркменистан', 
+          name: 'инжиниринг туркменистан', 
+          content: 'инжиниринг туркменистан',
+          description: 'инжиниринг туркменистан', 
+          keyword: 'инжиниринг туркменистан',
+        },
+        { 
+          hid: 'установка и пусконаладка туркменистан', 
+          name: 'установка и пусконаладка туркменистан', 
+          content: 'установка и пусконаладка туркменистан',
+          description: 'установка и пусконаладка туркменистан',
+          keyword: 'установка и пусконаладка туркменистан',
         },
         { property: "og:title", content: "KIP" },
         {
           name: "author",
-          content: "Developer: Orazov Dovran (#dob)",
+          content: "Developer: KIP group",
         },
         {
           itemprop: "og:image:width",

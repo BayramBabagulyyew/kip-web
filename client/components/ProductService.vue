@@ -15,7 +15,7 @@
           <div class="services__content-logo">
             <img :src="`${imageURL}${item?.logo}`" alt="" />
           </div>
-          <p style="color: #183a60; font-size: large; font-weight: 600">
+          <p style="color: #183a60; font-size: large; font-weight: 600; text-transform: initial;">
             {{ translateName(item) }}
           </p>
         </div>
@@ -35,7 +35,7 @@
           </div>
           <!-- <p>{{ translateName(item) }}</p> -->
           <!-- <h2>{{ translateName(item) }}</h2> -->
-          <p style="color: #183a60; font-size: large; font-weight: 600">
+          <p style="color: #183a60; font-size: large; font-weight: 600; ">
             {{ translateName(item) }}
           </p>
         </div>
@@ -51,7 +51,7 @@
     </div>
     <div class="relative mobile-button-circle-white">
       <BaseButtonProducts
-        :url="'http://119.235.121.50:8090/kip/dshbrd/2.pdf'"
+        :url="'https://kip.tm/site/2.pdf'"
         primary
       >
         {{ $t("downloadFile") }}

@@ -29,7 +29,7 @@
 
         <h1 class="products__description-title">{{ $t("description") }}</h1>
         <p class="products__description-description"
-          style="line-height: 2.0em; text-align: justify;"
+          style="line-height: 2.0em; text-align: justify; text-indent: 2.0em;"
           v-html="translateContent(product)"
         >
         </p>

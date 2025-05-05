@@ -49,19 +49,18 @@
           {{ $t("contacts") }}
         </base-button-circle>
         <div class="button-arrow-title left">
-          <h2 class="button-arrow-title__text white">{{ $t("contactUsMin") }}</h2>
+          <h2 class="button-arrow-title__text white">
+            {{ $t("contactUsMin") }}
+          </h2>
           <base-icon icon="contactWhiteArrow" class="arrow" />
         </div>
       </div>
       <div class="intro__logo" ref="image">
-        <intro-logo></intro-logo>
-        <img src="@/assets/img/logo-last.png" alt="logo" />
+        <intro-logo-2></intro-logo-2>
+        <!-- <img src="@/assets/img/logo-last.png" alt="logo" /> -->
       </div>
       <div class="relative mobile-button-circle-white" ref="project">
-        <base-button-circle
-          :url="'http://119.235.121.50:8090/kip/dshbrd/1.pdf'"
-          primary
-        >
+        <base-button-circle :url="'https://kip.tm/site/1.pdf'" primary>
           {{ $t("catalog") }}
         </base-button-circle>
         <!-- <base-icon icon="circleCursor" class="circle-cursor" /> -->
@@ -118,7 +117,7 @@ export default {
       const options =
         {
           rootMargin: "0px 0px 0px 0px",
-          threshold: 0.4,
+          threshold: 0.1,
         } || {};
       this.observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -215,17 +214,18 @@ export default {
     cursor: none;
   }
 
-  &::after {
+  /* intro, sag ashaky burchdaky blur */
+  /* &::after {
     content: "";
     fill: rgba(24, 58, 96, 0.5);
     background: var(--primary);
     filter: blur(70.4336166381836px);
     width: 120px;
-    height: 120px;
+    height: 40px;
     position: absolute;
     right: 0;
     bottom: 0;
-  }
+  } */
   &__left-bg {
     &::before {
       content: "";
@@ -530,7 +530,6 @@ export default {
     @media (max-width: 767px) {
       font-size: 10px;
       margin-bottom: 4px;
-
     }
   }
 }

@@ -30,7 +30,7 @@ import { responseInterceptor } from './utils/response.interceptor';
 @UseInterceptors(responseInterceptor)
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
   @UseInterceptors(FileInterceptor('fileUrl'))
   @Post('/upload')

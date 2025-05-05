@@ -14,7 +14,7 @@
           v-for="project in projects.rows"
           :key="project.projectId"
           class="projects-item"
-          @click="openInNewTab(project.projectId)"
+            @click="openInNewTab(project.projectId)"
         >
           <div class="projects-item__image">
             <img :src="`${imageURL}${project?.cover}`" alt="" />
@@ -242,3 +242,4 @@ export default {
   }
 }
 </style>
+

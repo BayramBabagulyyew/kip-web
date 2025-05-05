@@ -20,7 +20,7 @@ import { ProjectsService } from './projects.service';
 @UseInterceptors(responseInterceptor)
 @Controller('projects')
 export class ProjectsController {
-  constructor(private readonly projectsService: ProjectsService) {}
+  constructor(private readonly projectsService: ProjectsService) { }
 
   @UseGuards(AuthGuard)
   @Post('/upsert')

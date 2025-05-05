@@ -40,6 +40,8 @@ export default {
         clients: [],
         projects: [],
       },
+      isModalVisible: false,  // For modal visibility
+      selectedImage: '',      // To store the clicked image URL
       links: [
         {
           id: 1,

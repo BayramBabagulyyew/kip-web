@@ -255,7 +255,7 @@ export default {
     font-weight: 500;
     line-height: 120%;
     letter-spacing: 0.45px;
-    text-transform: capitalize;
+    text-transform: initial;
     position: relative;
     padding-bottom: 7px;
     margin-bottom: 16px;
