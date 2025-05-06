@@ -38,7 +38,6 @@ export const request = async ({
         "Content-Type, X-Auth-Token, Origin, Authorization";
     }
   }
-
   const response = await axios({
     url: `${baseURL}${url}`,
     method,

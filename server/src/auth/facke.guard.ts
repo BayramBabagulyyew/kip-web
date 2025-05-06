@@ -1,10 +1,4 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  HttpException,
-  HttpStatus,
-  Injectable,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -17,7 +11,7 @@ export class FackeGuard implements CanActivate {
       const authHeader = req.headers.authorization;
       const token = authHeader.split(' ')[1];
       const user = this.jwtService.verify(token);
-      let userId: string = '';
+      let userId = '';
       userId = user?.id;
       req.id = userId;
       return true;

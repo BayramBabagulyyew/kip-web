@@ -1,6 +1,11 @@
 <template>
   <div class="gallery-page" ref="aos">
-    <gallery-popup v-if="isImage" :items="gallery" @clicked="closeGallery" />
+    <gallery-popup
+      v-if="isImage"
+      :items="gallery"
+      @clicked="closeGallery"
+      ref="swiperTop"
+    />
     <div class="gallery-page__container">
       <div class="gallery-page__back">
         <base-icon
@@ -17,7 +22,7 @@
           class="gallery-page__image"
           v-for="item in gallery"
           :key="item.galleryId"
-          @click="showGallery"
+          @click="showGallery(item?.galleryId)"
         >
           <img :src="`${imageURL}${item?.image}`" alt="" />
         </div>
@@ -28,7 +33,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { GET_ALL_GALLERY, GET_GALLERY } from "../api/home.api";
+import { GET_GALLERY } from "../api/home.api";
 
 export default {
   computed: {
@@ -36,6 +41,7 @@ export default {
   },
   data() {
     return {
+      currentImage: Number,
       isImage: false,
       gallery: {
         type: Array,
@@ -70,21 +76,30 @@ export default {
   },
 
   methods: {
-    showGallery() {
+    showGallery(imageId) {
       if (document.querySelector(".wrapper").classList.contains("_lock")) {
         document.querySelector(".wrapper").classList.remove("_lock");
       } else {
         document.querySelector(".wrapper").classList.add("_lock");
       }
       this.isImage = !this.isImage;
+      this.$nextTick(() => {
+        // Find the index of the clicked image
+        const index = this.gallery.findIndex(
+          (item) => item.galleryId === imageId
+        );
+        if (index !== -1 && this.$refs.swiperTop?.swiper) {
+          this.$refs.swiperTop.swiper.slideTo(index);
+        }
+      });
     },
     closeGallery() {
-      document.querySelector(".wrapper").classList.remove("_lock");
+      document.body.classList.remove("no-scroll");
       this.isImage = false;
     },
     async fetchGallery() {
       try {
-        const { data, statusCode } = await GET_ALL_GALLERY();
+        const { data, statusCode } = await GET_GALLERY();
         if (statusCode) {
           this.gallery = data || [];
         }
@@ -101,8 +116,6 @@ export default {
   padding: 80px 0 40px;
   @media (max-width: 767px) {
     padding: 30px 0;
-  }
-  &__container {
   }
 
   &__back {

@@ -13,7 +13,7 @@ export class AuthService {
 
   async signUp(dto: singUpDto) {
     try {
-      let condidate = await this.prismaService.users.findUnique({
+      const condidate = await this.prismaService.users.findUnique({
         where: { username: dto.username },
       });
       if (condidate?.userId) {
@@ -47,7 +47,7 @@ export class AuthService {
 
   async signIn(dto: singUpDto) {
     try {
-      let condidate = await this.prismaService.users.findUnique({
+      const condidate = await this.prismaService.users.findUnique({
         where: { username: dto.username },
       });
       if (!condidate?.userId) {
@@ -92,7 +92,7 @@ export class AuthService {
 
   async changePassword(dto: ChangePasswordDto, userId: string) {
     try {
-      let condidate = await this.prismaService.users.findUnique({
+      const condidate = await this.prismaService.users.findUnique({
         where: { userId: userId },
         select: { userId: true, username: true, password: true },
       });

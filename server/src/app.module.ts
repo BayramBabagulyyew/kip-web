@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { join, resolve } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { join, resolve } from 'path';
-import { UsersModule } from './users/users.module';
-import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
-import { NewsModule } from './news/news.module';
-import { ProjectsModule } from './projects/projects.module';
 import { ImagesModule } from './images/images.module';
+import { NewsModule } from './news/news.module';
+import { PrismaModule } from './prisma/prisma.module';
+import { ProjectsModule } from './projects/projects.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -18,7 +18,7 @@ import { ImagesModule } from './images/images.module';
     }),
     ServeStaticModule.forRoot({
       rootPath: join(resolve(__dirname, '..', `${process.env.STATIC_FOLDER}`)),
-      serveRoot: '/site',
+      serveRoot: '/uploads',
     }),
     UsersModule,
     PrismaModule,
@@ -30,4 +30,4 @@ import { ImagesModule } from './images/images.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
