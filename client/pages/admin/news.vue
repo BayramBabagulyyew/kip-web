@@ -35,6 +35,9 @@
         :pageCount="paginationCount"
       ></base-pagination>
     </div>
+    <popup-error :errorPupUp="errorPupUp" :message="errorMessage">{{
+      errorMessage
+    }}</popup-error>
   </div>
 </template>
 
@@ -52,6 +55,8 @@ export default {
       paginationCount: 0,
       news: [],
       idEdit: null,
+      errorPupUp: false,
+      errorMessage: "", // New variable for error message
       buttons: [
         {
           key: 1,
@@ -100,6 +105,8 @@ export default {
         this.news = data.rows || [];
       } catch (error) {
         console.log(error);
+        this.errorMessage = error;
+        this.errorPupUp = true;
       }
     },
     async updatePage(p) {

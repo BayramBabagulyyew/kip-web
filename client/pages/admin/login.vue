@@ -9,12 +9,14 @@
         <p class="login__description">Hoş geldiň sapa geldiňiz!</p>
         <form class="login__form" @submit.prevent="login">
           <base-input
+            placeholder="kip-admin"
             @updateValue="(val) => (form.username = val)"
             :value="form.username"
             style="margin-bottom: 17px"
             label="Login"
           />
           <base-input
+            placeholder="********"
             @updateValue="(val) => (form.password = val)"
             :value="form.password"
             class="mb-4"
@@ -38,7 +40,7 @@ export default {
   middleware: ["auth-admin"],
   data() {
     return {
-      form: { username: "kip-admin ", password: "password" },
+      form: { username: "", password: "password" },
       activePupUp: false,
       errorPupUp: false,
     };

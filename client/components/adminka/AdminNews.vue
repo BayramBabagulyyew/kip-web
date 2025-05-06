@@ -178,14 +178,19 @@ export default {
           this.main.priority = null;
           this.main.authorId = "";
         } catch (error) {
-          console.log(error.response);
           if (error?.response?.data?.statusCode === 611) {
             this.errorMessage = "Bul piority eyam bar";
             this.errorPupUp = true;
             setTimeout(() => {
               this.errorPupUp = false;
             }, 2000);
+            return;
           }
+          this.errorMessage = error.response.data.message;
+          this.errorPupUp = true;
+          setTimeout(() => {
+            this.errorPupUp = false;
+          }, 2000);
         }
       }
     },

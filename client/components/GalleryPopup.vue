@@ -149,6 +149,8 @@ export default {
 }
 .gallery-popup-top {
   position: relative;
+  align-items: center;
+  display: flex;
   &__wrapper {
     display: flex;
     width: fit-content;
@@ -160,15 +162,23 @@ export default {
 
   &__image {
     width: 100%;
-    height: 450px;
+    height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      display: block;
     }
+
     @media (max-width: 767px) {
-      height: 370px;
+      img {
+        max-height: 370px;
+      }
     }
   }
 

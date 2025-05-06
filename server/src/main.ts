@@ -1,13 +1,10 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import {
-  HttpException,
-  HttpStatus,
-  ValidationError,
-  ValidationPipe,
+  ValidationPipe
 } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 import * as bodyParser from 'body-parser';
 import * as morgan from 'morgan';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -28,16 +25,16 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
-      exceptionFactory: (validationErrors: ValidationError[] = []) => {
-        return new HttpException(
-          {
-            statusCode: HttpStatus.NOT_ACCEPTABLE,
-            success: false,
-            message: validationErrors,
-          },
-          HttpStatus.NOT_ACCEPTABLE,
-        );
-      },
+      // exceptionFactory: (validationErrors: ValidationError[] = []) => {
+      //   return new HttpException(
+      //     {
+      //       statusCode: HttpStatus.NOT_ACCEPTABLE,
+      //       success: false,
+      //       message: validationErrors,
+      //     },
+      //     HttpStatus.NOT_ACCEPTABLE,
+      //   );
+      // },
     }),
   );
   app.setGlobalPrefix('site');
