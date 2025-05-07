@@ -105,7 +105,7 @@ export default {
         }, 0);
         return;
       }
-      console.log(this.send);
+      // console.log(this.send);
       try {
         const { data, statusCode } = await POST_MAIL({ data: this.send });
         if (statusCode) {
@@ -117,7 +117,7 @@ export default {
           this.fileName = null;
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     },
 

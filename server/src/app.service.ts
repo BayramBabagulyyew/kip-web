@@ -582,14 +582,14 @@ export class AppService {
       }
       let details = {
         from: 'payhasmerkezi@gmail.com',
-        to: ['09merdan10@gmail.com', 'info@kip.tm'],
+        to: ['info@kip.tm'],
         subject: 'KIP feedback',
         text: _text,
       };
       transporter.sendMail(details, (err) => {
         if (err) {
           console.log(err);
-          console.log('>>>>>>>>>>>>>>>>>>>>>> error');
+          // console.log('>>>>>>>>>>>>>>>>>>>>>> error');
         } else {
           console.log('OK');
         }

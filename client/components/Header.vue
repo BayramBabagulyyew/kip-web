@@ -111,7 +111,7 @@ export default {
     };
   },
   mounted() {
-    console.log(this.selectedLocale);
+    // console.log(this.selectedLocale);
   },
   computed: {
     selectedLocale() {

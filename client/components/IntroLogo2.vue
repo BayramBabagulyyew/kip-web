@@ -58,7 +58,7 @@ export default {
           msec.innerHTML = milliseconds;
         }
         if (milliseconds > 99) {
-          console.log("seconds");
+          // console.log("seconds");
           seconds++;
           sec.innerHTML = "0" + seconds;
           milliseconds = 0;

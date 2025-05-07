@@ -199,7 +199,7 @@ export default {
   },
   methods: {
     partnerEdit(data, str) {
-      console.log(this.main[str], data);
+      // console.log(this.main[str], data);
       data["type"] = str;
       Object.keys(this.main[str]).forEach(
         (key) => (this.main[str][key] = data[key])
@@ -242,7 +242,7 @@ export default {
             (key) => (this.main[str][key] = null)
           );
         } catch (error) {
-          console.log(error.response);
+          // console.log(error.response);
           if (error.response.data.statusCode === 611) {
             this.errorMessage = "Bul piority eyam bar";
             this.errorPupUp = true;

@@ -65,7 +65,7 @@ export default {
             this.$router.push("/admin/login");
           }
         } catch (err) {
-          console.log(err);
+          // console.log(err);
           this.errorPupUp = true;
         }
       }
