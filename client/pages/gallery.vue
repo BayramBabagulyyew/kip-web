@@ -3,8 +3,9 @@
     <gallery-popup
       v-if="isImage"
       :items="gallery"
+      :initialSlide="currentSlideIndex"
       @clicked="closeGallery"
-      ref="swiperTop"
+      ref="galleryPopup"
     />
     <div class="gallery-page__container">
       <div class="gallery-page__back">
@@ -20,9 +21,9 @@
       <div class="gallery-page__images" ref="images">
         <div
           class="gallery-page__image"
-          v-for="item in gallery"
+          v-for="(item, index) in gallery"
           :key="item.galleryId"
-          @click="showGallery(item?.galleryId)"
+          @click="showGallery(index)"
         >
           <img :src="`${imageURL}${item?.image}`" alt="" />
         </div>
@@ -41,6 +42,8 @@ export default {
   },
   data() {
     return {
+      currentSlideIndex: 0,
+
       currentImage: Number,
       isImage: false,
       gallery: {
@@ -56,11 +59,10 @@ export default {
 
   mounted() {
     if (this.$refs.aos) {
-      const options =
-        {
-          rootMargin: "0px 0px 0px 0px",
-          threshold: 0,
-        } || {};
+      const options = {
+        rootMargin: "0px 0px 0px 0px",
+        threshold: 0.4,
+      };
       this.observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry && entry.isIntersecting) {
@@ -68,31 +70,38 @@ export default {
           }
         });
       }, options);
+      this.observer.observe(this.$refs.aos);
     }
-    this.observer.observe(this.$refs.aos);
   },
-  destroyed() {
-    this.observer.disconnect();
+  beforeDestroy() {
+    if (this.observer) {
+      this.observer.disconnect();
+    }
   },
 
   methods: {
-    showGallery(imageId) {
-      if (document.querySelector(".wrapper").classList.contains("_lock")) {
-        document.querySelector(".wrapper").classList.remove("_lock");
-      } else {
-        document.querySelector(".wrapper").classList.add("_lock");
-      }
-      this.isImage = !this.isImage;
-      this.$nextTick(() => {
-        // Find the index of the clicked image
-        const index = this.gallery.findIndex(
-          (item) => item.galleryId === imageId
-        );
-        if (index !== -1 && this.$refs.swiperTop?.swiper) {
-          this.$refs.swiperTop.swiper.slideTo(index);
-        }
-      });
+    showGallery(index) {
+      this.currentSlideIndex = index;
+      document.body.classList.add("no-scroll");
+      this.isImage = true;
     },
+    // showGallery(imageId) {
+    //   if (document.querySelector(".wrapper").classList.contains("_lock")) {
+    //     document.querySelector(".wrapper").classList.remove("_lock");
+    //   } else {
+    //     document.querySelector(".wrapper").classList.add("_lock");
+    //   }
+    //   this.isImage = !this.isImage;
+    //   this.$nextTick(() => {
+    //     // Find the index of the clicked image
+    //     const index = this.gallery.findIndex(
+    //       (item) => item.galleryId === imageId
+    //     );
+    //     if (index !== -1 && this.$refs.swiperTop?.swiper) {
+    //       this.$refs.swiperTop.swiper.slideTo(index);
+    //     }
+    //   });
+    // },
     closeGallery() {
       document.body.classList.remove("no-scroll");
       this.isImage = false;
