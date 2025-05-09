@@ -60,7 +60,7 @@
         <!-- <img src="@/assets/img/logo-last.png" alt="logo" /> -->
       </div>
       <div class="relative mobile-button-circle-white" ref="project">
-        <base-button-circle :url="'https://kip.tm/site/1.pdf'" primary>
+        <base-button-circle :url="'https://kip.tm/public/1.pdf'" primary>
           {{ $t("catalog") }}
         </base-button-circle>
         <!-- <base-icon icon="circleCursor" class="circle-cursor" /> -->
