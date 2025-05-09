@@ -10,7 +10,13 @@
       />
 
       <div class="text-editor-wrapper__calendar" style="width: 200px">
-        <admin-input label="Calendar" type="date" appendIcon="calendar" />
+        <admin-input
+          label="Calendar"
+          type="date"
+          appendIcon="calendar"
+          v-model="formattedCreatedAt"
+          @updateValue="(val) => (formattedCreatedAt = val)"
+        />
       </div>
       <admin-textarea
         v-model="main[`content${activeLang}`]"
@@ -69,6 +75,19 @@ export default {
       default: null,
     },
   },
+  computed: {
+    formattedCreatedAt: {
+      get() {
+        if (!this.main.createdAt) return "";
+        return new Date(this.main.createdAt).toISOString().split("T")[0]; // format as YYYY-MM-DD
+      },
+      set(value) {
+        console.log(value);
+        this.main.createdAt = value; // optionally: new Date(value).toISOString()
+      },
+    },
+  },
+
   data() {
     return {
       activeLang: "Tm",
@@ -88,6 +107,7 @@ export default {
         isMain: false,
         priority: null,
         authorId: "",
+        createdAt: "",
       },
     };
   },
@@ -177,6 +197,7 @@ export default {
           this.main.isMain = false;
           this.main.priority = null;
           this.main.authorId = "";
+          this.main.createdAt = "";
         } catch (error) {
           if (error?.response?.data?.statusCode === 611) {
             this.errorMessage = "Bul piority eyam bar";
