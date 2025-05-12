@@ -149,7 +149,7 @@ export default {
 
 <style lang="scss" scoped>
 .ehs {
-  padding: 70px 300px 20px;
+  padding: 70px 0px 20px;
   @media (max-width: 767px) {
     padding: 60px 20px 20px;
   }
