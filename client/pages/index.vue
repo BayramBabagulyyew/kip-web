@@ -4,7 +4,7 @@
     <main class="main">
       <Intro id="home" url="#projects" :intro="intro" />
       <About id="about" :aboutUs="aboutUs" />
-      <Ehs id="ehs" />
+      <!-- <Ehs id="ehs" /> -->
       <product-service id="products-services" :items="products" />
       <News id="news" :news="news" />
       <Projects id="projects" :projects="projects" />
@@ -24,7 +24,7 @@ import {
   GET_PARTNERS,
   GET_PRODUCTS,
   GET_PROJECTS,
-} from "@/api/home.api";
+} from "../api/home.api";
 
 export default {
   data() {
@@ -40,8 +40,8 @@ export default {
         clients: [],
         projects: [],
       },
-      isModalVisible: false,  // For modal visibility
-      selectedImage: '',      // To store the clicked image URL
+      isModalVisible: false, // For modal visibility
+      selectedImage: "", // To store the clicked image URL
       links: [
         {
           id: 1,
@@ -56,7 +56,7 @@ export default {
         {
           id: 3,
           name: "ehs",
-          url: "#ehs",
+          url: "/ehs",
         },
         {
           id: 4,
@@ -161,9 +161,9 @@ export default {
 
     async fetchGallery() {
       try {
-        const { data, statusCode } = await GET_GALLERY();
+        const { data, statusCode } = await GET_GALLERY({ limit: 6, page: 1 });
         if (statusCode) {
-          this.gallery = data || [];
+          this.gallery = data.data || [];
         }
       } catch (error) {
         console.error(error);

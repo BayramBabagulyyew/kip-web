@@ -25,9 +25,11 @@ export const GET_PROJECT_ONE = ({ data }) =>
 export const POST_MAIL = ({ data }) =>
   request({ url: `mail`, method: "POST", data: data });
 
-export const GET_GALLERY = () => request({ url: `gallary`, method: "PATCH" });
+export const GET_GALLERY = ({ limit, page }) =>
+  request({ url: `gallery`, method: "GET", params: { limit, page } });
 
-export const GET_ALL_GALLERY = () => request({ url: `gallary/all`, method: "PATCH" });
+export const GET_ALL_GALLERY = () =>
+  request({ url: `gallary/all`, method: "PATCH" });
 
 export const GET_PARTNERS = () => request({ url: `partners`, method: "PATCH" });
 

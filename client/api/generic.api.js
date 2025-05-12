@@ -4,7 +4,12 @@ export const request = async ({
   url,
   method = "post",
   headers = {},
-  params = {},
+  params = {
+    limit: 20,
+    page: 1,
+    orderBy: "desc", // default order
+    sortBy: "createdAt", // default sort
+  },
   data = {},
   onUploadProgress = {},
   file = false,
@@ -32,10 +37,6 @@ export const request = async ({
     }
     if (localStorage?.getItem("Authorization")) {
       headers["Authorization"] = localStorage.getItem("Authorization");
-      headers["Access-Control-Allow-Origin"] = "*";
-      headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE";
-      headers["Access-Control-Allow-Headers"] =
-        "Content-Type, X-Auth-Token, Origin, Authorization";
     }
   }
   const response = await axios({

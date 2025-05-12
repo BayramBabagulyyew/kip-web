@@ -1,22 +1,19 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { fetchGallaryDto, upsertGallaryDto } from './dto/gallery.dto';
+import { FileHelper } from '@utils/file-delete.util';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { upsertGallaryDto } from './dto/gallery.dto';
 import { upsertPartnersDto } from './dto/partners.dto';
+
 
 @Injectable()
 export class ImagesService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) { }
 
   /* GALLARY BEGIN */
   async upsertGallary(dto: upsertGallaryDto, userId: string) {
     try {
-      const user = await this._userExists(userId);
-      if (!user?.userId) {
-        throw new HttpException(
-          { statusCode: 602, success: false, message: `user is not exists` },
-          HttpStatus.BAD_REQUEST,
-        );
-      }
+
       if (dto?.priority > 0) {
         const condidate = await this.prismaService.gallery.findFirst({
           where: { priority: dto?.priority },
@@ -61,17 +58,30 @@ export class ImagesService {
 
   async removeGallaryItem(galleryId: string, userId: string) {
     try {
-      const user = await this._userExists(userId);
-      if (!user?.userId) {
+
+      const gallery = await this.prismaService.gallery.findFirst({
+        where: { galleryId: galleryId, deletedAt: null },
+      });
+
+      if (!gallery) {
         throw new HttpException(
-          { statusCode: 602, success: false, message: `user is not exists` },
+          {
+            statusCode: 404,
+            success: false,
+            message: `Gallery is not exist!`,
+          },
           HttpStatus.BAD_REQUEST,
         );
       }
+      /**
+       * delete file from server
+       */
+      FileHelper.deleteFileSilent(gallery?.image);
       await this.prismaService.gallery.update({
         where: { galleryId: galleryId },
         data: { deletedAt: new Date(), authorId: userId, priority: null },
       });
+
       return { message: 'deleted' };
     } catch (err) {
       throw new HttpException(
@@ -85,16 +95,16 @@ export class ImagesService {
     }
   }
 
-  async fetchGallary(dto: fetchGallaryDto, userId: string) {
+  async fetchGallary(dto: PaginationDto, userId: string) {
     try {
       const limit: number = dto.limit || 10;
       const page: number = dto.page || 1;
-      const skip: number = Number(page) * Number(limit) - Number(limit);
-      const user = await this._userExists(userId);
-      if (!user?.userId) {
+      const skip: number = (page - 1) * Number(limit);
+
+      if (!userId) {
         // web client
         const count: number = await this.prismaService.gallery.count({
-          where: { deletedAt: dto?.deleted ? { not: null } : null },
+          where: { deletedAt: null },
         });
         const pageCount = Math.ceil(count / limit);
         const rows = await this.prismaService.gallery.findMany({
@@ -113,11 +123,11 @@ export class ImagesService {
       }
       // admin
       const count: number = await this.prismaService.gallery.count({
-        where: { deletedAt: dto?.deleted ? { not: null } : null },
+        where: { deletedAt: null },
       });
       const pageCount = Math.ceil(count / limit);
       const rows = await this.prismaService.gallery.findMany({
-        where: { deletedAt: dto?.deleted ? { not: null } : null },
+        where: { deletedAt: null },
         select: {
           galleryId: true,
           image: true,
@@ -126,8 +136,9 @@ export class ImagesService {
         },
         take: Number(limit),
         skip: skip,
-        orderBy: [{ priority: 'asc' }, { createdAt: 'desc' }],
+        orderBy: [{ createdAt: 'desc' }],
       });
+      console.log('count', count, limit, page, skip);
       return { count, pageCount, rows };
     } catch (err) {
       throw new HttpException(
@@ -146,13 +157,7 @@ export class ImagesService {
 
   async upsertPartners(dto: upsertPartnersDto, userId: string) {
     try {
-      const user = await this._userExists(userId);
-      if (!user?.userId) {
-        throw new HttpException(
-          { statusCode: 602, success: false, message: `user is not exists` },
-          HttpStatus.BAD_REQUEST,
-        );
-      }
+
       if (String(dto?.partnerId)?.length > 0 || Number(dto?.priority) > 0) {
         const condidate = await this.prismaService.partners.findFirst({
           where: { priority: dto?.priority },
@@ -205,13 +210,7 @@ export class ImagesService {
 
   async removePartners(partnerId: string, userId: string) {
     try {
-      const user = await this._userExists(userId);
-      if (!user?.userId) {
-        throw new HttpException(
-          { statusCode: 602, success: false, message: `user is not exists` },
-          HttpStatus.BAD_REQUEST,
-        );
-      }
+
       await this.prismaService.partners.update({
         where: { partnerId: partnerId },
         data: { priority: null, authorId: userId, deletedAt: new Date() },
@@ -272,12 +271,5 @@ export class ImagesService {
         HttpStatus.BAD_REQUEST,
       );
     }
-  }
-
-  private async _userExists(userId: string) {
-    const user = await this.prismaService.users.findFirst({
-      where: { userId: userId, deletedAt: null },
-    });
-    return user;
   }
 }

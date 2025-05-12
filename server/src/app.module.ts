@@ -18,7 +18,7 @@ import { UsersModule } from './users/users.module';
     }),
     ServeStaticModule.forRoot({
       rootPath: join(resolve(__dirname, '..', `${process.env.STATIC_FOLDER}`)),
-      serveRoot: '/uploads',
+      serveRoot: '/public/',
     }),
     UsersModule,
     PrismaModule,

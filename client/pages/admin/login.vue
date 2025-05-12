@@ -40,7 +40,7 @@ export default {
   middleware: ["auth-admin"],
   data() {
     return {
-      form: { username: "", password: "password" },
+      form: { username: "", password: "" },
       activePupUp: false,
       errorPupUp: false,
     };

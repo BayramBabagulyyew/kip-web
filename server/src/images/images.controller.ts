@@ -1,24 +1,27 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   Post,
   Req,
   UseGuards,
-  UseInterceptors,
+  UseInterceptors
 } from '@nestjs/common';
-import { ImagesService } from './images.service';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { fetchGallaryDto, upsertGallaryDto } from './dto/gallery.dto';
-import { RequestWithUser } from 'src/utils/request-with-user';
 import { FackeGuard } from 'src/auth/facke.guard';
+import { PaginationParams } from 'src/common/decorators/pagination-params.decorator';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { RequestWithUser } from 'src/utils/request-with-user';
 import { responseInterceptor } from 'src/utils/response.interceptor';
+import { upsertGallaryDto } from './dto/gallery.dto';
 import { upsertPartnersDto } from './dto/partners.dto';
+import { ImagesService } from './images.service';
 
 @UseInterceptors(responseInterceptor)
 @Controller('images')
 export class ImagesController {
-  constructor(private readonly imagesService: ImagesService) {}
+  constructor(private readonly imagesService: ImagesService) { }
 
   @UseGuards(AuthGuard)
   @Post('/gallery/upsert')
@@ -39,9 +42,12 @@ export class ImagesController {
   }
 
   @UseGuards(FackeGuard)
-  @Post('/gallery/all')
-  fetchGallary(@Body() dto: fetchGallaryDto, @Req() req: RequestWithUser) {
-    return this.imagesService.fetchGallary(dto, req?.id ? req?.id : '');
+  @Get('/gallery/all')
+  fetchGallary(
+    @PaginationParams() query: PaginationDto,
+    @Req() req: RequestWithUser
+  ) {
+    return this.imagesService.fetchGallary(query, req?.id ?? '');
   }
 
   @UseGuards(AuthGuard)

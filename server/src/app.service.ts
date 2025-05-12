@@ -16,6 +16,7 @@ import {
 } from './utils/app.dto';
 // import { ecology } from '@prisma/client';
 import * as nodemailer from 'nodemailer';
+import { PaginationRequest } from './common/interfaces';
 @Injectable()
 export class AppService {
   constructor(private readonly prismaService: PrismaService) { }
@@ -236,18 +237,22 @@ export class AppService {
     }
   }
 
-  async fetchGalary() {
+  async fetchGalary(pagination: PaginationRequest) {
     try {
+      const count = await this.prismaService.gallery.count({
+        where: { deletedAt: null }
+      })
       const gallery = await this.prismaService.gallery.findMany({
         where: { deletedAt: null },
         select: {
           galleryId: true,
           image: true,
         },
-        orderBy: [{ priority: 'asc' }, { createdAt: 'asc' }],
-        take: 6,
+        orderBy: [{ [`${pagination.order_by}`]: pagination.order_direction }],
+        take: pagination.limit,
+        skip: pagination.skip,
       });
-      return gallery;
+      return { count, data: gallery };
     } catch (err) {
       throw new HttpException(
         {

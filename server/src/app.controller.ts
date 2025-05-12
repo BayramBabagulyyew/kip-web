@@ -9,11 +9,13 @@ import {
   UploadedFile,
   UploadedFiles,
   UseGuards,
-  UseInterceptors,
+  UseInterceptors
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { AppService } from './app.service';
 import { AuthGuard } from './auth/auth.guard';
+import { PaginationParams } from './common/decorators/pagination-params.decorator';
+import { PaginationRequest } from './common/interfaces';
 import {
   contactDto,
   fetchNewsDto,
@@ -117,9 +119,10 @@ export class AppController {
     return this.appService.fetchProjects();
   }
 
-  @Patch('gallary')
-  fetchGallary() {
-    return this.appService.fetchGalary();
+  @Get('gallery')
+  fetchGallary(@PaginationParams() pagination: PaginationRequest
+  ) {
+    return this.appService.fetchGalary(pagination);
   }
 
   @Patch('gallary/all')

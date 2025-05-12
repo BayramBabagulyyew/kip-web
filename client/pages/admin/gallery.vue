@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { request } from "@/api/generic.api";
+import { request } from "../..//api/generic.api";
 export default {
   layout: "admin",
   data() {
@@ -66,7 +66,7 @@ export default {
       errorMessage: "Boş meydanlary dolduryň!",
       id: null,
       page: 1,
-      limit: 10,
+      limit: 12,
       galleries: [],
       main: {
         galleryId: null,
@@ -82,6 +82,7 @@ export default {
     async uploadPhoto(file) {
       try {
         const { success, data } = await request({
+          method: "POST",
           url: "upload",
           data: {
             fileUrl: file,
@@ -97,11 +98,11 @@ export default {
     async getGalleries() {
       try {
         const { success, data } = await request({
+          method: "GET",
           url: "images/gallery/all",
-          data: {
+          params: {
             page: this.page,
             limit: this.limit,
-            deleted: false,
           },
         });
         if (!success) return;
@@ -132,9 +133,9 @@ export default {
       }
     },
     async upsertData() {
-      if (!this.main.priority || !this.main.image) {
+      if (!this.main.image) {
         this.errorPupUp = true;
-        this.errorMessage = "Boş meydanlary doldury";
+        this.errorMessage = "Boş meýdanlary dolduryň";
         setTimeout(() => {
           this.errorPupUp = false;
         }, 2000);

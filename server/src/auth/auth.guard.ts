@@ -13,14 +13,26 @@ export class AuthGuard implements CanActivate {
   constructor(
     private jwtService: JwtService,
     private prismaService: PrismaService,
-  ) {}
+  ) { }
 
   async canActivate(
     context: ExecutionContext,
   ) /*: boolean | Promise<boolean> | Observable<boolean> */ {
     const req = context.switchToHttp().getRequest();
     try {
-      const authHeader = req.headers.authorization;
+
+      if (!req.headers?.authorization) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.UNAUTHORIZED,
+            success: false,
+            message: 'unauthorized',
+          },
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
+
+      const authHeader = req.headers?.authorization;
       const bearer = authHeader.split(' ')[0];
       const token = authHeader.split(' ')[1];
 
@@ -34,10 +46,22 @@ export class AuthGuard implements CanActivate {
           HttpStatus.BAD_REQUEST,
         );
       }
+
       const { id } = this.jwtService.verify(token);
-      await this.prismaService.users.findFirstOrThrow({
+      const user = await this.prismaService.users.findFirst({
         where: { userId: id },
       });
+
+      if (!user) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.UNAUTHORIZED,
+            success: false,
+            message: 'unauthorized',
+          },
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
       req.id = id;
       return true;
     } catch (e) {
@@ -47,7 +71,7 @@ export class AuthGuard implements CanActivate {
           success: false,
           message: 'unauthorized',
         },
-        HttpStatus.BAD_REQUEST,
+        HttpStatus.UNAUTHORIZED,
       );
     }
   }

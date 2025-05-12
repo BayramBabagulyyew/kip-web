@@ -10,8 +10,16 @@
       </div>
       <div class="news-id__box">
         <div class="news-id__image">
-          <img :src="`${imageURL}${news?.image}`" alt=""  @click="openModal(`${imageURL}${news?.image}`)" />
-          <ImagePreviewModal :imageUrl="selectedImage" :isVisible="isModalVisible" @close="closeModal" />
+          <img
+            :src="`${imageURL}${news?.image}`"
+            alt=""
+            @click="openModal(`${imageURL}${news?.image}`)"
+          />
+          <ImagePreviewModal
+            :imageUrl="selectedImage"
+            :isVisible="isModalVisible"
+            @close="closeModal"
+          />
         </div>
         <h1 class="news-id__title">
           {{ translateTitle(news) }}
@@ -26,7 +34,7 @@
 </template>
 
 <script>
-import ImagePreviewModal from '~/components/ImagePreviewModal.vue';
+import ImagePreviewModal from "~/components/ImagePreviewModal.vue";
 import { GET_NEWS_ID } from "@/api/home.api";
 import translate from "@/mixins/translate";
 import { mapGetters } from "vuex";
@@ -43,7 +51,7 @@ export default {
     return {
       news: {},
       isModalVisible: false,
-      selectedImage: '',
+      selectedImage: "",
     };
   },
 
@@ -58,7 +66,7 @@ export default {
           data: { newsId: this.$route.params.id },
         });
         if (statusCode) this.news = data;
-        console.log(this.news);
+        // console.log(this.news);
       } catch (error) {
         console.error(error);
       }
@@ -69,7 +77,7 @@ export default {
     },
     closeModal() {
       this.isModalVisible = false;
-      this.selectedImage = '';
+      this.selectedImage = "";
     },
   },
 };
