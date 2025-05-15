@@ -11,9 +11,11 @@ import {
 import { NewsService } from './news.service';
 import { responseInterceptor } from 'src/utils/response.interceptor';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { UpsertNewsDto, fetchAdminNewsDto } from './news.dto';
+import { UpsertNewsDto } from './news.dto';
 import { RequestWithUser } from 'src/utils/request-with-user';
 import { FackeGuard } from 'src/auth/facke.guard';
+import { PaginationParams } from '../common/decorators/pagination-params.decorator';
+import { PaginationRequest } from '../common/interfaces';
 
 @UseInterceptors(responseInterceptor)
 @Controller('news')
@@ -28,8 +30,11 @@ export class NewsController {
 
   @UseGuards(FackeGuard)
   @Post('all')
-  fetchAdminNews(@Body() dto: fetchAdminNewsDto, @Req() req: RequestWithUser) {
-    return this.newsService.fetchAdminNews(dto, req?.id ? req?.id : '');
+  fetchAdminNews(
+    @PaginationParams() pagination: PaginationRequest,
+    @Req() req: RequestWithUser,
+  ) {
+    return this.newsService.fetchAdminNews(pagination, req?.id ? req?.id : '');
   }
 
   @UseGuards(FackeGuard)

@@ -13,7 +13,7 @@ export const GET_PRODUCTS_LIMIT = () =>
 export const GET_HOME = () => request({ url: `home`, method: "PATCH" });
 
 export const GET_NEWS = ({ limit, page }) => request({ url: `news`, method: "PATCH", params:{limit, page } });
-export const GET_NEWS_ALL = ({ limit, page }) => request({ url: `news/all`, method: "POST", params:{limit, page } });
+export const GET_NEWS_ALL = ({ limit, page }) => request({ url: `news/all`, method: "POST", data: { limit, page } });
 export const GET_NEWS_ID = ({ data }) =>
   request({ url: `news/one/${data.newsId}`, method: "GET" });
 

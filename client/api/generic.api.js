@@ -39,6 +39,7 @@ export const request = async ({
       headers["Authorization"] = localStorage.getItem("Authorization");
     }
   }
+  console.log(params,"her")
   const response = await axios({
     url: `${baseURL}${url}`,
     method,

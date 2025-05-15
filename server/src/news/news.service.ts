@@ -1,11 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import {
-  UpsertNewsDto,
-  changeIsMainDto,
-  changePriorityDto,
-  fetchAdminNewsDto,
-} from './news.dto';
+import { UpsertNewsDto, changeIsMainDto, changePriorityDto } from './news.dto';
+import { PaginationRequest } from '../common/interfaces';
 
 @Injectable()
 export class NewsService {
@@ -116,20 +112,17 @@ export class NewsService {
     }
   }
 
-  async fetchAdminNews(dto: fetchAdminNewsDto, userId: string) {
+  async fetchAdminNews(pagination: PaginationRequest, userId: string) {
     try {
-      const limit: number = dto.limit || 10;
-      const page: number = dto.page || 1;
-      const skip: number = Number(page) * Number(limit) - Number(limit);
       const user = await this._userExists(userId);
       if (user?.userId?.length > 0) {
         /// request send by admin panel
         const count: number = await this.prismaService.news.count({
-          where: { deletedAt: dto?.deleted ? { not: null } : null },
+          where: { deletedAt: null },
         });
-        const pageCount = Math.ceil(count / limit);
+        const pageCount = Math.ceil(count / pagination.limit);
         const rows = await this.prismaService.news.findMany({
-          where: { deletedAt: dto?.deleted ? { not: null } : null },
+          where: { deletedAt: null },
           select: {
             newsId: true,
             image: true,
@@ -142,9 +135,9 @@ export class NewsService {
             priority: true,
             createdAt: true,
           },
-          take: Number(limit),
-          skip: skip,
-          orderBy: [{ priority: 'asc' }, { createdAt: 'desc' }],
+          take: Number(pagination.limit),
+          skip: pagination.skip,
+          orderBy: [{ [`${pagination.order_by}`]: pagination.order_direction }],
         });
         return { count, pageCount, rows };
       }
@@ -152,7 +145,7 @@ export class NewsService {
       const count: number = await this.prismaService.news.count({
         where: { deletedAt: null },
       });
-      const pageCount = Math.ceil(count / limit);
+      const pageCount = Math.ceil(count / pagination.limit);
       const rows = await this.prismaService.news.findMany({
         where: { deletedAt: null },
         select: {
@@ -167,9 +160,9 @@ export class NewsService {
           priority: true,
           createdAt: true,
         },
-        take: Number(limit),
-        skip: skip,
-        orderBy: [{ priority: 'asc' }, { createdAt: 'desc' }],
+        take: Number(pagination.limit),
+        skip: pagination.skip,
+        orderBy: [{ [`${pagination.order_by}`]: pagination.order_direction }],
       });
       return { count, pageCount, rows };
     } catch (err) {

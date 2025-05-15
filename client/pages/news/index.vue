@@ -57,7 +57,7 @@ export default {
     return {
       news: [],
       page: 1,
-      limit: 5,
+      limit: 10,
       paginationCount: 0,
     };
   },
@@ -67,7 +67,7 @@ export default {
   },
 
   methods: {
-    async fetchNews(page) {
+    async fetchNews(page = 1) {
       try {
         const {success, data } = await GET_NEWS_ALL({limit: this.limit,  page:page});
         if (!success) return;
