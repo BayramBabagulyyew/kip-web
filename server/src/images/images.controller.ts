@@ -6,7 +6,7 @@ import {
   Post,
   Req,
   UseGuards,
-  UseInterceptors
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { FackeGuard } from 'src/auth/facke.guard';
@@ -21,7 +21,7 @@ import { ImagesService } from './images.service';
 @UseInterceptors(responseInterceptor)
 @Controller('images')
 export class ImagesController {
-  constructor(private readonly imagesService: ImagesService) { }
+  constructor(private readonly imagesService: ImagesService) {}
 
   @UseGuards(AuthGuard)
   @Post('/gallery/upsert')
@@ -45,7 +45,7 @@ export class ImagesController {
   @Get('/gallery/all')
   fetchGallary(
     @PaginationParams() query: PaginationDto,
-    @Req() req: RequestWithUser
+    @Req() req: RequestWithUser,
   ) {
     return this.imagesService.fetchGallary(query, req?.id ?? '');
   }

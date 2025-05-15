@@ -23,9 +23,48 @@
   /* gap: 40px; */
   margin-top: 80px;
 }
-.ehs-page__back {
+&__back {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 40px;
+  margin-bottom: 30px;
+
+  .project-icon {
+    transition: 0.3s;
+    border-radius: 50%;
+    animation: arrowAnimate 2s infinite linear alternate;
+    padding: 6px;
+    width: 50px;
+    height: 50px;
+
+    &:hover {
+      transform: scale(1.1);
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    @keyframes arrowAnimate {
+      0% {
+        transform: translateX(10px);
+      }
+
+      100% {
+        transform: translateX(0px);
+      }
+    }
+  }
+
+  @media (max-width: 767px) {
+    width: 40px;
+    height: 40px;
+    margin-left: 0;
+    margin-bottom: 20px;
+
+    &:deep() {
+      svg {
+        width: 30px;
+        height: 30px;
+      }
+    }
+  }
 }
 </style>

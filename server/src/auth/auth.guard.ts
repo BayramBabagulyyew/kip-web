@@ -13,14 +13,13 @@ export class AuthGuard implements CanActivate {
   constructor(
     private jwtService: JwtService,
     private prismaService: PrismaService,
-  ) { }
+  ) {}
 
   async canActivate(
     context: ExecutionContext,
   ) /*: boolean | Promise<boolean> | Observable<boolean> */ {
     const req = context.switchToHttp().getRequest();
     try {
-
       if (!req.headers?.authorization) {
         throw new HttpException(
           {

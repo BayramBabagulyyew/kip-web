@@ -5,15 +5,13 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { upsertGallaryDto } from './dto/gallery.dto';
 import { upsertPartnersDto } from './dto/partners.dto';
 
-
 @Injectable()
 export class ImagesService {
-  constructor(private readonly prismaService: PrismaService) { }
+  constructor(private readonly prismaService: PrismaService) {}
 
   /* GALLARY BEGIN */
   async upsertGallary(dto: upsertGallaryDto, userId: string) {
     try {
-
       if (dto?.priority > 0) {
         const condidate = await this.prismaService.gallery.findFirst({
           where: { priority: dto?.priority },
@@ -58,7 +56,6 @@ export class ImagesService {
 
   async removeGallaryItem(galleryId: string, userId: string) {
     try {
-
       const gallery = await this.prismaService.gallery.findFirst({
         where: { galleryId: galleryId, deletedAt: null },
       });
@@ -157,7 +154,6 @@ export class ImagesService {
 
   async upsertPartners(dto: upsertPartnersDto, userId: string) {
     try {
-
       if (String(dto?.partnerId)?.length > 0 || Number(dto?.priority) > 0) {
         const condidate = await this.prismaService.partners.findFirst({
           where: { priority: dto?.priority },
@@ -210,7 +206,6 @@ export class ImagesService {
 
   async removePartners(partnerId: string, userId: string) {
     try {
-
       await this.prismaService.partners.update({
         where: { partnerId: partnerId },
         data: { priority: null, authorId: userId, deletedAt: new Date() },

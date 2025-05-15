@@ -46,6 +46,7 @@
 import { request } from "@/api/generic.api";
 import translate from "@/mixins/translate";
 import { mapGetters } from "vuex";
+import {GET_NEWS, GET_NEWS_ALL} from "~/api/home.api";
 
 export default {
   mixins: [translate],
@@ -56,7 +57,7 @@ export default {
     return {
       news: [],
       page: 1,
-      limit: 10,
+      limit: 5,
       paginationCount: 0,
     };
   },
@@ -66,16 +67,9 @@ export default {
   },
 
   methods: {
-    async fetchNews() {
+    async fetchNews(page) {
       try {
-        const { success, data } = await request({
-          url: "news/all",
-          data: {
-            page: this.page,
-            limit: this.limit,
-            deleted: false,
-          },
-        });
+        const {success, data } = await GET_NEWS_ALL({limit: this.limit,  page:page});
         if (!success) return;
         this.paginationCount = Math.ceil(data.count / this.limit);
         this.news = data.rows || [];
@@ -85,7 +79,7 @@ export default {
     },
     async updatePage(p) {
       this.page = p;
-      await this.fetchNews();
+      await this.fetchNews(p);
     },
   },
 };

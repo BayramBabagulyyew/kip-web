@@ -24,7 +24,7 @@ import {
   GET_PARTNERS,
   GET_PRODUCTS,
   GET_PROJECTS,
-} from "../api/home.api";
+} from "~/api/home.api";
 
 export default {
   data() {
@@ -139,7 +139,7 @@ export default {
 
     async fetchNews() {
       try {
-        const { data, statusCode } = await GET_NEWS();
+        const { data, statusCode } = await GET_NEWS({limit:3,page:1});
         if (statusCode) {
           this.news = data || {};
         }

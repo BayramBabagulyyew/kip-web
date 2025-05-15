@@ -13,13 +13,13 @@ import {
   upsertEcologyDto,
   upsertServiceDto,
   upsetAboutDto,
-} from './utils/app.dto';
+} from '@utils/app.dto';
 // import { ecology } from '@prisma/client';
 import * as nodemailer from 'nodemailer';
 import { PaginationRequest } from './common/interfaces';
 @Injectable()
 export class AppService {
-  constructor(private readonly prismaService: PrismaService) { }
+  constructor(private readonly prismaService: PrismaService) {}
 
   async fetchHomeOnly() {
     try {
@@ -143,7 +143,7 @@ export class AppService {
     }
   }
 
-  async fetchNews() {
+  async fetchNews(pagination: PaginationRequest) {
     try {
       let mainNews = await this.prismaService.news.findFirst({
         where: { isMain: true, deletedAt: null, published: true },
@@ -173,7 +173,7 @@ export class AppService {
             contentEn: true,
             createdAt: true,
           },
-          orderBy: { createdAt: 'desc' },
+          orderBy: [{ [`${pagination.order_by}`]: pagination.order_direction }],
         });
       }
       const news = await this.prismaService.news.findMany({
@@ -193,8 +193,9 @@ export class AppService {
           contentEn: true,
           createdAt: true,
         },
-        orderBy: { createdAt: 'desc' },
-        take: 3,
+        orderBy: [{ [`${pagination.order_by}`]: pagination.order_direction }],
+        take: pagination.limit,
+        skip: pagination.skip,
       });
       return { mainNews, news };
     } catch (err) {
@@ -240,8 +241,8 @@ export class AppService {
   async fetchGalary(pagination: PaginationRequest) {
     try {
       const count = await this.prismaService.gallery.count({
-        where: { deletedAt: null }
-      })
+        where: { deletedAt: null },
+      });
       const gallery = await this.prismaService.gallery.findMany({
         where: { deletedAt: null },
         select: {
@@ -566,7 +567,7 @@ export class AppService {
           fileUrl: dto?.fileUrl ? dto?.fileUrl : null,
         },
       });
-      var transporter = nodemailer.createTransport({
+      const transporter = nodemailer.createTransport({
         service: 'gmail',
         host: 'smtp.gmail.com',
         port: 587,
@@ -585,7 +586,7 @@ export class AppService {
       if (dto?.fileUrl?.length > 0) {
         _text = _text + `file: https://kip.tm/site/${dto.fileUrl}`;
       }
-      let details = {
+      const details = {
         from: 'payhasmerkezi@gmail.com',
         to: ['info@kip.tm'],
         subject: 'KIP feedback',
@@ -1255,4 +1256,3 @@ export class AppService {
     }
   }
 }
-

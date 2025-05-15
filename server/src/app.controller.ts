@@ -9,7 +9,7 @@ import {
   UploadedFile,
   UploadedFiles,
   UseGuards,
-  UseInterceptors
+  UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { AppService } from './app.service';
@@ -32,7 +32,7 @@ import { responseInterceptor } from './utils/response.interceptor';
 @UseInterceptors(responseInterceptor)
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) { }
+  constructor(private readonly appService: AppService) {}
 
   @UseInterceptors(FileInterceptor('fileUrl'))
   @Post('/upload')
@@ -110,8 +110,8 @@ export class AppController {
   }
 
   @Patch('/news')
-  fetchNews() {
-    return this.appService.fetchNews();
+  fetchNews(@PaginationParams() pagination: PaginationRequest) {
+    return this.appService.fetchNews(pagination);
   }
 
   @Patch('/projects')
@@ -120,8 +120,7 @@ export class AppController {
   }
 
   @Get('gallery')
-  fetchGallary(@PaginationParams() pagination: PaginationRequest
-  ) {
+  fetchGallary(@PaginationParams() pagination: PaginationRequest) {
     return this.appService.fetchGalary(pagination);
   }
 

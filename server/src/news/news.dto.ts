@@ -64,7 +64,6 @@ export class UpsertNewsDto {
 }
 
 export class fetchAdminNewsDto {
-
   @IsOptional()
   @IsNumber()
   readonly page: number;
@@ -79,7 +78,6 @@ export class fetchAdminNewsDto {
 }
 
 export class changePriorityDto {
-
   @IsNotEmpty()
   @IsString()
   readonly newsId: string;
@@ -90,9 +88,7 @@ export class changePriorityDto {
 }
 
 export class changeIsMainDto {
-
   @IsNotEmpty()
   @IsString()
   readonly newsId: string;
-
 }

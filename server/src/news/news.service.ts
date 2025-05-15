@@ -9,7 +9,7 @@ import {
 
 @Injectable()
 export class NewsService {
-  constructor(private readonly prismaService: PrismaService) { }
+  constructor(private readonly prismaService: PrismaService) {}
 
   async upsertNews(dto: UpsertNewsDto, userId: string) {
     try {
@@ -29,7 +29,9 @@ export class NewsService {
         );
       }
       let newsDate = new Date();
-      if (dto.createdAt) { newsDate = new Date(dto.createdAt) }
+      if (dto.createdAt) {
+        newsDate = new Date(dto.createdAt);
+      }
       const news = await this.prismaService.news.upsert({
         where: { newsId: dto?.newsId ? dto?.newsId : '' },
         create: {
