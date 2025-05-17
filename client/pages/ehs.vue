@@ -23,7 +23,8 @@
   /* gap: 40px; */
   margin-top: 80px;
 }
-&__back {
+
+.ehs-page__back {
   display: flex;
   align-items: center;
   gap: 40px;
