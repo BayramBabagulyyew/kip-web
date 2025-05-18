@@ -57,12 +57,12 @@ model projects {
   descriptionTm String    @db.Text
   descriptionRu String    @db.Text
   descriptionEn String    @db.Text
-  companyTm     String
-  companyEn     String
-  companyRu     String
+  companyTm     String?
+  companyEn     String?
+  companyRu     String?
   logo          String
   workDate      DateTime  @db.Date()
-  endDate       DateTime  @db.Date()
+  endDate       DateTime? @db.Date()
   images        String[]
   cover         String
   priority      Int?      @unique
