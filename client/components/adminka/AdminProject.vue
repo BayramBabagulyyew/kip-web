@@ -8,9 +8,10 @@
         label="Project name"
         placeholder="..."
       />
+      <!-- @updateValue="(val) => (main[`company`] = val)" -->
       <admin-input
-        @updateValue="(val) => (main[`company`] = val)"
-        :value="main[`company`]"
+        @updateValue="(val) => (main[`company${activeLang}`] = val)"
+        :value="main[`company${activeLang}`]"
         label="Company name"
         placeholder="..."
       />
@@ -27,9 +28,18 @@
         />
         <div class="text-editor-wrapper__calendar" style="width: 200px">
           <admin-input
-            label="Calendar"
+            label="START DATE"
             @updateValue="(val) => (main.workDate = val)"
             :value="main.workDate"
+            type="date"
+            appendIcon="calendar"
+          />
+        </div>
+        <div class="text-editor-wrapper__calendar" style="width: 200px">
+          <admin-input
+            label="END DATE"
+            @updateValue="(val) => (main.endDate = val)"
+            :value="main.endDate"
             type="date"
             appendIcon="calendar"
           />
@@ -106,8 +116,11 @@ export default {
         descriptionTm: "",
         descriptionRu: "",
         descriptionEn: "",
-        company: "",
+        companyTm: "",
+        companyRu: "",
+        companyEn: "",
         workDate: "",
+        endDate: "",
         images: [],
         cover: "",
         priority: null,

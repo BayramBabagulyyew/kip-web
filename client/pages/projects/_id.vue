@@ -9,15 +9,19 @@
         />
       </div>
       <div class="projects-id__project">
-        <div class="projects-id__project-image" style="margin-right: 15px;">
+        <div class="projects-id__project-image" style="margin-right: 15px">
           <!-- <img src="@/assets/img/mennan.svg" alt="" /> -->
-          <img :src="`${imageURL}${project.cover}`" alt="" @click="openModal(`${imageURL}${project.cover}`)" />
+          <img
+            :src="`${imageURL}${project.cover}`"
+            alt=""
+            @click="openModal(`${imageURL}${project.cover}`)"
+          />
         </div>
         <div class="projects-id__project-content">
           <p class="projects-id__project-text">
             <span class="projects-id__project-span">{{ $t("company") }}:</span>
             <span>
-              {{ project?.company }}
+              {{ project?.companyEn }}
             </span>
           </p>
           <p class="projects-id__project-text">
@@ -25,7 +29,13 @@
               >{{ $t("engineeringPeriod") }}:</span
             >
             <span>
-              {{ new Date(project?.workDate).toLocaleString(translateLanguage(project), { month: 'long' }), }},
+              {{ new Date(project?.workDate).toLocaleString(translateLanguage(project), { month: 'long' }),
+
+
+
+
+
+              }},
               {{ new Date(project?.workDate).getFullYear() }}
             </span>
           </p>
@@ -38,11 +48,14 @@
               {{ project?.company }}
             </span>
           </p> -->
-          
+
           <!-- SHU YERDE EDILEN PROYEKTIN BRANDYNY GOSHMALY, BRAND_NAME BOLYAR DINE, OL HEM OPTIONAL BOLMALY, PROJECT OBJECT.I BIRAZ UYTGETMELI -->
 
           <p class="projects-id__project-text">
-            <span v-html="translateName(project)" style="font-weight: 600;"></span>
+            <span
+              v-html="translateName(project)"
+              style="font-weight: 600"
+            ></span>
           </p>
         </div>
       </div>
@@ -67,13 +80,17 @@
           </div>
         </div>
       </div>
-      <ImagePreviewModal :imageUrl="selectedImage" :isVisible="isModalVisible" @close="closeModal" />
+      <ImagePreviewModal
+        :imageUrl="selectedImage"
+        :isVisible="isModalVisible"
+        @close="closeModal"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import ImagePreviewModal from '~/components/ImagePreviewModal.vue';
+import ImagePreviewModal from "~/components/ImagePreviewModal.vue";
 import { GET_PROJECT_ONE } from "@/api/home.api";
 import translate from "@/mixins/translate";
 import { mapGetters } from "vuex";
@@ -95,7 +112,7 @@ export default {
         },
       },
       isModalVisible: false,
-      selectedImage: '',
+      selectedImage: "",
     };
   },
   async mounted() {
@@ -142,7 +159,7 @@ export default {
     },
     closeModal() {
       this.isModalVisible = false;
-      this.selectedImage = '';
+      this.selectedImage = "";
     },
   },
 };
@@ -194,8 +211,8 @@ export default {
   }
 
   &__project-image {
-    max-width: 150px;
-    height: 70px;
+    width: auto;
+    height: auto;
     img {
       width: 100%;
       height: 100%;
@@ -265,9 +282,9 @@ export default {
   &__description-description {
     color: #000;
     font-size: 17px;
-    text-indent: 2.0em;
+    text-indent: 2em;
     font-weight: 500;
-    line-height: 2.0em;
+    line-height: 2em;
     @media (max-width: 767px) {
       font-size: 15px;
     }

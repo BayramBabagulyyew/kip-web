@@ -14,7 +14,7 @@
           v-for="project in projects.rows"
           :key="project.projectId"
           class="projects-item"
-            @click="openInNewTab(project.projectId)"
+          @click="openInNewTab(project.projectId)"
         >
           <div class="projects-item__image">
             <img :src="`${imageURL}${project?.cover}`" alt="" />
@@ -82,7 +82,7 @@ export default {
 
   methods: {
     openInNewTab(projectId) {
-      window.open(`/projects/${projectId}`, '_blank');
+      window.open(`/projects/${projectId}`, "_blank");
     },
 
     async fetchProjects() {
@@ -242,4 +242,3 @@ export default {
   }
 }
 </style>
-

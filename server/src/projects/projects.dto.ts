@@ -27,48 +27,75 @@ export class upsertProjectDto {
   @IsOptional()
   @IsString()
   readonly projectId: string;
+
   @IsOptional()
   @IsString()
   readonly nameTm: string;
+
   @IsOptional()
   @IsString()
   readonly nameRu: string;
+
   @IsOptional()
   @IsString()
   readonly nameEn: string;
+
   @IsOptional()
   @IsString()
   readonly descriptionTm: string;
+
   @IsOptional()
   @IsString()
   readonly descriptionRu: string;
+
   @IsOptional()
   @IsString()
   readonly descriptionEn: string;
+
   @IsNotEmpty()
   @IsString()
-  readonly company: string;
+  readonly companyTm: string;
+
+  @IsNotEmpty()
+  @IsString()
+  readonly companyEn: string;
+
+  @IsNotEmpty()
+  @IsString()
+  readonly companyRu: string;
+
   @IsNotEmpty()
   @IsString()
   readonly logo: string;
+
   @IsNotEmpty()
   @IsDateString()
   readonly workDate: string;
+
+  @IsNotEmpty()
+  @IsDateString()
+  readonly endDate: string;
+
   @IsNotEmpty()
   @IsString({ each: true })
   readonly images: string[];
+
   @IsNotEmpty()
   @IsString()
   readonly cover: string;
+
   @IsOptional()
   @IsInt()
   readonly priority: number;
+
   @IsOptional()
   @IsBoolean()
   readonly homeActivity: boolean;
+
   // @IsNotEmpty()
   // @IsString()
   // readonly categoryId: string;
+
   @IsOptional()
   @IsString()
   readonly authorId: string;

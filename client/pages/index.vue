@@ -139,7 +139,7 @@ export default {
 
     async fetchNews() {
       try {
-        const { data, statusCode } = await GET_NEWS({limit:3,page:1});
+        const { data, statusCode } = await GET_NEWS({ limit: 3, page: 1 });
         if (statusCode) {
           this.news = data || {};
         }

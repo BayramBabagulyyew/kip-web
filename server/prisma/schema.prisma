@@ -1,7 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../generated/client"
-  binaryTargets   = ["native", "debian-openssl-3.0.x", "debian-openssl-1.1.x"]
+  provider      = "prisma-client-js"
+  output        = "../generated/client"
+  binaryTargets = ["native", "debian-openssl-3.0.x", "debian-openssl-1.1.x"]
 }
 
 datasource db {
@@ -57,9 +57,12 @@ model projects {
   descriptionTm String    @db.Text
   descriptionRu String    @db.Text
   descriptionEn String    @db.Text
-  company       String
+  companyTm     String
+  companyEn     String
+  companyRu     String
   logo          String
   workDate      DateTime  @db.Date()
+  endDate       DateTime  @db.Date()
   images        String[]
   cover         String
   priority      Int?      @unique

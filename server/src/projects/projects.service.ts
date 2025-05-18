@@ -45,9 +45,12 @@ export class ProjectsService {
           nameEn: dto.nameEn,
           descriptionEn: dto.descriptionEn,
           cover: dto.cover,
-          company: dto.company,
           logo: dto.logo,
+          companyEn: dto.companyEn,
+          companyRu: dto.companyRu,
+          companyTm: dto.companyTm,
           workDate: new Date(dto.workDate),
+          endDate: new Date(dto.endDate),
           authorId: userId,
           homeActivity: dto?.homeActivity ? dto?.homeActivity : false,
           images: dto.images,
@@ -61,9 +64,12 @@ export class ProjectsService {
           nameEn: dto.nameEn,
           descriptionEn: dto.descriptionEn,
           cover: dto.cover,
-          company: dto.company,
-          logo: dto.logo,
+          companyEn: dto.companyEn,
+          companyRu: dto.companyRu,
+          companyTm: dto.companyTm,
           workDate: new Date(dto.workDate),
+          endDate: new Date(dto.endDate),
+          logo: dto.logo,
           authorId: userId,
           homeActivity: dto?.homeActivity ? dto?.homeActivity : false,
           images: dto.images,
@@ -144,8 +150,11 @@ export class ProjectsService {
           authorId: true,
           priority: true,
           createdAt: true,
-          company: true,
+          companyEn: true,
+          companyTm: true,
+          companyRu: true,
           workDate: true,
+          endDate: true,
           images: true,
           logo: true,
           homeActivity: true,
@@ -203,8 +212,11 @@ export class ProjectsService {
           authorId: true,
           priority: true,
           createdAt: true,
-          company: true,
+          companyEn: true,
+          companyTm: true,
+          companyRu: true,
           workDate: true,
+          endDate: true,
           homeActivity: true,
           images: true,
           logo: true,
@@ -238,9 +250,12 @@ export class ProjectsService {
           descriptionEn: true,
           descriptionRu: true,
           descriptionTm: true,
-          company: true,
-          logo: true,
+          companyEn: true,
+          companyTm: true,
+          companyRu: true,
           workDate: true,
+          endDate: true,
+          logo: true,
           images: true,
           cover: true,
           priority: true,
@@ -248,16 +263,19 @@ export class ProjectsService {
           createdAt: true,
         },
       });
+      if (!project) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            success: false,
+            message: 'Habar  tapylmady',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      }
       return project;
     } catch (err) {
-      throw new HttpException(
-        {
-          statusCode: err.statusCode || HttpStatus.BAD_REQUEST,
-          success: false,
-          message: err.message,
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw err;
     }
   }
 
