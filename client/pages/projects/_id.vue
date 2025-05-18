@@ -35,6 +35,19 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
               }},
               {{ new Date(project?.workDate).getFullYear() }}
             </span>
@@ -211,12 +224,12 @@ export default {
   }
 
   &__project-image {
-    width: auto;
-    height: auto;
+    max-width: 25vw;
+    height: 25vh;
     img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: fit;
       object-position: center;
     }
   }
