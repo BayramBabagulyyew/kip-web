@@ -29,19 +29,19 @@
         <div class="text-editor-wrapper__calendar" style="width: 200px">
           <admin-input
             label="START DATE"
-            @updateValue="(val) => (main.workDate = val)"
-            :value="main.workDate"
             type="date"
             appendIcon="calendar"
+            v-model="formattedWorkDate"
+            @updateValue="(val) => (formattedWorkDate = val)"
           />
         </div>
         <div class="text-editor-wrapper__calendar" style="width: 200px">
           <admin-input
             label="END DATE"
-            @updateValue="(val) => (main.endDate = val)"
-            :value="main.endDate"
             type="date"
             appendIcon="calendar"
+            v-model="formattedEndDate"
+            @updateValue="(val) => (formattedEndDate = val)"
           />
         </div>
       </div>
@@ -99,6 +99,28 @@ export default {
     id: {
       type: String,
       default: null,
+    },
+  },
+  computed: {
+    formattedWorkDate: {
+      get() {
+        if (!this.main.workDate) return "";
+        return new Date(this.main.workDate).toISOString().split("T")[0]; // format as YYYY-MM-DD
+      },
+      set(value) {
+        console.log(value);
+        this.main.workDate = value; // optionally: new Date(value).toISOString()
+      },
+    },
+    formattedEndDate: {
+      get() {
+        if (!this.main.endDate) return "";
+        return new Date(this.main.endDate).toISOString().split("T")[0]; // format as YYYY-MM-DD
+      },
+      set(value) {
+        console.log(value);
+        this.main.endDate = value; // optionally: new Date(value).toISOString()
+      },
     },
   },
   data() {

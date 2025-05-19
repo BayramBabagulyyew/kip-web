@@ -34,17 +34,11 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+              }},
+              {{ new Date(project?.workDate).getFullYear() }} </span
+            >-
+            <span>
+              {{ new Date(project?.endDate).toLocaleString(translateLanguage(project), { month: 'long' }),
 
 
 

@@ -17,7 +17,7 @@
           <td>
             <img :src="`${imageURL}${item.cover}`" alt="" />
           </td>
-          <td>{{ item?.company }}</td>
+          <td>{{ item?.companyEn }}</td>
           <td class="description" v-html="item.descriptionTm"></td>
           <td>{{ item?.priority }}</td>
           <td>
