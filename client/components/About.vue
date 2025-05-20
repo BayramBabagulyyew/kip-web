@@ -12,9 +12,12 @@
       </div>
       <div class="about__content" ref="content">
         <h1 class="about__title">
-          {{ translateTitle(aboutUs) }}
+          {{ aboutUs?.[translator("title")] }}
         </h1>
-        <p class="about__description" v-html="translateContent(aboutUs)"></p>
+        <p
+          class="about__description"
+          v-html="aboutUs?.[translator('content')]"
+        ></p>
         <div class="about__button-wrapper">
           <button
             @click="$router.push(localeLocation('/about'))"
@@ -40,7 +43,7 @@
                     {{ aboutUs?.information?.info1.count }}
                   </p>
                   <h2 class="information-button-dropdown__title">
-                    {{ translateTitle(aboutUs?.information?.info1) }}
+                    {{ aboutUs?.information?.info1?.[translator("title")] }}
                   </h2>
                 </div>
               </div>
@@ -53,7 +56,7 @@
                     {{ aboutUs?.information?.info2.count }}
                   </p>
                   <h2 class="information-button-dropdown__title">
-                    {{ translateTitle(aboutUs?.information?.info2) }}
+                    {{ aboutUs?.information?.info2?.[translator("title")] }}
                   </h2>
                 </div>
               </div>
@@ -66,7 +69,7 @@
                     {{ aboutUs?.information?.info3.count }}
                   </p>
                   <h2 class="information-button-dropdown__title">
-                    {{ translateTitle(aboutUs?.information?.info3) }}
+                    {{ aboutUs?.information?.info3?.[translator("title")] }}
                   </h2>
                 </div>
               </div>
@@ -79,7 +82,7 @@
                     {{ aboutUs?.information?.info4?.count }}
                   </p>
                   <h2 class="information-button-dropdown__title">
-                    {{ translateTitle(aboutUs?.information?.info4) }}
+                    {{ aboutUs?.information?.info4?.[translator("title")] }}
                   </h2>
                 </div>
               </div>
@@ -287,7 +290,7 @@ export default {
   &__description {
     color: var(--text3);
     font-size: 20px;
-    text-indent: 2.0em;
+    text-indent: 2em;
     text-align: justify;
     font-weight: 400;
     line-height: 1.5em;
@@ -302,12 +305,10 @@ export default {
       background-color: #d5d5d5;
       transition: 0.3s all;
     }
-
     &::-webkit-scrollbar-thumb {
       background: var(--primary);
       transition: 0.3s all;
     }
-
     @media (max-width: 767px) {
       font-size: 16px;
       margin-bottom: 20px;
@@ -345,6 +346,7 @@ export default {
     }
   }
 }
+
 .button-arrow-title {
   position: absolute;
   bottom: -60px;
@@ -360,6 +362,7 @@ export default {
   .arrow-mobile {
     display: none;
   }
+
   @media (max-width: 767px) {
     bottom: auto;
     opacity: 100;
@@ -369,13 +372,12 @@ export default {
     .arrow {
       display: none !important;
     }
-    .icon {
-    }
     .arrow-mobile {
       display: block;
       rotate: -15deg;
     }
   }
+
   &__text {
     white-space: nowrap;
     font-size: 16px;
@@ -389,6 +391,7 @@ export default {
     }
   }
 }
+
 .information-button-dropdown {
   position: absolute;
   left: -100%;
@@ -442,10 +445,6 @@ export default {
       }
     }
   }
-
-  &__content {
-  }
-
   &__number {
     color: var(--primary);
     font-size: 18px;
@@ -455,7 +454,6 @@ export default {
       font-size: 12px;
     }
   }
-
   &__title {
     color: var(--red);
     font-size: 16px;

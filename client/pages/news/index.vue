@@ -21,11 +21,11 @@
         </div>
         <div class="news-page__content">
           <h1 class="news-page__title">
-            {{ translateTitle(item) }}
+            {{ item?.[translator("title")] }}
           </h1>
           <div
             class="news-page__description"
-            v-html="translateContent(item)"
+            v-html="item?.[translator(`content`)]"
           ></div>
           <p class="news-page__date">
             {{ new Date(item.createdAt).toLocaleDateString() }}
@@ -43,10 +43,9 @@
 </template>
 
 <script>
-import { request } from "@/api/generic.api";
 import translate from "@/mixins/translate";
 import { mapGetters } from "vuex";
-import {GET_NEWS, GET_NEWS_ALL} from "~/api/home.api";
+import { GET_NEWS_ALL } from "~/api/home.api";
 
 export default {
   mixins: [translate],
@@ -69,7 +68,10 @@ export default {
   methods: {
     async fetchNews(page = 1) {
       try {
-        const {success, data } = await GET_NEWS_ALL({limit: this.limit,  page:page});
+        const { success, data } = await GET_NEWS_ALL({
+          limit: this.limit,
+          page: page,
+        });
         if (!success) return;
         this.paginationCount = Math.ceil(data.count / this.limit);
         this.news = data.rows || [];

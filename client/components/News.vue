@@ -14,11 +14,11 @@
             </div>
             <div class="news__left-item-content">
               <h1 class="news__left-item-title">
-                {{ translateTitle(item) }}
+                {{ item?.[translator("title")] }}
               </h1>
               <p
                 class="news__left-item-description"
-                v-html="translateContent(item)"
+                v-html="item?.[translator('content')]"
               ></p>
               <p class="news__left-item-date">
                 {{ new Date(item.createdAt).toLocaleDateString() }}
@@ -39,11 +39,11 @@
         </div>
         <div class="news__center-content">
           <h1 class="news__center-title">
-            {{ translateTitle(news?.mainNews) }}
+            {{ news?.mainNews?.[translator("title")] }}
           </h1>
           <p
             class="news__center-description"
-            v-html="translateContent(news?.mainNews)"
+            v-html="news?.mainNews?.[translator('content')]"
           ></p>
           <p class="news__center-date">
             {{ new Date(news?.mainNews?.createdAt).toLocaleDateString() }}

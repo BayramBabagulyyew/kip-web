@@ -46,10 +46,7 @@
         </div>
       </div>
     </div>
-    <!-- <h2 class="ehs__box-title">
-        {{ translateTitle(datas) }}
-      </h2> -->
-    <p class="ehs__box-description" v-html="translateContent(datas)"></p>
+    <p class="ehs__box-description" v-html="datas?.[translator(`content`)]"></p>
   </div>
 </template>
 

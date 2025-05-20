@@ -22,9 +22,12 @@
           />
         </div>
         <h1 class="news-id__title">
-          {{ translateTitle(news) }}
+          {{ news?.[translator("title")] }}
         </h1>
-        <p class="news-id__description" v-html="translateContent(news)"></p>
+        <p
+          class="news-id__description"
+          v-html="news?.[translator(`content`)]"
+        ></p>
         <p class="news-id__date">
           {{ new Date(news?.createdAt).toLocaleDateString() }}
         </p>
@@ -34,10 +37,10 @@
 </template>
 
 <script>
-import ImagePreviewModal from "~/components/ImagePreviewModal.vue";
 import { GET_NEWS_ID } from "@/api/home.api";
 import translate from "@/mixins/translate";
 import { mapGetters } from "vuex";
+import ImagePreviewModal from "~/components/ImagePreviewModal.vue";
 
 export default {
   components: {

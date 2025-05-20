@@ -16,7 +16,7 @@ export default {
   },
   methods: {
     closeModal() {
-      this.$emit('close');
+      this.$emit("close");
     },
   },
 };
@@ -55,4 +55,3 @@ export default {
   border-radius: 4px;
 }
 </style>
-

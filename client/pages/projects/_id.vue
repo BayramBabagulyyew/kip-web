@@ -21,7 +21,7 @@
           <p class="projects-id__project-text">
             <span class="projects-id__project-span">{{ $t("company") }}:</span>
             <span>
-              {{ project?.companyEn }}
+              {{ project?.[translator("company")] }}
             </span>
           </p>
           <p class="projects-id__project-text">
@@ -54,7 +54,7 @@
           </p>
           <p class="projects-id__project-text">
             <span
-              v-html="translateName(project)"
+              v-html="project[translator(`name`)]"
               style="font-weight: 600"
             ></span>
           </p>
@@ -64,7 +64,7 @@
         <h1 class="projects-id__description-title">{{ $t("description") }}</h1>
         <p
           class="projects-id__description-description"
-          v-html="translateDescription(project)"
+          v-html="project?.[translator(`description`)]"
         ></p>
       </div>
       <div class="projects-id__images-wrapper">
@@ -206,7 +206,6 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 980px;
     margin-bottom: 30px;
   }
 
@@ -230,6 +229,7 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    max-width: 500px;
   }
 
   &__project-text {
@@ -298,8 +298,6 @@ export default {
 
   &__images-wrapper {
     position: relative;
-    &::before {
-    }
   }
 
   &__images-title {

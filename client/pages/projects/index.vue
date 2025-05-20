@@ -21,7 +21,9 @@
           </div>
           <div class="projects-item__bottom">
             <div class="projects-item__content">
-              <h1 class="projects-item__title">{{ translateName(project) }}</h1>
+              <h1 class="projects-item__title">
+                {{ project[translator("name")] }}
+              </h1>
             </div>
           </div>
         </div>

@@ -15,8 +15,15 @@
           <div class="services__content-logo">
             <img :src="`${imageURL}${item?.logo}`" alt="" />
           </div>
-          <p style="color: #183a60; font-size: large; font-weight: 600; text-transform: initial;">
-            {{ translateName(item) }}
+          <p
+            style="
+              color: #183a60;
+              font-size: large;
+              font-weight: 600;
+              text-transform: initial;
+            "
+          >
+            {{ item[translator("name")] }}
           </p>
         </div>
       </div>
@@ -35,8 +42,8 @@
           </div>
           <!-- <p>{{ translateName(item) }}</p> -->
           <!-- <h2>{{ translateName(item) }}</h2> -->
-          <p style="color: #183a60; font-size: large; font-weight: 600; ">
-            {{ translateName(item) }}
+          <p style="color: #183a60; font-size: large; font-weight: 600">
+            {{ item[translator("name")] }}
           </p>
         </div>
       </div>
@@ -50,10 +57,7 @@
       </button>
     </div>
     <div class="relative mobile-button-circle-white">
-      <BaseButtonProducts
-        :url="'https://kip.tm/site/2.pdf'"
-        primary
-      >
+      <BaseButtonProducts :url="'https://kip.tm/public/2.pdf'" primary>
         {{ $t("downloadFile") }}
       </BaseButtonProducts>
       <!-- <base-icon icon="circleCursor" class="circle-cursor" /> -->

@@ -36,13 +36,13 @@
           </li>
           <li class="contact-modal__item">
             <base-icon icon="location" />
-            <p class="">{{ translateAddress(intro?.contact) }}</p>
+            <p class="">{{ intro?.contact?.[translator("address")] }}</p>
           </li>
         </div>
       </div>
     </div>
     <div class="intro__left-bg" />
-    <h1 class="intro__title" v-html="translateTagline(intro)"></h1>
+    <h1 class="intro__title" v-html="intro[translator(`tagline`)]"></h1>
     <div class="intro__center-items">
       <div class="relative mobile-button-circle-primary" ref="contact">
         <base-button-circle @clicked="openContact = !openContact">

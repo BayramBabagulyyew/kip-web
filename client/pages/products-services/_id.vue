@@ -11,7 +11,6 @@
       <div class="products__project">
         <div class="products__project-image">
           <img :src="`${imageURL}${product?.logo}`" alt="" />
-          
         </div>
         <div class="products__project-content">
           <p class="products__project-text">
@@ -24,15 +23,23 @@
           </p> -->
         </div>
       </div>
-      <p style="color: #183A60; font-size: large; font-weight: 600; margin-bottom: 10px;">{{ translateName(product) }}</p>
+      <p
+        style="
+          color: #183a60;
+          font-size: large;
+          font-weight: 600;
+          margin-bottom: 10px;
+        "
+      >
+        {{ product[translator("name")] }}
+      </p>
       <div class="products__description-wrapper">
-
         <h1 class="products__description-title">{{ $t("description") }}</h1>
-        <p class="products__description-description"
-          style="line-height: 2.0em; text-align: justify; text-indent: 2.0em;"
-          v-html="translateContent(product)"
-        >
-        </p>
+        <p
+          class="products__description-description"
+          style="line-height: 2em; text-align: justify; text-indent: 2em"
+          v-html="product?.[translator(`content`)]"
+        ></p>
         <!-- v-html="translateContent(item)" -->
       </div>
       <!-- <div class="products__images-wrapper">

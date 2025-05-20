@@ -11,12 +11,12 @@
         </div>
         <div class="about-page__content" ref="images">
           <h1 class="about-page__title">
-            {{ translateTitle(aboutUs) }}
+            {{ aboutUs?.[translator("title")] }}
           </h1>
           <p
             class="about-page__description"
-            v-html="translateContent(aboutUs)"
-            style="text-align: justify; line-height: 1.5em; text-indent: 2em;"
+            v-html="aboutUs?.[translator(`content`)]"
+            style="text-align: justify; line-height: 1.5em; text-indent: 2em"
           ></p>
         </div>
       </div>

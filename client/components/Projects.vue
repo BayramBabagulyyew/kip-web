@@ -14,7 +14,7 @@
           <img :src="`${imageURL}${project?.cover}`" alt="" />
         </div>
         <h1 class="projects__item-title">
-          {{ translateName(project) }}
+          {{ project[translator("name")] }}
         </h1>
       </div>
     </div>
