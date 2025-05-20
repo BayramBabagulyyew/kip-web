@@ -29,35 +29,29 @@
               >{{ $t("engineeringPeriod") }}:</span
             >
             <span>
-              {{ new Date(project?.workDate).toLocaleString(translateLanguage(project), { month: 'long' }),
-
-
-
-
-              }},
-              {{ new Date(project?.workDate).getFullYear() }} </span
-            >-
-            <span>
-              {{ new Date(project?.endDate).toLocaleString(translateLanguage(project), { month: 'long' }),
-
-
-
-              }},
-              {{ new Date(project?.workDate).getFullYear() }}
+              {{
+                new Date(project?.workDate).toLocaleString(
+                  translateLanguage(project),
+                  { month: "long" }
+                )
+              }}, {{ new Date(project?.workDate).getFullYear() }}
+            </span>
+            <span
+              v-if="
+                project?.endDate &&
+                new Date(project?.workDate).getMonth() !==
+                  new Date(project?.endDate).getMonth()
+              "
+            >
+              -
+              {{
+                new Date(project?.endDate).toLocaleString(
+                  translateLanguage(project),
+                  { month: "long" }
+                )
+              }}, {{ new Date(project?.endDate).getFullYear() }}
             </span>
           </p>
-
-          <!-- <p class="projects-id__project-text">
-            <span class="projects-id__project-span"
-              >{{ $t("projectBrand") }}:</span
-            >
-            <span>
-              {{ project?.company }}
-            </span>
-          </p> -->
-
-          <!-- SHU YERDE EDILEN PROYEKTIN BRANDYNY GOSHMALY, BRAND_NAME BOLYAR DINE, OL HEM OPTIONAL BOLMALY, PROJECT OBJECT.I BIRAZ UYTGETMELI -->
-
           <p class="projects-id__project-text">
             <span
               v-html="translateName(project)"
@@ -66,7 +60,6 @@
           </p>
         </div>
       </div>
-      <!-- <ImagePreviewModal :imageUrl="selectedImage" :isVisible="isModalVisible" @close="closeModal" /> -->
       <div class="projects-id__description-wrapper">
         <h1 class="projects-id__description-title">{{ $t("description") }}</h1>
         <p
@@ -97,10 +90,10 @@
 </template>
 
 <script>
-import ImagePreviewModal from "~/components/ImagePreviewModal.vue";
 import { GET_PROJECT_ONE } from "@/api/home.api";
 import translate from "@/mixins/translate";
 import { mapGetters } from "vuex";
+import ImagePreviewModal from "~/components/ImagePreviewModal.vue";
 
 export default {
   components: {
@@ -218,13 +211,18 @@ export default {
   }
 
   &__project-image {
-    max-width: 25vw;
-    height: 25vh;
+    flex: 0 0 25%;
+    height: 155px;
     img {
       width: 100%;
       height: 100%;
-      object-fit: fit;
+      object-fit: cover;
       object-position: center;
+      border-radius: 4px;
+    }
+    @media (max-width: 479px) {
+      flex: 0 0 50%;
+      height: 130px;
     }
   }
 
@@ -240,6 +238,7 @@ export default {
     font-weight: 400;
     line-height: normal;
     text-transform: initial;
+    text-transform: capitalize;
   }
 
   &__project-span {

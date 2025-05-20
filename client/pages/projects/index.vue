@@ -82,7 +82,7 @@ export default {
 
   methods: {
     openInNewTab(projectId) {
-      window.open(`/projects/${projectId}`, "_blank");
+      this.$router.push(`/projects/${projectId}`);
     },
 
     async fetchProjects() {
