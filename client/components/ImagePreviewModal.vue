@@ -37,21 +37,34 @@ export default {
 }
 .modal-content {
   position: relative;
-  /* background-color: white; */
-  padding: 2px;
+  display: inline-block; /* Make content wrap the image */
+  padding: 0;
   border-radius: 1px;
   text-align: center;
 }
 .close {
   position: absolute;
-  top: 0px;
-  right: 60px;
+  top: 8px;
+  right: 8px;
   font-size: 34px;
   cursor: pointer;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
 }
 .modal-image {
-  max-width: 80%;
-  height: 80%; /*  auto; */
+  max-width: 90vw;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
   border-radius: 4px;
+  display: block;
 }
 </style>
