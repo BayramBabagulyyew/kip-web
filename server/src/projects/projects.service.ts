@@ -8,7 +8,7 @@ import {
 
 @Injectable()
 export class ProjectsService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) { }
 
   /* PROJECTS BEGIN */
   async upsertProject(dto: upsertProjectDto, userId: string) {
@@ -50,7 +50,7 @@ export class ProjectsService {
           companyRu: dto.companyRu,
           companyTm: dto.companyTm,
           workDate: new Date(dto.workDate),
-          endDate: new Date(dto.endDate),
+          endDate: dto.endDate ? new Date(dto.endDate) : null,
           authorId: userId,
           homeActivity: dto?.homeActivity ? dto?.homeActivity : false,
           images: dto.images,
@@ -68,7 +68,7 @@ export class ProjectsService {
           companyRu: dto.companyRu,
           companyTm: dto.companyTm,
           workDate: new Date(dto.workDate),
-          endDate: new Date(dto.endDate),
+          endDate: dto.endDate ? new Date(dto.endDate) : null,
           logo: dto.logo,
           authorId: userId,
           homeActivity: dto?.homeActivity ? dto?.homeActivity : false,

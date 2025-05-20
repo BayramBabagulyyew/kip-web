@@ -74,6 +74,7 @@ export class upsertProjectDto {
 
   @IsNotEmpty()
   @IsDateString()
+  @IsOptional()
   readonly endDate: string;
 
   @IsNotEmpty()
