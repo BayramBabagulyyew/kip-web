@@ -7,16 +7,14 @@
           class="projects__icon"
           @clicked="$router.push(localeLocation('/'))"
         />
-        <h1 class="projects__title">{{ $t("productsServices") }}</h1>
+        <h1 class="projects__title">{{ $t('productsServices') }}</h1>
       </div>
       <div class="services__row" ref="images">
         <div
           class="services__item"
           v-for="item in items"
           :key="item.id"
-          @click="
-            $router.push(localeLocation(`/products-services/${item?.id}`))
-          "
+          @click="$router.push(localeLocation(`/products-services/${item?.id}`))"
         >
           <!-- <div class="services__image">
             <img :src="`${imageURL}${item?.images[0]}`" alt="" />
@@ -26,15 +24,8 @@
               <img :src="`${imageURL}${item?.logo}`" alt="" />
             </div>
             <!-- <p>{{ translateName(item) }}</p> -->
-            <p
-              style="
-                color: #183a60;
-                font-size: large;
-                font-weight: 600;
-                text-transform: initial;
-              "
-            >
-              {{ item[translator("name")] }}
+            <p style="color: #183a60; font-size: large; font-weight: 600; text-transform: initial">
+              {{ item[translator('name')] }}
             </p>
           </div>
         </div>
@@ -50,13 +41,13 @@
 </template>
 
 <script>
-import { request } from "@/api/generic.api";
-import translate from "@/mixins/translate";
-import { mapGetters } from "vuex";
+import { request } from '@/api/generic.api';
+import translate from '@/mixins/translate';
+import { mapGetters } from 'vuex';
 export default {
   mixins: [translate],
   computed: {
-    ...mapGetters(["imageURL"]),
+    ...mapGetters(['imageURL']),
   },
 
   data() {
@@ -73,14 +64,13 @@ export default {
     if (this.$refs.aos) {
       const options =
         {
-          rootMargin: "0px 0px 0px 0px",
+          rootMargin: '0px 0px 0px 0px',
           threshold: 0.4,
         } || {};
       this.observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry && entry.isIntersecting) {
-            this.$refs.images.classList.add("aos");
-            const elemAos = document.querySelectorAll(".aos");
+            this.$refs.images.classList.add('aos');
           }
         });
       }, options);
@@ -94,8 +84,8 @@ export default {
     async fetchProducts() {
       try {
         const { success, data } = await request({
-          url: "services",
-          method: "PATCH",
+          url: 'services',
+          method: 'PATCH',
           data: {
             page: this.page,
             limit: this.limit,

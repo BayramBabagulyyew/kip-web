@@ -12,18 +12,6 @@ export const getters = {
     return state.isPopup;
   },
   aboutDatas: (state) => {
-    return state.aboutDatas
-  },
-};
-
-export const mutations = {
-  updateTitleValues(state, payload) {
-    state.main.title;
-  },
-  openPopup(state, status) {
-    state.isPopup = status;
-  },
-  setAboutDatas(state, payload) {
-    state.aboutDatas = payload
+    return state.aboutDatas;
   },
 };
