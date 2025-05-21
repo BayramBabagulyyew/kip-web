@@ -93,8 +93,6 @@ export default {
   @media (max-width: 767px) {
     padding: 30px 0;
   }
-  &__container {
-  }
 
   &__back {
     width: 50px;
@@ -149,6 +147,8 @@ export default {
   &__item {
     display: grid;
     grid-template-columns: minmax(100px, 160px) 1fr;
+    // background-color: red;
+    // height: 130px;
     gap: 10px;
     align-items: center;
     transition: 0.3s all;
@@ -177,7 +177,7 @@ export default {
   &__content {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 130px;
   }
 
   &__title {
@@ -187,7 +187,6 @@ export default {
     font-weight: 600;
     line-height: 120%;
     letter-spacing: 0.21px;
-    text-transform: capitalize;
     margin-bottom: 4px;
   }
 
@@ -197,16 +196,19 @@ export default {
     font-weight: 500;
     margin-bottom: 8px;
     flex: 1 1 auto;
+
     &:deep() {
       p {
         display: none;
         &:first-child {
-          display: block;
           overflow: hidden;
           text-overflow: ellipsis;
           display: -webkit-box;
-          -webkit-line-clamp: 5;
-          line-clamp: 5;
+          -webkit-line-clamp: 3;
+          word-wrap: break-word; /* Ensures long words wrap */
+          overflow-wrap: break-word; /* Same as above, more modern */
+          hyphens: auto;
+          line-clamp: 3; /* Removed for Chrome compatibility */
           -webkit-box-orient: vertical;
         }
       }
