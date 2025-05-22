@@ -19,49 +19,41 @@
         </div>
         <div class="projects-id__project-content">
           <p class="projects-id__project-text">
-            <span class="projects-id__project-span">{{ $t("company") }}:</span>
+            <span class="projects-id__project-span">{{ $t('company') }}:</span>
             <span>
-              {{ project?.[translator("company")] }}
+              {{ project?.[translator('company')] }}
             </span>
           </p>
           <p class="projects-id__project-text">
-            <span class="projects-id__project-span"
-              >{{ $t("engineeringPeriod") }}:</span
-            >
+            <span class="projects-id__project-span">{{ $t('engineeringPeriod') }}:</span>
             <span>
               {{
-                new Date(project?.workDate).toLocaleString(
-                  translateLanguage(project),
-                  { month: "long" }
-                )
+                new Date(project?.workDate).toLocaleString(translateLanguage(project), {
+                  month: 'long',
+                })
               }}, {{ new Date(project?.workDate).getFullYear() }}
             </span>
             <span
               v-if="
                 project?.endDate &&
-                new Date(project?.workDate).getMonth() !==
-                  new Date(project?.endDate).getMonth()
+                new Date(project?.workDate).getMonth() !== new Date(project?.endDate).getMonth()
               "
             >
               -
               {{
-                new Date(project?.endDate).toLocaleString(
-                  translateLanguage(project),
-                  { month: "long" }
-                )
+                new Date(project?.endDate).toLocaleString(translateLanguage(project), {
+                  month: 'long',
+                })
               }}, {{ new Date(project?.endDate).getFullYear() }}
             </span>
           </p>
           <p class="projects-id__project-text">
-            <span
-              v-html="project[translator(`name`)]"
-              style="font-weight: 600"
-            ></span>
+            <span v-html="project[translator(`name`)]" style="font-weight: 600"></span>
           </p>
         </div>
       </div>
       <div class="projects-id__description-wrapper">
-        <h1 class="projects-id__description-title">{{ $t("description") }}</h1>
+        <h1 class="projects-id__description-title">{{ $t('description') }}</h1>
         <p
           class="projects-id__description-description"
           v-html="project?.[translator(`description`)]"
@@ -90,10 +82,10 @@
 </template>
 
 <script>
-import { GET_PROJECT_ONE } from "@/api/home.api";
-import translate from "@/mixins/translate";
-import { mapGetters } from "vuex";
-import ImagePreviewModal from "~/components/ImagePreviewModal.vue";
+import { GET_PROJECT_ONE } from '@/api/home.api';
+import translate from '@/mixins/translate';
+import { mapGetters } from 'vuex';
+import ImagePreviewModal from '~/components/ImagePreviewModal.vue';
 
 export default {
   components: {
@@ -101,7 +93,7 @@ export default {
   },
   mixins: [translate],
   computed: {
-    ...mapGetters(["imageURL"]),
+    ...mapGetters(['imageURL']),
   },
   data() {
     return {
@@ -112,7 +104,7 @@ export default {
         },
       },
       isModalVisible: false,
-      selectedImage: "",
+      selectedImage: '',
     };
   },
   async mounted() {
@@ -120,14 +112,14 @@ export default {
     if (this.$refs.aos) {
       const options =
         {
-          rootMargin: "0px 0px 0px 0px",
+          rootMargin: '0px 0px 0px 0px',
           threshold: 0.4,
         } || {};
       this.observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry && entry.isIntersecting) {
-            this.$refs.images.classList.add("aos");
-            const elemAos = document.querySelectorAll(".aos");
+            this.$refs.images.classList.add('aos');
+            const elemAos = document.querySelectorAll('.aos');
           }
         });
       }, options);
@@ -159,7 +151,7 @@ export default {
     },
     closeModal() {
       this.isModalVisible = false;
-      this.selectedImage = "";
+      this.selectedImage = '';
     },
   },
 };
@@ -229,7 +221,7 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    max-width: 500px;
+    width: 750px;
   }
 
   &__project-text {
@@ -238,7 +230,6 @@ export default {
     font-weight: 400;
     line-height: normal;
     text-transform: initial;
-    text-transform: capitalize;
   }
 
   &__project-span {
@@ -256,13 +247,13 @@ export default {
     font-size: 30px;
     font-weight: 400;
     letter-spacing: 0.45px;
-    text-transform: capitalize;
+    // text-transform: capitalize;
     padding-bottom: 7px;
     position: relative;
     display: inline-block;
     margin-bottom: 14px;
     &::after {
-      content: "";
+      content: '';
       bottom: 0;
       left: 0;
       width: 130%;
@@ -311,7 +302,7 @@ export default {
     display: inline-block;
     margin-bottom: 30px;
     &::after {
-      content: "";
+      content: '';
       bottom: 0;
       left: 0;
       width: 120%;
