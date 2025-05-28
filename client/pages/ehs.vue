@@ -7,7 +7,7 @@
         @clicked="$router.back(localeLocation(-1))"
       />
       <h1 class="ehs-page__title">
-        {{ $t("ehs") }}
+        {{ $t('ehs') }}
       </h1>
     </div>
     <Ehs id="ehs" />

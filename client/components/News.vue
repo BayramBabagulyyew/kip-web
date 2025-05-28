@@ -3,60 +3,55 @@
     <div class="news__row" ref="row">
       <div class="news__left">
         <div class="news__left-items">
-          <div
-            class="news__left-item"
-            v-for="item in news.news"
-            :key="item.newsId"
-            @click="$router.push(localeLocation(`/news/${item.newsId}`))"
-          >
-            <div class="news__left-item-image">
-              <img :src="`${imageURL}${item?.image}`" alt="" />
-            </div>
-            <div class="news__left-item-content">
-              <h1 class="news__left-item-title">
-                {{ item?.[translator("title")] }}
-              </h1>
-              <p
-                class="news__left-item-description"
-                v-html="item?.[translator('content')]"
-              ></p>
-              <p class="news__left-item-date">
-                {{ new Date(item.createdAt).toLocaleDateString() }}
-              </p>
-            </div>
+          <!-- class="news__left-item" -->
+          <div v-for="item in news.news" :key="item.newsId">
+            <!-- @click="$router.push(localeLocation(`/news/${item.newsId}`))" -->
+            <a :href="`/news/${item.newsId}`" class="news__left-item">
+              <div class="news__left-item-image">
+                <img :src="`${imageURL}${item?.image}`" alt="" />
+              </div>
+              <div class="news__left-item-content">
+                <h1 class="news__left-item-title">
+                  {{ item?.[translator('title')] }}
+                </h1>
+                <p class="news__left-item-description" v-html="item?.[translator('content')]"></p>
+                <p class="news__left-item-date">
+                  {{ new Date(item.createdAt).toLocaleDateString() }}
+                </p>
+              </div>
+            </a>
           </div>
         </div>
-        <button
-          @click="$router.push('/news')"
-          class="news__watch-button mobile"
-        >
-          {{ $t("seeAll") }}
+        <button @click="$router.push('/news')" class="news__watch-button mobile">
+          {{ $t('seeAll') }}
         </button>
       </div>
-      <div class="news__center">
-        <div class="news__center-image">
-          <img :src="`${imageURL}${news?.mainNews?.image}`" alt="" />
+      <a :href="`/news/${news?.mainNews?.newsId}`">
+        <div class="news__center">
+          <div class="news__center-image">
+            <img :src="`${imageURL}${news?.mainNews?.image}`" alt="" />
+          </div>
+          <div class="news__center-content">
+            <h1 class="news__center-title">
+              {{ news?.mainNews?.[translator('title')] }}
+            </h1>
+            <p
+              class="news__center-description"
+              v-html="news?.mainNews?.[translator('content')]"
+            ></p>
+            <p class="news__center-date">
+              {{ new Date(news?.mainNews?.createdAt).toLocaleDateString() }}
+            </p>
+          </div>
         </div>
-        <div class="news__center-content">
-          <h1 class="news__center-title">
-            {{ news?.mainNews?.[translator("title")] }}
-          </h1>
-          <p
-            class="news__center-description"
-            v-html="news?.mainNews?.[translator('content')]"
-          ></p>
-          <p class="news__center-date">
-            {{ new Date(news?.mainNews?.createdAt).toLocaleDateString() }}
-          </p>
-        </div>
-      </div>
+      </a>
       <div class="news__right">
-        <h1 class="news__right-title">{{ $t("news") }}</h1>
+        <h1 class="news__right-title">{{ $t('news') }}</h1>
 
         <!-- <h2 class="news__right-subtitle">{{ $t("newsCompany") }}</h2> -->
 
         <button @click="$router.push('/news')" class="news__watch-button">
-          {{ $t("seeAll") }}
+          {{ $t('seeAll') }}
         </button>
       </div>
     </div>
@@ -64,8 +59,8 @@
 </template>
 
 <script>
-import translate from "@/mixins/translate";
-import { mapGetters } from "vuex";
+import translate from '@/mixins/translate';
+import { mapGetters } from 'vuex';
 
 export default {
   props: {
@@ -76,7 +71,7 @@ export default {
   },
   mixins: [translate],
   computed: {
-    ...mapGetters(["imageURL"]),
+    ...mapGetters(['imageURL']),
   },
   data() {
     return {
@@ -89,14 +84,14 @@ export default {
     if (this.$refs.aos) {
       const options =
         {
-          rootMargin: "0px 0px 0px 0px",
+          rootMargin: '0px 0px 0px 0px',
           threshold: 0.4,
         } || {};
       this.observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry && entry.isIntersecting) {
-            this.$refs.row.classList.add("aos");
-            const elemAos = document.querySelectorAll(".aos");
+            this.$refs.row.classList.add('aos');
+            const elemAos = document.querySelectorAll('.aos');
           }
         });
       }, options);
@@ -182,7 +177,7 @@ export default {
   &__left {
     position: relative;
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       right: -25px;
       top: 50%;
@@ -240,9 +235,6 @@ export default {
       object-fit: cover;
       border-radius: 5px;
     }
-  }
-
-  &__left-item-content {
   }
 
   &__left-item-title {
@@ -350,7 +342,7 @@ export default {
     position: relative;
     height: 100%;
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       left: -25px;
       top: 50%;
@@ -377,7 +369,7 @@ export default {
     display: flex;
     display: inline-block;
     &::after {
-      content: "";
+      content: '';
       bottom: 0;
       left: 0;
       width: 80%;

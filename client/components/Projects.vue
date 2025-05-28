@@ -1,42 +1,37 @@
 <template>
   <div class="projects" ref="aos">
     <div class="projects__title-wrapper">
-      <h1 class="projects__title">{{ $t("projects") }}</h1>
+      <h1 class="projects__title">{{ $t('projects') }}</h1>
     </div>
     <div class="projects__row" ref="images">
-      <div
-        class="projects__item"
-        v-for="project in projects"
-        :key="project.projectId"
-        @click="$router.push(localeLocation(`/projects/${project.projectId}`))"
-      >
-        <div class="projects__image">
-          <img :src="`${imageURL}${project?.cover}`" alt="" />
-        </div>
-        <h1 class="projects__item-title">
-          {{ project[translator("name")] }}
-        </h1>
+      <div class="projects__item" v-for="project in projects" :key="project.projectId">
+        <!-- @click="$router.push(localeLocation(`/projects/${project.projectId}`))" -->
+        <a :href="`/projects/${project.projectId}`" class="projects__item">
+          <div class="projects__image">
+            <img :src="`${imageURL}${project?.cover}`" alt="" />
+          </div>
+          <h1 class="projects__item-title">
+            {{ project[translator('name')] }}
+          </h1>
+        </a>
       </div>
     </div>
     <div class="projects__button-wrapper">
-      <button
-        class="projects__button"
-        @click="$router.push(localeLocation('/projects'))"
-      >
-        {{ $t("seeAll") }}
+      <button class="projects__button" @click="$router.push(localeLocation('/projects'))">
+        {{ $t('seeAll') }}
       </button>
     </div>
   </div>
 </template>
 
 <script>
-import translate from "@/mixins/translate";
-import { mapGetters } from "vuex";
+import translate from '@/mixins/translate';
+import { mapGetters } from 'vuex';
 
 export default {
   mixins: [translate],
   computed: {
-    ...mapGetters(["imageURL"]),
+    ...mapGetters(['imageURL']),
   },
   props: {
     projects: {
@@ -50,22 +45,22 @@ export default {
       id: 1,
       sliders: [
         {
-          image: "engineering_1.jpg",
-          title: "СF / BCF YARNS",
+          image: 'engineering_1.jpg',
+          title: 'СF / BCF YARNS',
         },
         {
-          image: "engineering_2.jpg",
-          title: "СF / BCF YARNS",
+          image: 'engineering_2.jpg',
+          title: 'СF / BCF YARNS',
         },
       ],
       telecom: [
         {
-          image: "telecom_2.png",
-          title: "СF / BCF YARNS",
+          image: 'telecom_2.png',
+          title: 'СF / BCF YARNS',
         },
         {
-          image: "projects_1.jpg",
-          title: "СF / BCF YARNS",
+          image: 'projects_1.jpg',
+          title: 'СF / BCF YARNS',
         },
       ],
     };
@@ -74,14 +69,14 @@ export default {
     if (this.$refs.aos) {
       const options =
         {
-          rootMargin: "0px 0px 0px 0px",
+          rootMargin: '0px 0px 0px 0px',
           threshold: 0.2,
         } || {};
       this.observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry && entry.isIntersecting) {
-            this.$refs.images.classList.add("aos");
-            const elemAos = document.querySelectorAll(".aos");
+            this.$refs.images.classList.add('aos');
+            const elemAos = document.querySelectorAll('.aos');
           }
         });
       }, options);
@@ -113,6 +108,7 @@ export default {
   width: 100vw;
   height: 100%;
   position: relative;
+  text-decoration: none;
   z-index: 2;
   display: flex;
   justify-content: center;
@@ -150,7 +146,7 @@ export default {
       margin-bottom: 20px;
     }
     &::after {
-      content: "";
+      content: '';
       bottom: 0;
       left: 0;
       width: 80%;
@@ -195,6 +191,7 @@ export default {
 
   &__item {
     transition: 0.2s;
+    text-decoration: none;
     cursor: pointer;
     &:hover {
       transform: scale(1.04);
@@ -213,7 +210,9 @@ export default {
   &__item-title {
     font-size: 18px;
     margin-top: 10px;
+    text-decoration: none;
     font-weight: 500;
+    color: var(--text2);
     @media (max-width: 767px) {
       font-size: 18px;
     }

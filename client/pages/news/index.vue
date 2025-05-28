@@ -10,27 +10,22 @@
       </div>
     </div>
     <div class="news-page__items">
-      <div
-        class="news-page__item"
-        v-for="item in news"
-        :key="item.newsId"
-        @click="$router.push(`/news/${item.newsId}`)"
-      >
-        <div class="news-page__image">
-          <img :src="`${imageURL}${item?.image}`" alt="" />
-        </div>
-        <div class="news-page__content">
-          <h1 class="news-page__title">
-            {{ item?.[translator("title")] }}
-          </h1>
-          <div
-            class="news-page__description"
-            v-html="item?.[translator(`content`)]"
-          ></div>
-          <p class="news-page__date">
-            {{ new Date(item.createdAt).toLocaleDateString() }}
-          </p>
-        </div>
+      <div v-for="item in news" :key="item.newsId">
+        <!-- @click="$router.push(`/news/${item.newsId}`)" -->
+        <a :href="`/news/${item.newsId}`" class="news-page__item">
+          <div class="news-page__image">
+            <img :src="`${imageURL}${item?.image}`" alt="" />
+          </div>
+          <div class="news-page__content">
+            <h1 class="news-page__title">
+              {{ item?.[translator('title')] }}
+            </h1>
+            <div class="news-page__description" v-html="item?.[translator(`content`)]"></div>
+            <p class="news-page__date">
+              {{ new Date(item.createdAt).toLocaleDateString() }}
+            </p>
+          </div>
+        </a>
       </div>
     </div>
     <base-pagination
@@ -43,14 +38,14 @@
 </template>
 
 <script>
-import translate from "@/mixins/translate";
-import { mapGetters } from "vuex";
-import { GET_NEWS_ALL } from "~/api/home.api";
+import translate from '@/mixins/translate';
+import { mapGetters } from 'vuex';
+import { GET_NEWS_ALL } from '~/api/home.api';
 
 export default {
   mixins: [translate],
   computed: {
-    ...mapGetters(["imageURL"]),
+    ...mapGetters(['imageURL']),
   },
   data() {
     return {
@@ -182,7 +177,7 @@ export default {
 
   &__title {
     color: var(--primary);
-    font-family: "Oxanium";
+    font-family: 'Oxanium';
     font-size: 14px;
     font-weight: 600;
     line-height: 120%;

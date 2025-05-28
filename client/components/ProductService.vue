@@ -1,31 +1,19 @@
 <template>
   <div class="services" ref="aos">
-    <h1 class="services__title">{{ $t("productsServices") }}</h1>
+    <h1 class="services__title">{{ $t('productsServices') }}</h1>
     <div class="services__row" ref="images">
-      <div
-        class="services__item"
-        v-for="item in items?.services"
-        :key="item?.id"
-        @click="$router.push(localeLocation(`/products-services/${item?.id}`))"
-      >
-        <!-- <div class="services__image">
-          <img :src="`${imageURL}${item?.images[0]}`" alt="" />
-        </div> -->
-        <div class="services__content">
-          <div class="services__content-logo">
-            <img :src="`${imageURL}${item?.logo}`" alt="" />
+      <div class="services__item" v-for="item in items?.services" :key="item?.id">
+        <!-- @click="$router.push(localeLocation(`/products-services/${item?.id}`))" -->
+        <a :href="`/products-services/${item?.id}`">
+          <div class="services__content">
+            <div class="services__content-logo">
+              <img :src="`${imageURL}${item?.logo}`" alt="" />
+            </div>
+            <p style="color: #183a60; font-size: large; font-weight: 600; text-transform: initial">
+              {{ item[translator('name')] }}
+            </p>
           </div>
-          <p
-            style="
-              color: #183a60;
-              font-size: large;
-              font-weight: 600;
-              text-transform: initial;
-            "
-          >
-            {{ item[translator("name")] }}
-          </p>
-        </div>
+        </a>
       </div>
       <div
         class="services__item"
@@ -43,26 +31,23 @@
           <!-- <p>{{ translateName(item) }}</p> -->
           <!-- <h2>{{ translateName(item) }}</h2> -->
           <p style="color: #183a60; font-size: large; font-weight: 600">
-            {{ item[translator("name")] }}
+            {{ item[translator('name')] }}
           </p>
         </div>
       </div>
     </div>
     <div class="services__button-wrapper">
-      <button
-        class="services__button"
-        @click="$router.push(localeLocation('/products-services'))"
-      >
-        {{ $t("seeAll") }}
+      <button class="services__button" @click="$router.push(localeLocation('/products-services'))">
+        {{ $t('seeAll') }}
       </button>
     </div>
     <div class="relative mobile-button-circle-white">
       <BaseButtonProducts :url="'https://kip.tm/public/2.pdf'" primary>
-        {{ $t("downloadFile") }}
+        {{ $t('downloadFile') }}
       </BaseButtonProducts>
       <!-- <base-icon icon="circleCursor" class="circle-cursor" /> -->
       <div class="button-arrow-title">
-        <h2 class="button-arrow-title__text">{{ $t("pdfDownloadFile") }}</h2>
+        <h2 class="button-arrow-title__text">{{ $t('pdfDownloadFile') }}</h2>
         <base-icon icon="workBlackArrowMini" class="black-arrow-mini" />
       </div>
     </div>
@@ -70,12 +55,12 @@
 </template>
 
 <script>
-import translate from "@/mixins/translate";
-import { mapGetters } from "vuex";
+import translate from '@/mixins/translate';
+import { mapGetters } from 'vuex';
 export default {
   mixins: [translate],
   computed: {
-    ...mapGetters(["imageURL"]),
+    ...mapGetters(['imageURL']),
   },
   props: {
     items: {
@@ -98,14 +83,14 @@ export default {
     if (this.$refs.aos) {
       const options =
         {
-          rootMargin: "0px 0px 0px 0px",
+          rootMargin: '0px 0px 0px 0px',
           threshold: 0.4,
         } || {};
       this.observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry && entry.isIntersecting) {
-            this.$refs.images.classList.add("aos");
-            const elemAos = document.querySelectorAll(".aos");
+            this.$refs.images.classList.add('aos');
+            const elemAos = document.querySelectorAll('.aos');
           }
         });
       }, options);

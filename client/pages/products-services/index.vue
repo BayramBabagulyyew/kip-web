@@ -10,24 +10,24 @@
         <h1 class="projects__title">{{ $t('productsServices') }}</h1>
       </div>
       <div class="services__row" ref="images">
-        <div
-          class="services__item"
-          v-for="item in items"
-          :key="item.id"
-          @click="$router.push(localeLocation(`/products-services/${item?.id}`))"
-        >
+        <div class="services__item" v-for="item in items" :key="item.id">
+          <!-- @click="$router.push(localeLocation(`/products-services/${item?.id}`))" -->
           <!-- <div class="services__image">
             <img :src="`${imageURL}${item?.images[0]}`" alt="" />
           </div> -->
-          <div class="services__content">
-            <div class="services__content-logo">
-              <img :src="`${imageURL}${item?.logo}`" alt="" />
+          <a :href="`/products-services/${item?.id}`">
+            <div class="services__content">
+              <div class="services__content-logo">
+                <img :src="`${imageURL}${item?.logo}`" alt="" />
+              </div>
+              <!-- <p>{{ translateName(item) }}</p> -->
+              <p
+                style="color: #183a60; font-size: large; font-weight: 600; text-transform: initial"
+              >
+                {{ item[translator('name')] }}
+              </p>
             </div>
-            <!-- <p>{{ translateName(item) }}</p> -->
-            <p style="color: #183a60; font-size: large; font-weight: 600; text-transform: initial">
-              {{ item[translator('name')] }}
-            </p>
-          </div>
+          </a>
         </div>
       </div>
       <base-pagination

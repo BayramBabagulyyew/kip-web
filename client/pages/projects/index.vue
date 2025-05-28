@@ -7,25 +7,23 @@
           class="projects__icon"
           @clicked="$router.push(localeLocation('/'))"
         />
-        <h1 class="projects__title">{{ $t("projects") }}</h1>
+        <h1 class="projects__title">{{ $t('projects') }}</h1>
       </div>
       <div class="projects__items" ref="images">
-        <div
-          v-for="project in projects.rows"
-          :key="project.projectId"
-          class="projects-item"
-          @click="openInNewTab(project.projectId)"
-        >
-          <div class="projects-item__image">
-            <img :src="`${imageURL}${project?.cover}`" alt="" />
-          </div>
-          <div class="projects-item__bottom">
-            <div class="projects-item__content">
-              <h1 class="projects-item__title">
-                {{ project[translator("name")] }}
-              </h1>
+        <div v-for="project in projects.rows" :key="project.projectId" class="projects-item">
+          <!-- @click="openInNewTab(project.projectId)" -->
+          <a :href="`projects/${project.projectId}`" class="projects-item">
+            <div class="projects-item__image">
+              <img :src="`${imageURL}${project?.cover}`" alt="" />
             </div>
-          </div>
+            <div class="projects-item__bottom">
+              <div class="projects-item__content">
+                <h1 class="projects-item__title">
+                  {{ project[translator('name')] }}
+                </h1>
+              </div>
+            </div>
+          </a>
         </div>
       </div>
       <base-pagination
@@ -39,14 +37,14 @@
 </template>
 
 <script>
-import { request } from "@/api/generic.api";
-import translate from "@/mixins/translate";
-import { mapGetters } from "vuex";
+import { request } from '@/api/generic.api';
+import translate from '@/mixins/translate';
+import { mapGetters } from 'vuex';
 
 export default {
   mixins: [translate],
   computed: {
-    ...mapGetters(["imageURL"]),
+    ...mapGetters(['imageURL']),
   },
   data() {
     return {
@@ -64,14 +62,14 @@ export default {
     if (this.$refs.aos) {
       const options =
         {
-          rootMargin: "0px 0px 0px 0px",
+          rootMargin: '0px 0px 0px 0px',
           threshold: 0.4,
         } || {};
       this.observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry && entry.isIntersecting) {
-            this.$refs.images.classList.add("aos");
-            const elemAos = document.querySelectorAll(".aos");
+            this.$refs.images.classList.add('aos');
+            const elemAos = document.querySelectorAll('.aos');
           }
         });
       }, options);
@@ -90,7 +88,7 @@ export default {
     async fetchProjects() {
       try {
         const { success, data } = await request({
-          url: "projects/fetch",
+          url: 'projects/fetch',
           data: {
             page: this.page,
             limit: this.limit,
@@ -179,6 +177,7 @@ export default {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 50px;
+    text-decoration: none;
     @media (min-width: 767px) {
       transition: 1s all;
       transform: translateY(120px);
@@ -240,7 +239,7 @@ export default {
     font-weight: 700;
     line-height: normal;
     text-transform: initial;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
 }
 </style>
