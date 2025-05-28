@@ -8,7 +8,7 @@ import {
 
 @Injectable()
 export class ProjectsService {
-  constructor(private readonly prismaService: PrismaService) { }
+  constructor(private readonly prismaService: PrismaService) {}
 
   /* PROJECTS BEGIN */
   async upsertProject(dto: upsertProjectDto, userId: string) {
@@ -92,7 +92,6 @@ export class ProjectsService {
   async removeProject(projectId: string, userId: string) {
     try {
       const exists = await this._userExists(userId);
-      console.log(exists);
 
       if (!exists) {
         throw new HttpException(

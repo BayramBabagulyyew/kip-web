@@ -7,7 +7,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ChangePasswordDto, singUpDto } from 'src/users/user.dto';
+import { ChangePasswordDto, singInDto, singUpDto } from 'src/users/user.dto';
 import { responseInterceptor } from 'src/utils/response.interceptor';
 import { AuthGuard } from './auth.guard';
 import { RequestWithUser } from 'src/utils/request-with-user';
@@ -23,7 +23,7 @@ export class AuthController {
   }
 
   @Post('signin')
-  singIn(@Body() dto: singUpDto) {
+  singIn(@Body() dto: singInDto) {
     return this.authService.signIn(dto);
   }
 

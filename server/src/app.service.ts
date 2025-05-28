@@ -1,8 +1,4 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { existsSync, mkdirSync, writeFileSync } from 'fs';
-import { extname, join, resolve } from 'path';
-import { v4 } from 'uuid';
-import { PrismaService } from './prisma/prisma.service';
 import {
   contactDto,
   fetchNewsDto,
@@ -14,6 +10,10 @@ import {
   upsertServiceDto,
   upsetAboutDto,
 } from '@utils/app.dto';
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
+import { extname, join, resolve } from 'path';
+import { v4 } from 'uuid';
+import { PrismaService } from './prisma/prisma.service';
 // import { ecology } from '@prisma/client';
 import * as nodemailer from 'nodemailer';
 import { PaginationRequest } from './common/interfaces';
@@ -594,10 +594,10 @@ export class AppService {
       };
       transporter.sendMail(details, (err) => {
         if (err) {
-          console.log(err);
+          console.error(err);
           // console.log('>>>>>>>>>>>>>>>>>>>>>> error');
         } else {
-          console.log('OK');
+          console.warn('OK');
         }
       });
       return { message: 'mail send successfully' };

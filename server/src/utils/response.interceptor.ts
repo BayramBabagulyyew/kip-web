@@ -8,6 +8,7 @@ import { map, Observable } from 'rxjs';
 
 @Injectable()
 export class responseInterceptor implements NestInterceptor {
+  // eslint-disable-next-line
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map((value) => {

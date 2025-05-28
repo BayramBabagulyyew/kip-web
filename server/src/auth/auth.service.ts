@@ -1,18 +1,30 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { ChangePasswordDto, singUpDto } from 'src/users/user.dto';
-import * as bcrypt from 'bcryptjs';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcryptjs';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { ChangePasswordDto, singInDto, singUpDto } from 'src/users/user.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
   async signUp(dto: singUpDto) {
     try {
+      const key: string = this.configService.get<string>('SUPER_KEY');
+      if (!dto.key || dto.key !== key) {
+        throw new NotFoundException();
+      }
+
       const condidate = await this.prismaService.users.findUnique({
         where: { username: dto.username },
       });
@@ -45,7 +57,7 @@ export class AuthService {
     }
   }
 
-  async signIn(dto: singUpDto) {
+  async signIn(dto: singInDto) {
     try {
       const condidate = await this.prismaService.users.findUnique({
         where: { username: dto.username },

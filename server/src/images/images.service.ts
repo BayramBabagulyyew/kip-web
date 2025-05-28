@@ -135,7 +135,6 @@ export class ImagesService {
         skip: skip,
         orderBy: [{ createdAt: 'desc' }],
       });
-      console.log('count', count, limit, page, skip);
       return { count, pageCount, rows };
     } catch (err) {
       throw new HttpException(

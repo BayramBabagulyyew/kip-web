@@ -37,8 +37,9 @@ async function bootstrap() {
   );
   app.setGlobalPrefix('site');
   app.getHttpAdapter().getInstance().disable('x-powered-by');
-  await app.listen(port).then(() => {
-    console.log(`server started on ${port}`);
+  await app.listen(port, () => {
+    // eslint-disable-next-line no-console
+    console.log(`Server is running on port ${port}`);
   });
 }
 bootstrap();
