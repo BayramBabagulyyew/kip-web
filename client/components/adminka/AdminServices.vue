@@ -13,14 +13,34 @@
         label="Products/services content"
         placeholder="..."
       /> -->
-      <div></div>
-      <admin-textarea
+
+      <!-- <admin-textarea
         v-model="main[`content${activeLang}`]"
         label="Content #home"
         class="mb-2"
-      />
-      <div></div>
-
+      /> -->
+      <div class="admin-textarea">
+        <label class="admin-label">Content #home</label>
+        <div class="editor-wrapper">
+          <!-- <RichTextEditor v-model="main[`content${activeLang}`]" :language="activeLang" /> -->
+          <Editor
+            v-model="main[`content${activeLang}`]"
+            :init="{
+              height: 500,
+              menubar: true,
+              toolbar: `undo redo | blocks | fontfamily fontsize | bold italic underline strikethrough | 
+              forecolor backcolor | alignleft aligncenter alignright alignjustify | 
+              bullist numlist outdent indent | removeformat | link image media | 
+              code fullscreen preview print | table hr pagebreak emoticons | 
+              ltr rtl | template`,
+              skin_url: '/tinymce/skins/ui/oxide',
+              content_css: '/tinymce/skins/content/default/content.css',
+              icons_url: '/tinymce/icons/default/icons.js',
+              language_url: '/tinymce/langs/en.js',
+            }"
+          />
+        </div>
+      </div>
       <!-- <admin-input
         @updateValue="(val) => (main[`type`] = val)"
         :value="main[`type`]"
@@ -44,11 +64,7 @@
       </div>
       <div></div>
       <div class="flex flex-x-end grid-column">
-        <base-button
-          @clickedButton="upsertData"
-          style="width: 150px"
-          class="admin-header__button"
-        >
+        <base-button @clickedButton="upsertData" style="width: 150px" class="admin-header__button">
           Save
         </base-button>
       </div>
@@ -83,7 +99,7 @@
 </template>
 
 <script>
-import { request } from "@/api/generic.api";
+import { request } from '@/api/generic.api';
 export default {
   props: {
     id: {
@@ -93,27 +109,27 @@ export default {
   },
   data() {
     return {
-      activeLang: "Tm",
+      activeLang: 'Tm',
       activePupUp: false,
       errorPupUp: false,
       image: null,
-      errorMessage: "Boş meydanlary dolduryň!",
-      selectedRadio: "service",
+      errorMessage: 'Boş meydanlary dolduryň!',
+      selectedRadio: 'service',
       radioOptions: [
-        { label: "service", value: "service" },
-        { label: "product", value: "product" },
+        { label: 'service', value: 'service' },
+        { label: 'product', value: 'product' },
       ],
       main: {
         id: null,
-        nameTm: "",
-        nameRu: "",
-        nameEn: "",
-        contentTm: "",
-        contentRu: "",
-        contentEn: "",
-        type: "",
+        nameTm: '',
+        nameRu: '',
+        nameEn: '',
+        contentTm: '',
+        contentRu: '',
+        contentEn: '',
+        type: '',
         images: [],
-        logo: "",
+        logo: '',
         priority: null,
       },
     };
@@ -141,19 +157,16 @@ export default {
       this.main.images = this.main.images.filter((item) => item !== data);
     },
     async upsertData() {
-      if (
-        !this.main[`name${this.activeLang}`] ||
-        !this.main[`content${this.activeLang}`]
-      ) {
+      if (!this.main[`name${this.activeLang}`] || !this.main[`content${this.activeLang}`]) {
         this.errorPupUp = true;
-        this.errorMessage = "Boş meydanlary doldury";
+        this.errorMessage = 'Boş meydanlary doldury';
         setTimeout(() => {
           this.errorPupUp = false;
         }, 2000);
       } else {
         try {
           const { success, data } = await request({
-            url: "services/upsert",
+            url: 'services/upsert',
             data: {
               ...this.main,
               type: this.selectedRadio,
@@ -161,12 +174,12 @@ export default {
           });
           if (!success) return;
           this.main.id = null;
-          this.main.nameTm = "";
-          this.main.contentTm = "";
-          this.main.nameRu = "";
-          this.main.contentRu = "";
-          this.main.nameEn = "";
-          this.main.contentEn = "";
+          this.main.nameTm = '';
+          this.main.contentTm = '';
+          this.main.nameRu = '';
+          this.main.contentRu = '';
+          this.main.nameEn = '';
+          this.main.contentEn = '';
           this.main.images = [];
           this.main.priority = null;
           this.main.type = null;
@@ -174,7 +187,7 @@ export default {
         } catch (error) {
           console.log(error.response);
           if (error?.response?.data?.statusCode === 611) {
-            this.errorMessage = "Bul piority eyam bar";
+            this.errorMessage = 'Bul piority eyam bar';
             this.errorPupUp = true;
             setTimeout(() => {
               this.errorPupUp = false;
@@ -187,7 +200,7 @@ export default {
       try {
         const { success, data } = await request({
           url: `services/find/${id}`,
-          method: "POST",
+          method: 'POST',
         });
         if (!success) return;
         for (let [key] of Object.entries(this.main)) {
@@ -206,7 +219,7 @@ export default {
     async uploadPhotoCover(file) {
       try {
         const { success, data } = await request({
-          url: "upload",
+          url: 'upload',
           data: {
             fileUrl: file,
           },
@@ -221,7 +234,7 @@ export default {
     async uploadPhotoImages(file) {
       try {
         const { success, data } = await request({
-          url: "upload",
+          url: 'upload',
           data: {
             fileUrl: file,
           },
@@ -267,5 +280,28 @@ export default {
 }
 .grid-column {
   grid-column: 1 / span 2;
+}
+.admin-label {
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  @media (max-width: 767px) {
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+}
+
+.editor-wrapper {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px;
+  margin: 8px 0 20px;
+  background-color: #fff;
+
+  // Optional: shadow to match input components
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 </style>

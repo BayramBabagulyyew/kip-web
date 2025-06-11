@@ -18,19 +18,31 @@
           @updateValue="(val) => (formattedCreatedAt = val)"
         />
       </div>
-      <admin-textarea
-        v-model="main[`content${activeLang}`]"
-        label="Description"
-        class="mb-2 admin-textarea"
-      />
+      <div class="admin-textarea">
+        <label class="admin-label">Description</label>
+        <div class="editor-wrapper">
+          <RichTextEditor v-model="main[`content${activeLang}`]" :language="activeLang" />
+          <Editor
+            v-model="main[`content${activeLang}`]"
+            :init="{
+              height: 500,
+              menubar: true,
+              toolbar: `undo redo | blocks | fontfamily fontsize | bold italic underline strikethrough | 
+              forecolor backcolor | alignleft aligncenter alignright alignjustify | 
+              bullist numlist outdent indent | removeformat | link image media | 
+              code fullscreen preview print | table hr pagebreak emoticons | 
+              ltr rtl | template`,
+              skin_url: '/tinymce/skins/ui/oxide',
+              content_css: '/tinymce/skins/content/default/content.css',
+              icons_url: '/tinymce/icons/default/icons.js',
+              language_url: '/tinymce/langs/en.js',
+            }"
+          />
+        </div>
+      </div>
     </form>
     <div class="admin-news-page__images-wrapper">
-      <base-file-input
-        imgUpload
-        @file="uploadPhoto"
-        :image="main.image"
-        style="height: 216px"
-      />
+      <base-file-input imgUpload @file="uploadPhoto" :image="main.image" style="height: 216px" />
       <div class="admin-news-page__switches-wrapper">
         <div class="admin-news-page__switches">
           <admin-input
@@ -67,7 +79,7 @@
 </template>
 
 <script>
-import { request } from "@/api/generic.api";
+import { request } from '@/api/generic.api';
 export default {
   props: {
     id: {
@@ -78,8 +90,8 @@ export default {
   computed: {
     formattedCreatedAt: {
       get() {
-        if (!this.main.createdAt) return "";
-        return new Date(this.main.createdAt).toISOString().split("T")[0]; // format as YYYY-MM-DD
+        if (!this.main.createdAt) return '';
+        return new Date(this.main.createdAt).toISOString().split('T')[0]; // format as YYYY-MM-DD
       },
       set(value) {
         console.log(value);
@@ -90,24 +102,24 @@ export default {
 
   data() {
     return {
-      activeLang: "Tm",
+      activeLang: 'Tm',
       activePupUp: false,
       errorPupUp: false,
-      errorMessage: "Boş meydanlary dolduryň!",
+      errorMessage: 'Boş meydanlary dolduryň!',
       main: {
         newsId: null,
-        titleTm: "",
-        contentTm: "",
-        titleRu: "",
-        contentRu: "",
-        titleEn: "",
-        contentEn: "",
-        image: "",
+        titleTm: '',
+        contentTm: '',
+        titleRu: '',
+        contentRu: '',
+        titleEn: '',
+        contentEn: '',
+        image: '',
         published: false,
         isMain: false,
         priority: null,
-        authorId: "",
-        createdAt: "",
+        authorId: '',
+        createdAt: '',
       },
     };
   },
@@ -133,7 +145,7 @@ export default {
     async uploadPhoto(file) {
       try {
         const { success, data } = await request({
-          url: "upload",
+          url: 'upload',
           data: {
             fileUrl: file,
           },
@@ -149,7 +161,7 @@ export default {
       try {
         const { success, data } = await request({
           url: `news/one/${id}`,
-          method: "GET",
+          method: 'GET',
         });
         if (!success) return;
         for (let [key] of Object.entries(this.main)) {
@@ -169,38 +181,35 @@ export default {
       this.activeLang = key;
     },
     async upsertData() {
-      if (
-        !this.main[`content${this.activeLang}`] ||
-        !this.main[`title${this.activeLang}`]
-      ) {
+      if (!this.main[`content${this.activeLang}`] || !this.main[`title${this.activeLang}`]) {
         this.errorPupUp = true;
-        this.errorMessage = "Boş meydanlary doldury";
+        this.errorMessage = 'Boş meydanlary doldury';
         setTimeout(() => {
           this.errorPupUp = false;
         }, 2000);
       } else {
         try {
           const { success, data } = await request({
-            url: "news/upsert",
+            url: 'news/upsert',
             data: this.main,
           });
           if (!success) return;
           this.main.newsId = null;
-          this.main.titleTm = "";
-          this.main.contentTm = "";
-          this.main.titleRu = "";
-          this.main.contentRu = "";
-          this.main.titleEn = "";
-          this.main.contentEn = "";
-          this.main.image = "";
+          this.main.titleTm = '';
+          this.main.contentTm = '';
+          this.main.titleRu = '';
+          this.main.contentRu = '';
+          this.main.titleEn = '';
+          this.main.contentEn = '';
+          this.main.image = '';
           this.main.published = false;
           this.main.isMain = false;
           this.main.priority = null;
-          this.main.authorId = "";
-          this.main.createdAt = "";
+          this.main.authorId = '';
+          this.main.createdAt = '';
         } catch (error) {
           if (error?.response?.data?.statusCode === 611) {
-            this.errorMessage = "Bul piority eyam bar";
+            this.errorMessage = 'Bul piority eyam bar';
             this.errorPupUp = true;
             setTimeout(() => {
               this.errorPupUp = false;
@@ -255,9 +264,35 @@ export default {
   gap: 20px;
 }
 .admin-textarea {
-  grid-column: 1 / span 2;
+  // grid-column: 1 / span 2;
+  width: 50rem;
+  gap: 5rem;
+  display: block;
 }
 .grid-column {
   grid-column: 1 / span 2;
+}
+.admin-label {
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  @media (max-width: 767px) {
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+}
+
+.editor-wrapper {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px;
+  margin: 8px 0 20px;
+  background-color: #fff;
+
+  // Optional: shadow to match input components
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 </style>

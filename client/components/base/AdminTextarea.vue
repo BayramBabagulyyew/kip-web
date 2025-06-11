@@ -1,64 +1,31 @@
 <template>
   <div class="base-textarea">
     <h4 class="base-textarea__label">{{ label }}</h4>
-    <div class="text-editor-wrapper">
-      <div class="text-editor-wrapper__text-editor" v-if="editor">
-        <div
-          class="text-editor-wrapper__text-editor-item"
-          @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
-          :class="{ active: editor.isActive('heading', { level: 1 }) }"
-        >
-          <base-icon icon="h1Icon" />
-        </div>
-        <div
-          class="text-editor-wrapper__text-editor-item"
-          @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
-          :class="{ active: editor.isActive('heading', { level: 2 }) }"
-        >
-          <base-icon icon="h2Icon" />
-        </div>
-        <div
-          class="text-editor-wrapper__text-editor-item"
-          @click="editor.chain().focus().toggleBlockquote().run()"
-          :class="{ active: editor.isActive('blockquote') }"
-        >
-          <base-icon icon="quoteIcon" />
-        </div>
-        <div
-          class="text-editor-wrapper__text-editor-item"
-          @click="editor.chain().focus().toggleBold().run()"
-          :class="{ active: editor.isActive('bold') }"
-        >
-          <base-icon icon="boldIcon" />
-        </div>
-        <div
-          class="text-editor-wrapper__text-editor-item"
-          @click="editor.chain().focus().toggleUnderline().run()"
-          :class="{ active: editor.isActive('underline') }"
-        >
-          <base-icon icon="underlinedIcon" />
-        </div>
-        <div
-          class="text-editor-wrapper__text-editor-item"
-          @click="editor.chain().focus().toggleItalic().run()"
-          :class="{ active: editor.isActive('italic') }"
-        >
-          <base-icon icon="italicIcon" />
-        </div>
-      </div>
-    </div>
-    <div class="base-textarea__textarea">
-      <editor-content :editor="editor" class="base-textarea__tiptap" />
-    </div>
+    <Editor
+      v-model="main[`content${activeLang}`]"
+      :init="{
+        height: 500,
+        menubar: true,
+        toolbar: `undo redo | blocks | fontfamily fontsize | bold italic underline strikethrough | 
+              forecolor backcolor | alignleft aligncenter alignright alignjustify | 
+              bullist numlist outdent indent | removeformat | link image media | 
+              code fullscreen preview print | table hr pagebreak emoticons | 
+              ltr rtl | template`,
+        skin_url: '/tinymce/skins/ui/oxide',
+        content_css: '/tinymce/skins/content/default/content.css',
+        icons_url: '/tinymce/icons/default/icons.js',
+        language_url: '/tinymce/langs/en.js',
+      }"
+    />
   </div>
 </template>
 
 <script>
-import Blockquote from "@tiptap/extension-blockquote";
-import Placeholder from "@tiptap/extension-placeholder";
-import Underline from "@tiptap/extension-underline";
-import StarterKit from "@tiptap/starter-kit";
-import { Editor, EditorContent } from "@tiptap/vue-2";
+import Blockquote from '@tiptap/extension-blockquote';
+import Placeholder from '@tiptap/extension-placeholder';
+import Underline from '@tiptap/extension-underline';
+import StarterKit from '@tiptap/starter-kit';
+import { Editor, EditorContent } from '@tiptap/vue-2';
 export default {
   components: {
     EditorContent,
@@ -66,19 +33,19 @@ export default {
   props: {
     label: {
       type: String,
-      default: () => "",
+      default: () => '',
     },
     placeholder: {
       type: String,
-      default: () => "",
+      default: () => '',
     },
     height: {
       type: String,
-      default: () => "",
+      default: () => '',
     },
     value: {
       type: String,
-      default: () => "",
+      default: () => '',
     },
   },
   data() {
@@ -112,20 +79,20 @@ export default {
         Placeholder.configure({
           includeChildren: true,
           placeholder: ({ node }) => {
-            if (node.type.name === "div") {
-              return "…";
+            if (node.type.name === 'div') {
+              return '…';
             }
-            if (node.type.name === "img") {
-              return "…";
+            if (node.type.name === 'img') {
+              return '…';
             }
 
-            return "…";
+            return '…';
           },
         }),
       ],
       onUpdate: () => {
         // HTML
-        this.$emit("input", this.editor.getHTML());
+        this.$emit('input', this.editor.getHTML());
 
         // JSON
         // this.$emit('input', this.editor.getJSON())
@@ -248,7 +215,7 @@ export default {
         white-space: normal;
         -webkit-font-variant-ligatures: none;
         font-variant-ligatures: none;
-        font-feature-settings: "liga" 0; /* the above doesn't seem to work in Edge */
+        font-feature-settings: 'liga' 0; /* the above doesn't seem to work in Edge */
       }
 
       .ProseMirror pre {
@@ -322,7 +289,7 @@ export default {
       pre {
         background: #0d0d0d;
         color: #fff;
-        font-family: "JetBrainsMono", monospace;
+        font-family: 'JetBrainsMono', monospace;
         padding: 0.75rem 1rem;
         border-radius: 0.5rem;
 

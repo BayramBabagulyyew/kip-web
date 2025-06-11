@@ -32,10 +32,7 @@
           />
         </div>
 
-        <base-languages
-          @selectLanguage="toggleLanguage"
-          :activeLang="activeLang"
-        />
+        <base-languages @selectLanguage="toggleLanguage" :activeLang="activeLang" />
         <admin-input
           label="Title"
           placeholder="..."
@@ -44,37 +41,53 @@
           class="mb-2"
           appendIcon="starIcon"
         />
-        <admin-textarea
-          v-model="main[`content${activeLang}`]"
-          label="Content #home"
-          class="mb-2"
-        />
+        <!-- <admin-textarea
+        label="Content #home"
+        class="mb-2"
+        /> -->
+        <div class="admin-textarea">
+          <label class="admin-label">Content #home</label>
+          <div class="editor-wrapper">
+            <!-- <RichTextEditor v-model="main[`content${activeLang}`]" :language="activeLang" /> -->
+            <Editor
+              v-model="main[`content${activeLang}`]"
+              :init="{
+                height: 500,
+                menubar: true,
+                toolbar: `undo redo | blocks | fontfamily fontsize | bold italic underline strikethrough | 
+              forecolor backcolor | alignleft aligncenter alignright alignjustify | 
+              bullist numlist outdent indent | removeformat | link image media | 
+              code fullscreen preview print | table hr pagebreak emoticons | 
+              ltr rtl | template`,
+                skin_url: '/tinymce/skins/ui/oxide',
+                content_css: '/tinymce/skins/content/default/content.css',
+                icons_url: '/tinymce/icons/default/icons.js',
+                language_url: '/tinymce/langs/en.js',
+              }"
+            />
+          </div>
+        </div>
+
         <div class="flex flex-x-end">
-          <base-button @clickedButton="upsertData" style="width: 150px">
-            Save
-          </base-button>
+          <base-button @clickedButton="upsertData" style="width: 150px"> Save </base-button>
         </div>
       </form>
     </div>
     <popup-error :errorPupUp="errorPupUp">{{ errorMessage }}</popup-error>
     <popup-success :activePupUp="activePupUp"></popup-success>
-    <pop-up-delete
-      :deletePupUp="deletePupUp"
-      @no="deletePupUp = false"
-      @confirm="confirm"
-    />
+    <pop-up-delete :deletePupUp="deletePupUp" @no="deletePupUp = false" @confirm="confirm" />
   </div>
 </template>
 
 <script>
-import { request } from "@/api/generic.api";
-import { GET_EHS } from "../../api/home.api";
+import { request } from '@/api/generic.api';
+import { GET_EHS } from '../../api/home.api';
 
 export default {
-  layout: "admin",
+  layout: 'admin',
   data() {
     return {
-      activeLang: "Tm",
+      activeLang: 'Tm',
       datas: {
         images: [],
       },
@@ -82,16 +95,16 @@ export default {
       errorPupUp: false,
       paginationCount: 0,
       deletePupUp: false,
-      errorMessage: "Boş meydanlary dolduryň!",
+      errorMessage: 'Boş meydanlary dolduryň!',
       id: null,
       main: {
         images: [],
-        contentTm: "",
-        contentRu: "",
-        contentEn: "",
-        titleTm: "",
-        titleRu: "",
-        titleEn: "",
+        contentTm: '',
+        contentRu: '',
+        contentEn: '',
+        titleTm: '',
+        titleRu: '',
+        titleEn: '',
         video: null,
       },
     };
@@ -127,14 +140,14 @@ export default {
         !this.main.contentEn
       ) {
         this.errorPupUp = true;
-        this.errorMessage = "Boş meydanlary doldury";
+        this.errorMessage = 'Boş meydanlary doldury';
         setTimeout(() => {
           this.errorPupUp = false;
         }, 2000);
       } else {
         try {
           const { success, data } = await request({
-            url: "ecology/upsert",
+            url: 'ecology/upsert',
             data: this.main,
           });
           if (!success) return;
@@ -144,7 +157,7 @@ export default {
           }, 2000);
         } catch (error) {
           console.log(error.response);
-          this.errorMessage = "Bosh meydanlary doldur";
+          this.errorMessage = 'Bosh meydanlary doldur';
           this.errorPupUp = true;
           setTimeout(() => {
             this.errorPupUp = false;
@@ -167,7 +180,7 @@ export default {
     async uploadPhotoImages(file) {
       try {
         const { success, data } = await request({
-          url: "upload",
+          url: 'upload',
           data: {
             fileUrl: file,
           },
@@ -194,5 +207,29 @@ export default {
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
   }
+}
+
+.admin-label {
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  @media (max-width: 767px) {
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+}
+
+.editor-wrapper {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px;
+  margin: 8px 0 20px;
+  background-color: #fff;
+
+  // Optional: shadow to match input components
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 </style>

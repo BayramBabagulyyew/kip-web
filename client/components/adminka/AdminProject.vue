@@ -46,17 +46,32 @@
         </div>
       </div>
       <div></div>
-      <admin-textarea
-        v-model="main[`description${activeLang}`]"
-        label="Description"
-        class="mb-2 admin-textarea"
-      />
+
+      <div class="admin-textarea">
+        <label class="admin-label">Description</label>
+        <div class="editor-wrapper">
+          <RichTextEditor v-model="main[`content${activeLang}`]" :language="activeLang" />
+          <Editor
+            v-model="main[`description${activeLang}`]"
+            :init="{
+              height: 500,
+              menubar: true,
+              toolbar: `undo redo | blocks | fontfamily fontsize | bold italic underline strikethrough | 
+              forecolor backcolor | alignleft aligncenter alignright alignjustify | 
+              bullist numlist outdent indent | removeformat | link image media | 
+              code fullscreen preview print | table hr pagebreak emoticons | 
+              ltr rtl | template`,
+              skin_url: '/tinymce/skins/ui/oxide',
+              content_css: '/tinymce/skins/content/default/content.css',
+              icons_url: '/tinymce/icons/default/icons.js',
+              language_url: '/tinymce/langs/en.js',
+            }"
+          />
+        </div>
+      </div>
+
       <div class="flex flex-x-end grid-column">
-        <base-button
-          @clickedButton="upsertData"
-          style="width: 150px"
-          class="admin-header__button"
-        >
+        <base-button @clickedButton="upsertData" style="width: 150px" class="admin-header__button">
           Save
         </base-button>
       </div>
@@ -93,7 +108,7 @@
 </template>
 
 <script>
-import { request } from "@/api/generic.api";
+import { request } from '@/api/generic.api';
 export default {
   props: {
     id: {
@@ -104,8 +119,8 @@ export default {
   computed: {
     formattedWorkDate: {
       get() {
-        if (!this.main.workDate) return "";
-        return new Date(this.main.workDate).toISOString().split("T")[0]; // format as YYYY-MM-DD
+        if (!this.main.workDate) return '';
+        return new Date(this.main.workDate).toISOString().split('T')[0]; // format as YYYY-MM-DD
       },
       set(value) {
         console.log(value);
@@ -114,8 +129,8 @@ export default {
     },
     formattedEndDate: {
       get() {
-        if (!this.main.endDate) return "";
-        return new Date(this.main.endDate).toISOString().split("T")[0]; // format as YYYY-MM-DD
+        if (!this.main.endDate) return '';
+        return new Date(this.main.endDate).toISOString().split('T')[0]; // format as YYYY-MM-DD
       },
       set(value) {
         console.log(value);
@@ -125,28 +140,28 @@ export default {
   },
   data() {
     return {
-      activeLang: "Tm",
+      activeLang: 'Tm',
       activePupUp: false,
       errorPupUp: false,
       image: null,
-      errorMessage: "Boş meydanlary dolduryň!",
+      errorMessage: 'Boş meydanlary dolduryň!',
       main: {
         projectId: null,
-        nameTm: "",
-        nameRu: "",
-        nameEn: "",
-        descriptionTm: "",
-        descriptionRu: "",
-        descriptionEn: "",
-        companyTm: "",
-        companyRu: "",
-        companyEn: "",
-        workDate: "",
-        endDate: "",
+        nameTm: '',
+        nameRu: '',
+        nameEn: '',
+        descriptionTm: '',
+        descriptionRu: '',
+        descriptionEn: '',
+        companyTm: '',
+        companyRu: '',
+        companyEn: '',
+        workDate: '',
+        endDate: '',
         images: [],
-        cover: "",
+        cover: '',
         priority: null,
-        logo: "dd",
+        logo: 'dd',
       },
     };
   },
@@ -173,29 +188,26 @@ export default {
       this.main.images = this.main.images.filter((item) => item !== data);
     },
     async upsertData() {
-      if (
-        !this.main[`name${this.activeLang}`] ||
-        !this.main[`description${this.activeLang}`]
-      ) {
+      if (!this.main[`name${this.activeLang}`] || !this.main[`description${this.activeLang}`]) {
         this.errorPupUp = true;
-        this.errorMessage = "Boş meydanlary doldury";
+        this.errorMessage = 'Boş meydanlary doldury';
         setTimeout(() => {
           this.errorPupUp = false;
         }, 2000);
       } else {
         try {
           const { success, data } = await request({
-            url: "projects/upsert",
+            url: 'projects/upsert',
             data: this.main,
           });
           if (!success) return;
           this.main.projectId = null;
-          this.main.nameTm = "";
-          this.main.descriptionTm = "";
-          this.main.nameRu = "";
-          this.main.descriptionRu = "";
-          this.main.nameEn = "";
-          this.main.descriptionEn = "";
+          this.main.nameTm = '';
+          this.main.descriptionTm = '';
+          this.main.nameRu = '';
+          this.main.descriptionRu = '';
+          this.main.nameEn = '';
+          this.main.descriptionEn = '';
           this.main.images = [];
           this.main.priority = null;
           this.main.company = null;
@@ -205,7 +217,7 @@ export default {
         } catch (error) {
           console.log(error.response);
           if (error?.response?.data?.statusCode === 611) {
-            this.errorMessage = "Bul piority eyam bar";
+            this.errorMessage = 'Bul piority eyam bar';
             this.errorPupUp = true;
             setTimeout(() => {
               this.errorPupUp = false;
@@ -218,7 +230,7 @@ export default {
       try {
         const { success, data } = await request({
           url: `projects/one/${id}`,
-          method: "POST",
+          method: 'POST',
         });
         if (!success) return;
         for (let [key] of Object.entries(this.main)) {
@@ -237,7 +249,7 @@ export default {
     async uploadPhotoCover(file) {
       try {
         const { success, data } = await request({
-          url: "upload",
+          url: 'upload',
           data: {
             fileUrl: file,
           },
@@ -252,7 +264,7 @@ export default {
     async uploadPhotoImages(file) {
       try {
         const { success, data } = await request({
-          url: "upload",
+          url: 'upload',
           data: {
             fileUrl: file,
           },
@@ -298,5 +310,29 @@ export default {
 }
 .grid-column {
   grid-column: 1 / span 2;
+}
+
+.admin-label {
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  @media (max-width: 767px) {
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+}
+
+.editor-wrapper {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px;
+  margin: 8px 0 20px;
+  background-color: #fff;
+
+  // Optional: shadow to match input components
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 </style>
