@@ -3,36 +3,22 @@
     <div class="about__left" />
     <div class="about__row" @click.stop="closeDropdown">
       <div class="about__logo">
-        <img
-          class="about__logo-image"
-          src="@/assets/img/fb.svg"
-          alt=""
-          ref="image"
-        />
+        <img class="about__logo-image" src="@/assets/img/fb.svg" alt="" ref="image" />
       </div>
       <div class="about__content" ref="content">
         <h1 class="about__title">
-          {{ aboutUs?.[translator("title")] }}
+          {{ aboutUs?.[translator('title')] }}
         </h1>
-        <p
-          class="about__description"
-          v-html="aboutUs?.[translator('content')]"
-        ></p>
+        <p class="about__description" v-html="aboutUs?.[translator('content')]"></p>
         <div class="about__button-wrapper">
-          <button
-            @click="$router.push(localeLocation('/about'))"
-            class="about__button"
-          >
-            {{ $t("readMore") }}
+          <button @click="$router.push(localeLocation('/about'))" class="about__button">
+            {{ $t('readMore') }}
           </button>
         </div>
       </div>
       <div class="about__information-button" @click.stop>
         <div class="relative">
-          <div
-            @click.stop
-            :class="['information-button-dropdown', { open: isVisible }]"
-          >
+          <div @click.stop :class="['information-button-dropdown', { open: isVisible }]">
             <div class="information-button-dropdown__items">
               <div class="information-button-dropdown__item">
                 <div class="information-button-dropdown__icon">
@@ -43,7 +29,7 @@
                     {{ aboutUs?.information?.info1.count }}
                   </p>
                   <h2 class="information-button-dropdown__title">
-                    {{ aboutUs?.information?.info1?.[translator("title")] }}
+                    {{ aboutUs?.information?.info1?.[translator('title')] }}
                   </h2>
                 </div>
               </div>
@@ -56,7 +42,7 @@
                     {{ aboutUs?.information?.info2.count }}
                   </p>
                   <h2 class="information-button-dropdown__title">
-                    {{ aboutUs?.information?.info2?.[translator("title")] }}
+                    {{ aboutUs?.information?.info2?.[translator('title')] }}
                   </h2>
                 </div>
               </div>
@@ -69,7 +55,7 @@
                     {{ aboutUs?.information?.info3.count }}
                   </p>
                   <h2 class="information-button-dropdown__title">
-                    {{ aboutUs?.information?.info3?.[translator("title")] }}
+                    {{ aboutUs?.information?.info3?.[translator('title')] }}
                   </h2>
                 </div>
               </div>
@@ -82,20 +68,20 @@
                     {{ aboutUs?.information?.info4?.count }}
                   </p>
                   <h2 class="information-button-dropdown__title">
-                    {{ aboutUs?.information?.info4?.[translator("title")] }}
+                    {{ aboutUs?.information?.info4?.[translator('title')] }}
                   </h2>
                 </div>
               </div>
             </div>
           </div>
           <base-button-circle primary @clicked="isVisible = !isVisible">
-            {{ $t("information") }}
+            {{ $t('information') }}
           </base-button-circle>
           <div class="button-arrow-title">
             <base-icon icon="workBlackArrow" class="arrow" />
             <base-icon icon="arrowLeftMini" class="arrow-mobile" />
             <h2 class="button-arrow-title__text">
-              {{ $t("informationAboutUs") }}
+              {{ $t('informationAboutUs') }}
             </h2>
           </div>
         </div>
@@ -105,7 +91,7 @@
 </template>
 
 <script>
-import translate from "@/mixins/translate";
+import translate from '@/mixins/translate';
 export default {
   props: {
     aboutUs: {
@@ -131,14 +117,14 @@ export default {
     if (this.$refs.aos) {
       const options =
         {
-          rootMargin: "0px 0px 0px 0px",
+          rootMargin: '0px 0px 0px 0px',
           threshold: 0.4,
         } || {};
       this.observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry && entry.isIntersecting) {
-            this.$refs.image.classList.add("aos");
-            this.$refs.content.classList.add("aos");
+            this.$refs.image.classList.add('aos');
+            this.$refs.content.classList.add('aos');
           }
         });
       }, options);
@@ -199,7 +185,7 @@ export default {
     }
 
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       width: 550px;
       height: 550px;
@@ -210,7 +196,7 @@ export default {
       z-index: -2;
     }
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       width: 650px;
       height: 650px;
@@ -264,7 +250,7 @@ export default {
     margin-bottom: 16px;
     display: inline-block;
     &::after {
-      content: "";
+      content: '';
       bottom: 0;
       left: 0;
       width: 80%;

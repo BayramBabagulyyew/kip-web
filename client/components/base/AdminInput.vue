@@ -9,11 +9,7 @@
       :placeholder="placeholder"
       :style="`height: ${height}px`"
       @input="
-        (e) =>
-          $emit(
-            'updateValue',
-            type === 'number' ? Number(e.target.value) : e.target.value
-          )
+        (e) => $emit('updateValue', type === 'number' ? Number(e.target.value) : e.target.value)
       "
       :value="value"
     />
@@ -26,26 +22,26 @@ export default {
   props: {
     type: {
       type: String,
-      default: () => "text",
+      default: () => 'text',
     },
     label: {
       type: String,
-      default: () => "",
+      default: () => '',
     },
     placeholder: {
       type: String,
-      default: () => "",
+      default: () => '',
     },
     height: {
       type: String,
-      default: () => "",
+      default: () => '',
     },
     value: {
       type: String | Number,
     },
     appendIcon: {
       type: String,
-      default: () => "",
+      default: () => '',
     },
   },
 };
@@ -102,7 +98,7 @@ export default {
   }
 }
 
-input[type="date"]::date-selector-button {
+input[type='date']::date-selector-button {
   border: 2px solid #6c5ce7;
   padding: 0.2em 0.4em;
   border-radius: 0.2em;

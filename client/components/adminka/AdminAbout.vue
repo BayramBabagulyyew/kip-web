@@ -9,50 +9,8 @@
         class="mb-2"
         placeholder="..."
       />
-      <div class="admin-textarea">
-        <label class="admin-label">Content</label>
-        <div class="editor-wrapper">
-          <!-- <RichTextEditor v-model="main[`content${activeLang}`]" :language="activeLang" /> -->
-          <Editor
-            v-model="main[`content${activeLang}`]"
-            :init="{
-              height: 500,
-              menubar: true,
-              toolbar: `undo redo | blocks | fontfamily fontsize | bold italic underline strikethrough | 
-              forecolor backcolor | alignleft aligncenter alignright alignjustify | 
-              bullist numlist outdent indent | removeformat | link image media | 
-              code fullscreen preview print | table hr pagebreak emoticons | 
-              ltr rtl | template`,
-              skin_url: '/tinymce/skins/ui/oxide',
-              content_css: '/tinymce/skins/content/default/content.css',
-              icons_url: '/tinymce/icons/default/icons.js',
-              language_url: '/tinymce/langs/en.js',
-            }"
-          />
-        </div>
-      </div>
-      <div class="admin-textarea">
-        <label class="admin-label">Tagline #home</label>
-        <div class="editor-wrapper">
-          <RichTextEditor v-model="main[`content${activeLang}`]" :language="activeLang" />
-          <Editor
-            v-model="main[`tagline${activeLang}`]"
-            :init="{
-              height: 500,
-              menubar: true,
-              toolbar: `undo redo | blocks | fontfamily fontsize | bold italic underline strikethrough | 
-              forecolor backcolor | alignleft aligncenter alignright alignjustify | 
-              bullist numlist outdent indent | removeformat | link image media | 
-              code fullscreen preview print | table hr pagebreak emoticons | 
-              ltr rtl | template`,
-              skin_url: '/tinymce/skins/ui/oxide',
-              content_css: '/tinymce/skins/content/default/content.css',
-              icons_url: '/tinymce/icons/default/icons.js',
-              language_url: '/tinymce/langs/en.js',
-            }"
-          />
-        </div>
-      </div>
+      <RichTextEditor :model-value="main[`content${activeLang}`]" label="Content" />
+      <RichTextEditor :model-value="main[`tagline${activeLang}`]" label="Content" />
       <div class="flex flex-x-end">
         <base-button @clickedButton="addAbout" style="width: 150px" class="admin-header__button">
           Save
@@ -66,6 +24,7 @@
 <script>
 import { ADD_ABOUT, GET_ABOUT } from '@/api/admin.api';
 import { mapGetters } from 'vuex';
+import RichTextEditor from '../base/RichTextEditor.vue';
 
 export default {
   data() {
@@ -98,7 +57,7 @@ export default {
   methods: {
     async addAbout() {
       try {
-        const { data, statusCode } = await ADD_ABOUT({
+        const { data, statusCode, success } = await ADD_ABOUT({
           data: {
             titleTm: this.main.titleTm,
             contentTm: this.main.contentTm,
@@ -111,15 +70,17 @@ export default {
             taglineEn: this.main.taglineEn,
           },
         });
+        if (!success) return;
         this.activePupUp = true;
-        setTimeout(() => {
-          this.activePupUp = false;
-        }, 2000);
-        if (!statusCode) return;
+        this.fetchAbout();
       } catch (error) {
         console.log(error);
         this.errorPupUp = true;
       }
+      setTimeout(() => {
+        this.activePupUp = false;
+        this.errorPupUp = false;
+      }, 2000);
     },
 
     async fetchAbout() {

@@ -18,28 +18,7 @@
           @updateValue="(val) => (formattedCreatedAt = val)"
         />
       </div>
-      <div class="admin-textarea">
-        <label class="admin-label">Description</label>
-        <div class="editor-wrapper">
-          <RichTextEditor v-model="main[`content${activeLang}`]" :language="activeLang" />
-          <Editor
-            v-model="main[`content${activeLang}`]"
-            :init="{
-              height: 500,
-              menubar: true,
-              toolbar: `undo redo | blocks | fontfamily fontsize | bold italic underline strikethrough | 
-              forecolor backcolor | alignleft aligncenter alignright alignjustify | 
-              bullist numlist outdent indent | removeformat | link image media | 
-              code fullscreen preview print | table hr pagebreak emoticons | 
-              ltr rtl | template`,
-              skin_url: '/tinymce/skins/ui/oxide',
-              content_css: '/tinymce/skins/content/default/content.css',
-              icons_url: '/tinymce/icons/default/icons.js',
-              language_url: '/tinymce/langs/en.js',
-            }"
-          />
-        </div>
-      </div>
+      <RichTextEditor :model-value="main[`content${activeLang}`]" label="Description" />
     </form>
     <div class="admin-news-page__images-wrapper">
       <base-file-input imgUpload @file="uploadPhoto" :image="main.image" style="height: 216px" />
@@ -80,6 +59,8 @@
 
 <script>
 import { request } from '@/api/generic.api';
+
+const tinymceScriptSrc = 'https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js';
 export default {
   props: {
     id: {
@@ -263,36 +244,8 @@ export default {
   grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
-.admin-textarea {
-  // grid-column: 1 / span 2;
-  width: 50rem;
-  gap: 5rem;
-  display: block;
-}
+
 .grid-column {
   grid-column: 1 / span 2;
-}
-.admin-label {
-  color: var(--primary);
-  font-size: 14px;
-  font-weight: 700;
-  line-height: normal;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-  @media (max-width: 767px) {
-    margin-bottom: 6px;
-    font-size: 14px;
-  }
-}
-
-.editor-wrapper {
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 8px;
-  margin: 8px 0 20px;
-  background-color: #fff;
-
-  // Optional: shadow to match input components
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 </style>
