@@ -45,7 +45,13 @@
         label="Content #home"
         class="mb-2"
         /> -->
-        <RichTextEditor :model-value="main[`content${activeLang}`] || ''"  label="Content #home" />
+        <!-- <RichTextEditor :model-value="main[`content${activeLang}`] || ''" label="Content #home" /> -->
+        <RichTextEditor
+          :model-value="main[`content${activeLang}`]"
+          @update="(val) => (main[`content${activeLang}`] = val)"
+          :language="activeLang"
+          label="Content #home"
+        />
 
         <div class="flex flex-x-end">
           <base-button @clickedButton="upsertData" style="width: 150px"> Save </base-button>
@@ -187,5 +193,4 @@ export default {
     gap: 20px;
   }
 }
-
 </style>

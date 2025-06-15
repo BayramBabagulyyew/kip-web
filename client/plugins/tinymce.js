@@ -2,44 +2,45 @@ import Editor from '@tinymce/tinymce-vue';
 import Vue from 'vue';
 
 // Core (side-effect)
-import 'tinymce/tinymce';
+import '../static/tinymce/tinymce';
 
 // Theme, icons, models
-import 'tinymce/icons/default';
-import 'tinymce/models/dom/model'; // 👈 This is the missing one!
-import 'tinymce/themes/silver';
+import '../static/tinymce/icons/default';
+import '../static/tinymce/models/dom/model';
+import '../static/tinymce/themes/silver';
 
 // Plugins
-import 'tinymce/plugins/code';
-import 'tinymce/plugins/image';
-import 'tinymce/plugins/link';
-import 'tinymce/plugins/lists';
+import '../static/tinymce/plugins/code';
+import '../static/tinymce/plugins/image';
+import '../static/tinymce/plugins/link';
+import '../static/tinymce/plugins/lists';
 
 // Skin CSS
-import 'tinymce/skins/ui/oxide/skin.min.css';
+import '../static/tinymce/skins/ui/oxide-dark/skin.min.css';
+import '../static/tinymce/skins/ui/oxide/skin.min.css';
 
-import 'tinymce/icons/default';
-import 'tinymce/plugins/advlist';
-import 'tinymce/plugins/anchor';
-import 'tinymce/plugins/autolink';
-import 'tinymce/plugins/charmap';
-import 'tinymce/plugins/code';
-import 'tinymce/plugins/directionality';
-import 'tinymce/plugins/emoticons';
-import 'tinymce/plugins/fullscreen';
-import 'tinymce/plugins/help';
-import 'tinymce/plugins/image';
-import 'tinymce/plugins/insertdatetime';
-import 'tinymce/plugins/link';
-import 'tinymce/plugins/lists';
-import 'tinymce/plugins/media';
-import 'tinymce/plugins/nonbreaking';
-import 'tinymce/plugins/pagebreak';
-import 'tinymce/plugins/preview';
-import 'tinymce/plugins/save';
-import 'tinymce/plugins/searchreplace';
-import 'tinymce/plugins/table';
-import 'tinymce/plugins/visualblocks';
-import 'tinymce/plugins/wordcount';
+import '../static/tinymce/icons/default';
+import '../static/tinymce/plugins/advlist';
+import '../static/tinymce/plugins/anchor';
+import '../static/tinymce/plugins/autolink';
+import '../static/tinymce/plugins/charmap';
+import '../static/tinymce/plugins/code';
+import '../static/tinymce/plugins/directionality';
+import '../static/tinymce/plugins/emoticons';
+import '../static/tinymce/plugins/fullscreen';
+import '../static/tinymce/plugins/help';
+import '../static/tinymce/plugins/image';
+import '../static/tinymce/plugins/insertdatetime';
+import '../static/tinymce/plugins/link';
+import '../static/tinymce/plugins/lists';
+import '../static/tinymce/plugins/media';
+import '../static/tinymce/plugins/nonbreaking';
+import '../static/tinymce/plugins/pagebreak';
+import '../static/tinymce/plugins/preview';
+import '../static/tinymce/plugins/save';
+import '../static/tinymce/plugins/searchreplace';
+import '../static/tinymce/plugins/table';
+import '../static/tinymce/plugins/visualblocks';
+import '../static/tinymce/plugins/wordcount';
 
 Vue.component('Editor', Editor);

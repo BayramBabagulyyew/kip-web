@@ -9,8 +9,20 @@
         class="mb-2"
         placeholder="..."
       />
-      <RichTextEditor :model-value="main[`content${activeLang}`]" label="Content" />
-      <RichTextEditor :model-value="main[`tagline${activeLang}`]" label="Content" />
+
+      <RichTextEditor
+        :model-value="main[`content${activeLang}`]"
+        @update="(val) => (main[`content${activeLang}`] = val)"
+        :language="activeLang"
+        label="Content"
+      />
+      <RichTextEditor
+        :model-value="main[`tagline${activeLang}`]"
+        @update="(val) => (main[`tagline${activeLang}`] = val)"
+        :language="activeLang"
+        label="Tagline"
+      />
+
       <div class="flex flex-x-end">
         <base-button @clickedButton="addAbout" style="width: 150px" class="admin-header__button">
           Save

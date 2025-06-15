@@ -18,7 +18,13 @@
           @updateValue="(val) => (formattedCreatedAt = val)"
         />
       </div>
-      <RichTextEditor :model-value="main[`content${activeLang}`]" label="Description" />
+
+      <RichTextEditor
+        :model-value="main[`content${activeLang}`]"
+        @update="(val) => (main[`content${activeLang}`] = val)"
+        :language="activeLang"
+        label="Content"
+      />
     </form>
     <div class="admin-news-page__images-wrapper">
       <base-file-input imgUpload @file="uploadPhoto" :image="main.image" style="height: 216px" />

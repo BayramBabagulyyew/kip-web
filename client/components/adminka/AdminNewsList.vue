@@ -19,10 +19,10 @@
             <img :src="`${imageURL}${item.image}`" alt="" />
           </td>
           <td>{{ item.titleTm }}</td>
-          <td v-html="item.contentTm"></td>
-          <td class="date">{{ new Date(item.createdAt).toLocaleDateString('ru-RU') }}</td>
+          <td v-html="item?.contentTm"></td>
+          <td class="date">{{ new Date(item?.createdAt).toLocaleDateString('ru-RU') }}</td>
           <!-- <td class="star"><base-icon icon="starIcon" /></td> -->
-          <td style="text-align: center">{{ item.priority }}</td>
+          <td style="text-align: center">{{ item?.priority }}</td>
           <td>
             <div class="controller">
               <base-icon icon="adminCrash" @clicked="itemDelete(item)" />
@@ -41,10 +41,10 @@
 </template>
 
 <script>
-import { request } from "@/api/generic.api";
-import { mapGetters } from "vuex";
+import { request } from '@/api/generic.api';
+import { mapGetters } from 'vuex';
 export default {
-  emits: ["itemEdit"],
+  emits: ['itemEdit'],
   props: {
     datas: {
       type: Array,
@@ -70,7 +70,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["imageURL"]),
+    ...mapGetters(['imageURL']),
   },
   methods: {
     itemDelete(data) {
@@ -84,7 +84,7 @@ export default {
         });
         if (!success) return;
         this.deletePupUp = false;
-        this.$emit("itemDelete");
+        this.$emit('itemDelete');
       } catch (error) {
         console.log(error);
       }

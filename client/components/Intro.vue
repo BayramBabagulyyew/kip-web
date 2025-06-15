@@ -7,7 +7,7 @@
     >
       <div class="contact-modal__wrapper">
         <div class="contact-modal__box" @click.stop>
-          <h1 class="contact-modal__title">{{ $t("contactUs") }}</h1>
+          <h1 class="contact-modal__title">{{ $t('contactUs') }}</h1>
           <li class="contact-modal__item">
             <base-icon icon="call" />
             <div class="contact-modal__content">
@@ -26,17 +26,14 @@
             </a>
           </li>
           <li class="contact-modal__item">
-            <a
-              :href="`mailto:${intro?.contact?.info}`"
-              class="flex flex-y-center gap-10"
-            >
+            <a :href="`mailto:${intro?.contact?.info}`" class="flex flex-y-center gap-10">
               <base-icon icon="email" />
               <p>{{ intro?.contact?.info }}</p>
             </a>
           </li>
           <li class="contact-modal__item">
             <base-icon icon="location" />
-            <p class="">{{ intro?.contact?.[translator("address")] }}</p>
+            <p class="">{{ intro?.contact?.[translator('address')] }}</p>
           </li>
         </div>
       </div>
@@ -46,11 +43,11 @@
     <div class="intro__center-items">
       <div class="relative mobile-button-circle-primary" ref="contact">
         <base-button-circle @clicked="openContact = !openContact">
-          {{ $t("contacts") }}
+          {{ $t('contacts') }}
         </base-button-circle>
         <div class="button-arrow-title left">
           <h2 class="button-arrow-title__text white">
-            {{ $t("contactUsMin") }}
+            {{ $t('contactUsMin') }}
           </h2>
           <base-icon icon="contactWhiteArrow" class="arrow" />
         </div>
@@ -60,13 +57,13 @@
         <!-- <img src="@/assets/img/logo-last.png" alt="logo" /> -->
       </div>
       <div class="relative mobile-button-circle-white" ref="project">
-        <base-button-circle :url="'https://kip.tm/public/1.pdf'" primary>
-          {{ $t("catalog") }}
+        <base-button-circle :url="'https://kip.tm/public/kip_eng_presentation_ru.pdf'" primary>
+          {{ $t('catalog') }}
         </base-button-circle>
         <!-- <base-icon icon="circleCursor" class="circle-cursor" /> -->
         <div class="button-arrow-title">
           <base-icon icon="workBlackArrow" class="black-arrow" />
-          <h2 class="button-arrow-title__text">{{ $t("downloadCatalog") }}</h2>
+          <h2 class="button-arrow-title__text">{{ $t('downloadCatalog') }}</h2>
           <base-icon icon="workBlackArrowMini" class="black-arrow-mini" />
         </div>
       </div>
@@ -76,20 +73,16 @@
     </div>
     <div class="intro__title-block" ref="titleBlock">
       <div class="intro__title-block-box-wrapper">
-        <img
-          src="@/assets/img/intro-title-wrapper.png"
-          class="intro__title-block-box"
-          alt=""
-        />
+        <img src="@/assets/img/intro-title-wrapper.png" class="intro__title-block-box" alt="" />
         <h3 class="intro__title-block-name">
-          {{ $t("introTitle") }}
+          {{ $t('introTitle') }}
         </h3>
       </div>
     </div>
 
     <div class="representative" ref="representative">
       <h2 class="representative__title">
-        {{ $t("dealership") }}
+        {{ $t('dealership') }}
       </h2>
       <representative-home :representatives="intro?.dealership" />
     </div>
@@ -97,7 +90,7 @@
 </template>
 
 <script>
-import translate from "@/mixins/translate";
+import translate from '@/mixins/translate';
 export default {
   props: {
     intro: {
@@ -116,18 +109,18 @@ export default {
     if (this.$refs.aos) {
       const options =
         {
-          rootMargin: "0px 0px 0px 0px",
+          rootMargin: '0px 0px 0px 0px',
           threshold: 0.1,
         } || {};
       this.observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry && entry.isIntersecting) {
-            this.$refs.image.classList.add("aos");
-            this.$refs.contact.classList.add("aos");
-            this.$refs.project.classList.add("aos");
-            this.$refs.representative.classList.add("aos");
-            this.$refs.titleBlock.classList.add("aos");
-            this.$refs.swiper.classList.add("aos");
+            this.$refs.image.classList.add('aos');
+            this.$refs.contact.classList.add('aos');
+            this.$refs.project.classList.add('aos');
+            this.$refs.representative.classList.add('aos');
+            this.$refs.titleBlock.classList.add('aos');
+            this.$refs.swiper.classList.add('aos');
           }
         });
       }, options);
@@ -228,7 +221,7 @@ export default {
   } */
   &__left-bg {
     &::before {
-      content: "";
+      content: '';
       width: 50%;
       height: 100%;
       position: absolute;
@@ -238,7 +231,7 @@ export default {
       z-index: -1;
     }
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       top: 150px;
       left: -50px;
@@ -314,18 +307,14 @@ export default {
         animation-timing-function: ease-out;
       }
       40% {
-        -webkit-transform: perspective(1000px) translate3d(0, 0, 150px)
-          rotate3d(0, 1, 0, -190deg);
-        transform: perspective(1000px) translate3d(0, 0, 150px)
-          rotate3d(0, 1, 0, -190deg);
+        -webkit-transform: perspective(1000px) translate3d(0, 0, 150px) rotate3d(0, 1, 0, -190deg);
+        transform: perspective(1000px) translate3d(0, 0, 150px) rotate3d(0, 1, 0, -190deg);
         -webkit-animation-timing-function: ease-out;
         animation-timing-function: ease-out;
       }
       50% {
-        -webkit-transform: perspective(1000px) translate3d(0, 0, 150px)
-          rotate3d(0, 1, 0, -170deg);
-        transform: perspective(1000px) translate3d(0, 0, 150px)
-          rotate3d(0, 1, 0, -170deg);
+        -webkit-transform: perspective(1000px) translate3d(0, 0, 150px) rotate3d(0, 1, 0, -170deg);
+        transform: perspective(1000px) translate3d(0, 0, 150px) rotate3d(0, 1, 0, -170deg);
         -webkit-animation-timing-function: ease-in;
         animation-timing-function: ease-in;
       }
@@ -569,7 +558,7 @@ export default {
     display: inline-block;
     margin-bottom: 10px;
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       bottom: 0;
       left: 0;

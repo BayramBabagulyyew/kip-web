@@ -112,6 +112,7 @@ export default {
   i18n: {
     locales: [
       { code: 'en', lang: 'EN', name: 'ENG', iso: 'en-EN', file: 'en' },
+      // { code: 'tk', lang: 'TK', name: 'TKM', iso: 'tk-TM', file: 'tm' },
       {
         code: 'ru',
         lang: 'RU',

@@ -16,7 +16,13 @@
         placeholder="..."
       />
 
-      <RichTextEditor :model-value="main[`description${activeLang}`]" label="Description" />
+      <RichTextEditor
+        :model-value="main[`description${activeLang}`]"
+        @update="(val) => (main[`description${activeLang}`] = val)"
+        :language="activeLang"
+        label="Description"
+      />
+
       <div class="flex gap-10">
         <admin-input
           @updateValue="(val) => (main[`priority`] = val)"
