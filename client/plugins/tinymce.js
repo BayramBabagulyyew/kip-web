@@ -2,7 +2,7 @@ import Editor from '@tinymce/tinymce-vue';
 import Vue from 'vue';
 
 // Core (side-effect)
-import '../static/tinymce/tinymce';
+import 'tinymce/tinymce';
 
 // Theme, icons, models
 import '../static/tinymce/icons/default';
