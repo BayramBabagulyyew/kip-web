@@ -44,9 +44,9 @@
       <!-- <RichTextEditor :model-value="main[`content${activeLang}`]" label="Content #home" /> -->
       <RichTextEditor
         :model-value="main[`content${activeLang}`]"
-        @update:modelValue="(val) => (main[`content${activeLang}`] = val)"
-        :language="activeLang ?? 'Tm'"
-        label="Content #home"
+        @update="(val) => (main[`content${activeLang}`] = val)"
+        :language="activeLang"
+        label="Content"
       />
       <div class="flex flex-x-end grid-column">
         <base-button @clickedButton="upsertData" style="width: 150px" class="admin-header__button">
