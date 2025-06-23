@@ -8,7 +8,7 @@
       <div v-if="!imgPath" class="file-input__content">
         <base-icon icon="adminImg"></base-icon>
       </div>
-      <img v-else :src="`${imageURL}${imgPath}`" alt="" />
+      <img v-else :src="`${imageURL}${imgPath || 'c87ea29b-d35f-4d66-9884-94ecbf5c4478.jpg'}`" alt="" />
     </label>
     <base-icon v-if="imgUpload" icon="imgUpload" class="file-input__icon" />
   </div>

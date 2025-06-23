@@ -2,7 +2,7 @@
   <div class="gallery" ref="aos">
     <div class="gallery__row">
       <div class="gallery__title-wrapper">
-        <h1 class="gallery__title">{{ $t("gallery") }}</h1>
+        <h1 class="gallery__title">{{ $t('gallery') }}</h1>
       </div>
       <gallery-popup
         v-if="isImage"
@@ -23,10 +23,10 @@
       </div>
       <div class="gallery__button-wrapper">
         <button
-          @click="$router.push(localeLocation('/gallery'))"
+          @click="$router.push(localeLocation(`/${$i18n.locale}/gallery`))"
           class="gallery__button"
         >
-          {{ $t("seeAll") }}
+          {{ $t('seeAll') }}
         </button>
       </div>
     </div>
@@ -34,11 +34,11 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 
 export default {
   computed: {
-    ...mapGetters(["imageURL"]),
+    ...mapGetters(['imageURL']),
   },
   props: {
     gallery: {
@@ -56,13 +56,13 @@ export default {
   mounted() {
     if (this.$refs.aos) {
       const options = {
-        rootMargin: "0px 0px 0px 0px",
+        rootMargin: '0px 0px 0px 0px',
         threshold: 0.4,
       };
       this.observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry && entry.isIntersecting) {
-            this.$refs.images.classList.add("aos");
+            this.$refs.images.classList.add('aos');
           }
         });
       }, options);
@@ -77,11 +77,11 @@ export default {
   methods: {
     showGallery(index) {
       this.currentSlideIndex = index;
-      document.body.classList.add("no-scroll");
+      document.body.classList.add('no-scroll');
       this.isImage = true;
     },
     closeGallery() {
-      document.body.classList.remove("no-scroll");
+      document.body.classList.remove('no-scroll');
       this.isImage = false;
     },
   },
@@ -117,7 +117,7 @@ export default {
     text-transform: capitalize;
 
     &::after {
-      content: "";
+      content: '';
       bottom: 0;
       left: 0;
       width: 120%;

@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   IsArray,
   IsEmail,
@@ -10,7 +11,6 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { Type } from 'class-transformer';
 import { catalogTypeEnum, productServicesTypeEnum } from 'generated/client';
 
 export class fetchNewsDto {
@@ -141,18 +141,15 @@ export class upsetAboutDto {
   @IsNotEmpty()
   @IsString()
   readonly taglineEn: string;
-
-  // @IsNotEmpty()
-  // @IsObject()
-  // @ValidateNested({ each: true })
-  // @Type(() => informationDto)
-  // readonly information: informationDto;
-
-  // @IsNotEmpty()
-  // @IsObject()
-  // @ValidateNested({ each: true })
-  // @Type(() => contactDto)
-  // readonly contact: contactDto;
+  @IsOptional()
+  @IsString()
+  readonly presentationTm: string;
+  @IsOptional()
+  @IsString()
+  readonly presentationRu: string;
+  @IsOptional()
+  @IsString()
+  readonly presentationEn: string;
 }
 
 export class sendMailDto {

@@ -1,5 +1,3 @@
-import en from './locales/en';
-import ru from './locales/ru';
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head() {
@@ -110,9 +108,15 @@ export default {
   ],
 
   i18n: {
+    strategy: 'prefix',
+    defaultLocale: 'ru',
+    detectBrowserLanguage: {
+      useCookie: true,
+      alwaysRedirect: true,
+      fallbackLocale: 'ru',
+    },
     locales: [
       { code: 'en', lang: 'EN', name: 'ENG', iso: 'en-EN', file: 'en' },
-      // { code: 'tk', lang: 'TK', name: 'TKM', iso: 'tk-TM', file: 'tm' },
       {
         code: 'ru',
         lang: 'RU',
@@ -122,11 +126,10 @@ export default {
         isCatchallLocale: true,
       },
     ],
-    defaultLocale: 'ru',
-    seo: true,
+    lazy: true,
+    langDir: 'locales/',
     vueI18n: {
       fallbackLocale: 'ru',
-      messages: { ru, en },
     },
   },
 

@@ -6,7 +6,7 @@
           <!-- class="news__left-item" -->
           <div v-for="item in news.news" :key="item.newsId">
             <!-- @click="$router.push(localeLocation(`/news/${item.newsId}`))" -->
-            <a :href="`/news/${item.newsId}`" class="news__left-item">
+            <a :href="`/${$i18n.locale}/news/${item.newsId}`" class="news__left-item">
               <div class="news__left-item-image">
                 <img :src="`${imageURL}${item?.image}`" alt="" />
               </div>
@@ -22,11 +22,11 @@
             </a>
           </div>
         </div>
-        <button @click="$router.push('/news')" class="news__watch-button mobile">
+        <button @click="$router.push(`/${$i18n.locale}/news`)" class="news__watch-button mobile">
           {{ $t('seeAll') }}
         </button>
       </div>
-      <a :href="`/news/${news?.mainNews?.newsId}`">
+      <a :href="`${$i18n.locale}/news/${news?.mainNews?.newsId}`">
         <div class="news__center">
           <div class="news__center-image">
             <img :src="`${imageURL}${news?.mainNews?.image}`" alt="" />
@@ -50,7 +50,7 @@
 
         <!-- <h2 class="news__right-subtitle">{{ $t("newsCompany") }}</h2> -->
 
-        <button @click="$router.push('/news')" class="news__watch-button">
+        <button @click="$router.push(`/${$i18n.locale}/news`)" class="news__watch-button">
           {{ $t('seeAll') }}
         </button>
       </div>

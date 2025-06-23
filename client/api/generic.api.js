@@ -11,7 +11,7 @@ export const request = async ({
     sortBy: 'createdAt', // default sort
   },
   data = {},
-  onUploadProgress = {},
+  onUploadProgress = {  },
   file = false,
 }) => {
   if (file) {

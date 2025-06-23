@@ -23,20 +23,14 @@
           </p> -->
         </div>
       </div>
-      <p
-        style="
-          color: #183a60;
-          font-size: large;
-          font-weight: 600;
-          margin-bottom: 10px;
-        "
-      >
-        {{ product[translator("name")] }}
+      <p style="color: #183a60; font-size: large; font-weight: 600; margin-bottom: 10px">
+        {{ product[translator('name')] }}
       </p>
       <div class="products__description-wrapper">
-        <h1 class="products__description-title">{{ $t("description") }}</h1>
+        <h1 class="products__description-title">{{ $t('description') }}</h1>
+
         <p
-          class="products__description-description"
+          class="products__description-description inner_description"
           style="line-height: 2em; text-align: justify; text-indent: 2em"
           v-html="product?.[translator(`content`)]"
         ></p>
@@ -59,14 +53,14 @@
 </template>
 
 <script>
-import { GET_PRODUCTS_ONE } from "@/api/home.api";
-import translate from "@/mixins/translate";
-import { mapGetters } from "vuex";
+import { GET_PRODUCTS_ONE } from '@/api/home.api';
+import translate from '@/mixins/translate';
+import { mapGetters } from 'vuex';
 
 export default {
   mixins: [translate],
   computed: {
-    ...mapGetters(["imageURL"]),
+    ...mapGetters(['imageURL']),
   },
   data() {
     return {
@@ -83,14 +77,14 @@ export default {
     if (this.$refs.aos) {
       const options =
         {
-          rootMargin: "0px 0px 0px 0px",
+          rootMargin: '0px 0px 0px 0px',
           threshold: 0.4,
         } || {};
       this.observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry && entry.isIntersecting) {
-            this.$refs.images.classList.add("aos");
-            const elemAos = document.querySelectorAll(".aos");
+            this.$refs.images.classList.add('aos');
+            const elemAos = document.querySelectorAll('.aos');
           }
         });
       }, options);
@@ -209,7 +203,7 @@ export default {
     display: inline-block;
     margin-bottom: 14px;
     &::after {
-      content: "";
+      content: '';
       bottom: 0;
       left: 0;
       width: 130%;
@@ -232,7 +226,12 @@ export default {
     }
   }
 
+  .inner_description > ul {
+    list-style-type: unset !important;
+  }
+
   &__description-description {
+    list-style-type: unset;
     color: #000;
     font-size: 17px;
     font-weight: 500;
@@ -244,8 +243,6 @@ export default {
 
   &__images-wrapper {
     position: relative;
-    &::before {
-    }
   }
 
   &__images-title {
@@ -259,7 +256,7 @@ export default {
     display: inline-block;
     margin-bottom: 30px;
     &::after {
-      content: "";
+      content: '';
       bottom: 0;
       left: 0;
       width: 120%;

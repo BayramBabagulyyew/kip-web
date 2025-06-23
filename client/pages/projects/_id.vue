@@ -5,7 +5,7 @@
         <base-icon
           icon="arrowLeft"
           class="project-icon"
-          @clicked="$router.push(localeLocation('/projects'))"
+          @clicked="$router.push(localeLocation(`/${$i18n.locale}/projects`))"
         />
       </div>
       <div class="projects-id__project">

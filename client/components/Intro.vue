@@ -57,7 +57,7 @@
         <!-- <img src="@/assets/img/logo-last.png" alt="logo" /> -->
       </div>
       <div class="relative mobile-button-circle-white" ref="project">
-        <base-button-circle :url="'https://kip.tm/public/kip_eng_presentation_ru.pdf'" primary>
+        <base-button-circle :url="`https://kip.tm/public/kip_eng_presentation_${$i18n.locale}.pdf`" primary>
           {{ $t('catalog') }}
         </base-button-circle>
         <!-- <base-icon icon="circleCursor" class="circle-cursor" /> -->
@@ -476,9 +476,6 @@ export default {
   @media (max-width: 767px) {
     left: -100%;
     bottom: -60px;
-    .arrow {
-      // rotate: -20deg;
-    }
     .white {
       margin-left: 10px;
     }
@@ -600,8 +597,6 @@ export default {
       font-size: 14px;
       &:first-child {
         margin-bottom: 2px;
-      }
-      &:last-child {
       }
     }
   }

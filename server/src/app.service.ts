@@ -10,7 +10,7 @@ import {
   upsertServiceDto,
   upsetAboutDto,
 } from '@utils/app.dto';
-import { existsSync, mkdirSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, unlinkSync, writeFileSync } from 'fs';
 import { extname, join, resolve } from 'path';
 import { v4 } from 'uuid';
 import { PrismaService } from './prisma/prisma.service';
@@ -19,7 +19,7 @@ import * as nodemailer from 'nodemailer';
 import { PaginationRequest } from './common/interfaces';
 @Injectable()
 export class AppService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) { }
 
   async fetchHomeOnly() {
     try {
@@ -712,6 +712,28 @@ export class AppService {
       const condidate = await this.prismaService.about.findFirst({
         where: { deletedAt: null },
       });
+
+      if (dto.presentationEn && dto.presentationEn != condidate.presentationEn) {
+        const uploadPath = resolve(__dirname, '..', `${process.env.STATIC_FOLDER}`, `${condidate.presentationEn}`);
+        if (!existsSync(uploadPath)) {
+          unlinkSync(uploadPath);
+        }
+      }
+
+      if (dto.presentationTm && dto.presentationTm != condidate.presentationTm) {
+        const uploadPath = resolve(__dirname, '..', `${process.env.STATIC_FOLDER}`, `${condidate.presentationTm}`);
+        if (!existsSync(uploadPath)) {
+          unlinkSync(uploadPath);
+        }
+      }
+
+      if (dto.presentationRu && dto.presentationRu != condidate.presentationRu) {
+        const uploadPath = resolve(__dirname, '..', `${process.env.STATIC_FOLDER}`, `${condidate.presentationTm}`);
+        if (!existsSync(uploadPath)) {
+          unlinkSync(uploadPath);
+        }
+      }
+
       const about = await this.prismaService.about.upsert({
         where: { aboutId: condidate?.aboutId ? condidate?.aboutId : '' },
         create: {
@@ -725,6 +747,9 @@ export class AppService {
           taglineTm: dto.taglineTm,
           taglineRu: dto.taglineRu,
           taglineEn: dto.taglineEn,
+          presentationRu: dto.presentationRu,
+          presentationEn: dto.presentationEn,
+          presentationTm: dto.presentationTm,
         },
         update: {
           titleTm: dto.titleTm,
@@ -738,6 +763,9 @@ export class AppService {
           taglineRu: dto.taglineRu,
           taglineEn: dto.taglineEn,
           deletedAt: null,
+          presentationRu: dto.presentationRu,
+          presentationEn: dto.presentationEn,
+          presentationTm: dto.presentationTm,
         },
       });
       return about;

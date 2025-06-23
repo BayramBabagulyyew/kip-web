@@ -24,7 +24,7 @@ import {
   GET_PARTNERS,
   GET_PRODUCTS,
   GET_PROJECTS,
-} from "~/api/home.api";
+} from '~/api/home.api';
 
 export default {
   data() {
@@ -41,53 +41,53 @@ export default {
         projects: [],
       },
       isModalVisible: false, // For modal visibility
-      selectedImage: "", // To store the clicked image URL
+      selectedImage: '', // To store the clicked image URL
       links: [
         {
           id: 1,
-          name: "home",
-          url: "/#home",
+          name: 'home',
+          url: '/#home',
         },
         {
           id: 2,
-          name: "aboutUs",
-          url: "#about",
+          name: 'aboutUs',
+          url: '#about',
         },
         {
           id: 3,
-          name: "ehs",
-          url: "/ehs",
+          name: 'ehs',
+          url: '/ehs',
         },
         {
           id: 4,
-          name: "productsServices",
-          url: "#products-services",
+          name: 'productsServices',
+          url: '#products-services',
         },
         {
           id: 5,
-          name: "news",
-          url: "#news",
+          name: 'news',
+          url: '#news',
         },
         {
           id: 6,
-          name: "projects",
-          url: "#projects",
+          name: 'projects',
+          url: '#projects',
         },
         {
           id: 7,
-          name: "gallery",
-          url: "#gallery",
+          name: 'gallery',
+          url: '#gallery',
         },
         {
           id: 8,
-          name: "achievements",
-          url: "#achievements",
+          name: 'achievements',
+          url: '#achievements',
         },
 
         {
           id: 9,
-          name: "contactUs",
-          url: "#careers",
+          name: 'contactUs',
+          url: '#careers',
         },
       ],
     };

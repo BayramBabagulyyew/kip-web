@@ -24,11 +24,7 @@
       <nav class="sidebar__menu">
         <ul class="sidebar__menu-list">
           <li class="sidebar__menu-item" v-for="link in links" :key="link.id">
-            <nuxt-link
-              exact
-              :to="`/admin${link.url}`"
-              class="sidebar__menu-link"
-            >
+            <nuxt-link exact :to="`/${$i18n.locale}/admin${link.url}`" class="sidebar__menu-link">
               <base-icon :icon="link.icon" />
               <span>{{ link.name }} </span>
             </nuxt-link>
@@ -47,46 +43,45 @@ export default {
         {
           id: 2,
           url: ``,
-          icon: "folder",
-          name: "About us",
+          icon: 'folder',
+          name: 'About us',
         },
         {
           id: 3,
-          url: "/news",
-          icon: "folder",
-          name: "News",
+          url: '/news',
+          icon: 'folder',
+          name: 'News',
         },
         {
           id: 4,
-          url: "/projects",
-          icon: "folder",
-          name: "Projects",
+          url: '/projects',
+          icon: 'folder',
+          name: 'Projects',
         },
         {
           id: 5,
-          url: "/partners",
-          icon: "folder",
-          name: "Partners",
+          url: '/partners',
+          icon: 'folder',
+          name: 'Partners',
         },
         {
           id: 6,
-          url: "/gallery",
-          icon: "folder",
-          name: "Gallery",
+          url: '/gallery',
+          icon: 'folder',
+          name: 'Gallery',
         },
         {
           id: 7,
-          url: "/ehs",
-          icon: "folder",
-          name: "Ehs",
+          url: '/ehs',
+          icon: 'folder',
+          name: 'Ehs',
         },
         {
           id: 8,
-          url: "/products-services",
-          icon: "folder",
-          name: "Products/services",
+          url: '/products-services',
+          icon: 'folder',
+          name: 'Products/services',
         },
-        
       ],
     };
   },
@@ -134,7 +129,7 @@ export default {
     padding-bottom: 36px;
     position: relative;
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       bottom: 0;
       width: 100%;
@@ -152,7 +147,7 @@ export default {
     border-radius: 50%;
     position: relative;
     &::before {
-      content: "";
+      content: '';
       width: 50px;
       height: 50px;
       border: 2px solid var(--primary);

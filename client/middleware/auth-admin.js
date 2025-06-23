@@ -1,7 +1,8 @@
-export default async function (app) {
-  let token = app.$cookies.get("Authorization");
+export default async function ({ app, redirect }) {
+  let token = app.$cookies.get('Authorization');
+  const locale = app.i18n.locale || 'en';
 
   if (!token) {
-    return app.redirect("/admin/login");
+    return redirect(`/${locale}/admin/login`);
   }
 }

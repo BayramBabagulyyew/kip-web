@@ -56,15 +56,15 @@ export default {
           if (statusCode) {
             this.$cookies.set("Authorization", `Bearer ${data.token}`);
             localStorage.setItem("Authorization", `Bearer ${data.token}`);
-            this.$router.push(`/admin`);
+            this.$router.push(`/${this.$i18n.locale}/admin`);
             this.activePupUp = true;
             setTimeout(() => {
               this.activePupUp = false;
             }, 2000);
           } else {
-            this.$router.push("/admin/login");
+            this.$router.push(`/${this.$i18n.locale}/admin/login`);
           }
-        } catch (err) {
+        } catch {
           // console.log(err);
           this.errorPupUp = true;
         }

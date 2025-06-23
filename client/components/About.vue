@@ -11,7 +11,10 @@
         </h1>
         <p class="about__description" v-html="aboutUs?.[translator('content')]"></p>
         <div class="about__button-wrapper">
-          <button @click="$router.push(localeLocation('/about'))" class="about__button">
+          <button
+            @click="$router.push(localeLocation(`/${$i18n.locale}/about`))"
+            class="about__button"
+          >
             {{ $t('readMore') }}
           </button>
         </div>
@@ -114,22 +117,21 @@ export default {
     },
   },
   mounted() {
-    if (this.$refs.aos) {
-      const options =
-        {
-          rootMargin: '0px 0px 0px 0px',
-          threshold: 0.4,
-        } || {};
+    if (process.client && this.$refs.aos) {
+      const options = {
+        rootMargin: '0px 0px 0px 0px',
+        threshold: 0.4,
+      };
       this.observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry && entry.isIntersecting) {
-            this.$refs.image.classList.add('aos');
-            this.$refs.content.classList.add('aos');
+            this.$refs.image?.classList.add('aos');
+            this.$refs.content?.classList.add('aos');
           }
         });
       }, options);
+      this.observer.observe(this.$refs.aos);
     }
-    this.observer.observe(this.$refs.aos);
   },
   destroyed() {
     this.observer.disconnect();

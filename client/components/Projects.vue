@@ -6,7 +6,7 @@
     <div class="projects__row" ref="images">
       <div class="projects__item" v-for="project in projects" :key="project.projectId">
         <!-- @click="$router.push(localeLocation(`/projects/${project.projectId}`))" -->
-        <a :href="`/projects/${project.projectId}`" class="projects__item">
+        <a :href="`/${$i18n.locale}/projects/${project.projectId}`" class="projects__item">
           <div class="projects__image">
             <img :src="`${imageURL}${project?.cover}`" alt="" />
           </div>
@@ -17,7 +17,10 @@
       </div>
     </div>
     <div class="projects__button-wrapper">
-      <button class="projects__button" @click="$router.push(localeLocation('/projects'))">
+      <button
+        class="projects__button"
+        @click="$router.push(localeLocation(`/${$i18n.locale}/projects`))"
+      >
         {{ $t('seeAll') }}
       </button>
     </div>

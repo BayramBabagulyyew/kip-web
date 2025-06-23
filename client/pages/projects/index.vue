@@ -5,7 +5,7 @@
         <base-icon
           icon="arrowLeft"
           class="projects__icon"
-          @clicked="$router.push(localeLocation('/'))"
+          @clicked="$router.push(localeLocation(`/${$i18n.locale}`))"
         />
         <h1 class="projects__title">{{ $t('projects') }}</h1>
       </div>

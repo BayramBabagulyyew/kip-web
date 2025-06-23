@@ -108,20 +108,23 @@ model mails {
 }
 
 model about {
-  aboutId   String    @id @unique @default(cuid())
-  titleTm   String
-  contentTm String    @db.Text
-  titleRu   String
-  contentRu String    @db.Text
-  titleEn   String
-  contentEn String    @db.Text
-  taglineTm String
-  taglineRu String
-  taglineEn String
-  authorId  String
-  author    users     @relation(fields: [authorId], references: [userId])
-  createdAt DateTime  @default(dbgenerated("NOW()"))
-  deletedAt DateTime?
+  aboutId        String    @id @unique @default(cuid())
+  titleTm        String
+  contentTm      String    @db.Text
+  titleRu        String
+  contentRu      String    @db.Text
+  titleEn        String
+  contentEn      String    @db.Text
+  taglineTm      String
+  taglineRu      String
+  taglineEn      String
+  authorId       String
+  presentationTm String?
+  presentationRu String?
+  presentationEn String?
+  author         users     @relation(fields: [authorId], references: [userId])
+  createdAt      DateTime  @default(dbgenerated("NOW()"))
+  deletedAt      DateTime?
 }
 
 model contact {

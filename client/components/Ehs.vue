@@ -1,15 +1,11 @@
 <template>
   <div class="ehs">
     <h1 class="ehs__title">
-      {{ $t("ehsFull") }}
+      {{ $t('ehsFull') }}
     </h1>
     <div class="ehs__swiper-top ehs-top swiper mySwiper2" ref="swiperTop">
       <div class="ehs-top__wrapper swiper-wrapper">
-        <div
-          class="ehs-top__slide swiper-slide"
-          v-for="item in datas.images"
-          :key="item"
-        >
+        <div class="ehs-top__slide swiper-slide" v-for="item in datas.images" :key="item">
           <div class="ehs-top__image">
             <img :src="`${imageURL}${item}`" alt="" />
           </div>
@@ -35,11 +31,7 @@
       :options="swiperSmallOptions"
     >
       <div class="ehs-mini__wrapper swiper-wrapper">
-        <div
-          v-for="item in datas.images"
-          :key="item"
-          class="ehs-mini__slide swiper-slide"
-        >
+        <div v-for="item in datas.images" :key="item" class="ehs-mini__slide swiper-slide">
           <div class="ehs-mini__image">
             <img :src="`${imageURL}${item}`" alt="" />
           </div>
@@ -51,15 +43,15 @@
 </template>
 
 <script>
-import { GET_EHS } from "@/api/home.api";
-import translate from "@/mixins/translate";
-import Swiper from "@/plugins/thumbs";
-import { mapGetters } from "vuex";
+import { GET_EHS } from '@/api/home.api';
+import translate from '@/mixins/translate';
+import Swiper from '@/plugins/thumbs';
+import { mapGetters } from 'vuex';
 
 export default {
   mixins: [translate],
   computed: {
-    ...mapGetters(["imageURL"]),
+    ...mapGetters(['imageURL']),
     swiperSmall() {
       return this.$refs.mySwiperSmall.$swiper;
     },
@@ -84,12 +76,12 @@ export default {
         loop: true,
         speed: 1500,
         pagination: {
-          el: ".swiper-pagination",
+          el: '.swiper-pagination',
           clickable: true,
         },
         navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
         },
       },
     };
@@ -113,7 +105,7 @@ export default {
       }
     },
     swiperMainMini() {
-      this.swiperSmallOptions = new Swiper(".ehs-mini", {
+      this.swiperSmallOptions = new Swiper('.ehs-mini', {
         spaceBetween: 10,
         slidesPerView: 5,
         speed: 1500,
@@ -123,17 +115,17 @@ export default {
       });
     },
     swiperMainBig() {
-      this.swiperSmallOptions = new Swiper(".ehs-top", {
+      this.swiperSmallOptions = new Swiper('.ehs-top', {
         slidesPerView: 1,
         speed: 1500,
         loop: true,
         pagination: {
-          el: ".swiper-pagination",
+          el: '.swiper-pagination',
           clickable: true,
         },
         navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
         },
         thumbs: {
           swiper: this.swiperSmallOptions,
@@ -326,7 +318,7 @@ export default {
   &__slide {
     position: relative;
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       left: 0;
       top: 0;

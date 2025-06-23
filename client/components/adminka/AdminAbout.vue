@@ -22,21 +22,19 @@
         :language="activeLang"
         label="Tagline"
       />
-
       <div class="flex flex-x-end">
         <base-button @clickedButton="addAbout" style="width: 150px" class="admin-header__button">
           Save
         </base-button>
       </div>
     </form>
-    <popup-error :errorPupUp="errorPupUp">Boş meydanlary dolduryň!</popup-error>
+    <popup-error :errorPupUp="errorPupUp">Boş meýdanlary dolduryň!</popup-error>
     <popup-success :activePupUp="activePupUp">Success</popup-success>
   </div>
 </template>
 <script>
 import { ADD_ABOUT, GET_ABOUT } from '@/api/admin.api';
 import { mapGetters } from 'vuex';
-import RichTextEditor from '../base/RichTextEditor.vue';
 
 export default {
   data() {
@@ -69,7 +67,7 @@ export default {
   methods: {
     async addAbout() {
       try {
-        const { data, statusCode, success } = await ADD_ABOUT({
+        const {  success } = await ADD_ABOUT({
           data: {
             titleTm: this.main.titleTm,
             contentTm: this.main.contentTm,
@@ -84,7 +82,7 @@ export default {
         });
         if (!success) return;
         this.activePupUp = true;
-        this.fetchAbout();
+        await this.fetchAbout();
       } catch (error) {
         console.log(error);
         this.errorPupUp = true;
@@ -97,8 +95,8 @@ export default {
 
     async fetchAbout() {
       try {
-        const { data, statusCode } = await GET_ABOUT();
-        if (statusCode) {
+        const { data, success } = await GET_ABOUT();
+        if (success) {
           this.main = data;
         }
       } catch (error) {
