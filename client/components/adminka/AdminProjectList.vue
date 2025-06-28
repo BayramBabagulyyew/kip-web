@@ -18,7 +18,7 @@
             <img :src="`${imageURL}${item.cover}`" alt="" />
           </td>
           <td>{{ item?.companyEn }}</td>
-          <td class="description" v-html="item.descriptionTm"></td>
+          <td class="description" v-html="truncateHtml(item?.descriptionTm, 250)"></td>
           <td>{{ item?.priority }}</td>
           <td>
             <div class="controller">
@@ -40,6 +40,7 @@
 <script>
 import { request } from "@/api/generic.api";
 import { mapGetters } from "vuex";
+import { truncateHtml } from '@/mixins/truncate';
 export default {
   emits: ["itemEdit"],
   props: {
@@ -70,6 +71,7 @@ export default {
     ...mapGetters(["imageURL"]),
   },
   methods: {
+    truncateHtml,
     itemDelete(data) {
       this.id = data.projectId;
       this.deletePupUp = true;

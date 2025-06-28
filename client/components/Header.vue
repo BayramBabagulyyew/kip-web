@@ -147,7 +147,12 @@ export default {
 };
 </script>
 
+
 <style lang="scss" scoped>
+ul li {
+  list-style: none;
+}
+
 .header {
   position: fixed;
   top: 10px;

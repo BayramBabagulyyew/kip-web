@@ -21,7 +21,7 @@
           </td>
 
           <td>{{ item?.nameTm }}</td>
-          <td v-html="item.contentTm"></td>
+          <td v-html="truncateHtml(item?.contentTm, 250)"></td>
           <td>{{ item?.type }}</td>
           <td>{{ item?.priority }}</td>
           <td>
@@ -33,19 +33,17 @@
         </tr>
       </tbody>
     </base-table>
-    <pop-up-delete
-      :deletePupUp="deletePupUp"
-      @no="deletePupUp = false"
-      @confirm="confirm"
-    />
+    <pop-up-delete :deletePupUp="deletePupUp" @no="deletePupUp = false" @confirm="confirm" />
   </div>
 </template>
 
 <script>
-import { request } from "@/api/generic.api";
-import { mapGetters } from "vuex";
+import { request } from '@/api/generic.api';
+import { mapGetters } from 'vuex';
+import { truncateHtml } from '@/mixins/truncate';
+
 export default {
-  emits: ["itemEdit"],
+  emits: ['itemEdit'],
   props: {
     datas: {
       type: Array,
@@ -71,9 +69,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["imageURL"]),
+    ...mapGetters(['imageURL']),
   },
   methods: {
+    truncateHtml,
     itemDelete(data) {
       this.id = data.id;
       this.deletePupUp = true;
@@ -85,7 +84,7 @@ export default {
         });
         if (!success) return;
         this.deletePupUp = false;
-        this.$emit("itemDelete");
+        this.$emit('itemDelete');
       } catch (error) {
         console.log(error);
       }

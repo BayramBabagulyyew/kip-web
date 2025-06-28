@@ -20,7 +20,7 @@
             <h1 class="news-page__title">
               {{ item?.[translator('title')] }}
             </h1>
-            <div class="news-page__description" v-html="item?.[translator(`content`)]"></div>
+            <div class="news-page__description" v-html="cropText(item?.[translator(`content`)],item?.[translator('title')].length)"></div>
             <p class="news-page__date">
               {{ new Date(item.createdAt).toLocaleDateString() }}
             </p>
@@ -41,6 +41,7 @@
 import translate from '@/mixins/translate';
 import { mapGetters } from 'vuex';
 import { GET_NEWS_ALL } from '~/api/home.api';
+import {translator} from '@/mixins/translate';
 
 export default {
   mixins: [translate],
@@ -73,7 +74,13 @@ export default {
       } catch (error) {
         console.log(error);
       }
+
     },
+        cropText(text, length) {
+          const leftLeng = 200 - length;
+          if (!text) return '';
+          return text.length > leftLeng ? text.slice(0, leftLeng) + '...' : text;
+        },
     async updatePage(p) {
       this.page = p;
       await this.fetchNews(p);
@@ -177,7 +184,6 @@ export default {
 
   &__title {
     color: var(--primary);
-    font-family: 'Oxanium';
     font-size: 14px;
     font-weight: 600;
     line-height: 120%;
@@ -186,7 +192,7 @@ export default {
   }
 
   &__description {
-    color: var(--text3);
+
     font-size: 12px;
     font-weight: 500;
     margin-bottom: 8px;

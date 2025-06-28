@@ -89,6 +89,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+ul li {
+  list-style: none;
+}
 .sidebar {
   width: 100%;
   border-right: 1px solid var(--gray-light2);
