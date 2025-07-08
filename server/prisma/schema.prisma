@@ -201,3 +201,12 @@ enum catalogTypeEnum {
   home
   productservices
 }
+
+model taglines {
+  id        String   @id @unique @default(cuid())
+  taglineTm String
+  taglineRu String
+  taglineEn String
+  createdAt DateTime @default(dbgenerated("NOW()"))
+  updatedAt DateTime @updatedAt
+}
