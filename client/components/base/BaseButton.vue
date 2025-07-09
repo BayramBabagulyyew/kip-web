@@ -53,7 +53,7 @@ export default {
 .button {
   width: 100%;
   height: 34px;
-  padding: 10px;
+  padding: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;

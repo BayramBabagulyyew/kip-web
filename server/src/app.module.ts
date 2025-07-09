@@ -10,6 +10,7 @@ import { NewsModule } from './news/news.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ProjectsModule } from './projects/projects.module';
 import { UsersModule } from './users/users.module';
+import { TaglineModule } from './tagline/tagline.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { UsersModule } from './users/users.module';
     NewsModule,
     ProjectsModule,
     ImagesModule,
+    TaglineModule
   ],
   controllers: [AppController],
   providers: [AppService],

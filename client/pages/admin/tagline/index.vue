@@ -1,115 +1,77 @@
 <template>
   <div class="admin-news">
-    <admin-header>News</admin-header>
+    <admin-header>Tagline</admin-header>
     <div class="header-buttons">
-
       <base-button
         v-for="button in buttons"
         :key="button.key"
         :prevIcon="button.prevIcon"
-        @clickedButton="changeButtonPage(button.key)"
-        :class="[
-          'header-buttons__button',
-          { active: activeBtn === button.key },
-        ]"
+        @clickedButton="setView(button.key)"
+        :class="['header-buttons__button', { active: activeBtn === button.key }]"
         :adminButton="button.adminButton"
         :adminButtonSecond="button.adminButtonSecond"
       >
         {{ button.name }}
       </base-button>
     </div>
-
-      <admin-news-list
-        :datas="news"
-        :page="page"
-        :limit="limit"
-        @itemDelete="getNews"
-        @itemEdit="itemEdit"
-      />
-      <base-pagination
-        v-if="paginationCount > 1"
-        :modelValue="page"
-        @clickPage="(pagination) => updatePage(pagination)"
-        :pageCount="paginationCount"
-      ></base-pagination>
-
-    <popup-error :errorPupUp="errorPupUp" :message="errorMessage">{{
-        errorMessage
-      }}</popup-error>
+    <div class="content">
+      <component :is="currentComponent" :id="$route.query.id" @setView="setView" />
+    </div>
+    <popup-error :errorPupUp="errorPupUp" :message="errorMessage">{{ errorMessage }}</popup-error>
   </div>
 </template>
 
 <script>
-import { request } from "@/api/generic.api";
 export default {
-  layout: "admin",
+  layout: 'admin',
   data() {
     return {
-      activeBtn: 1,
-      activeLang: "Tm",
+      activeBtn: this.$route.query.view || 'add',
       id: null,
-      page: 1,
-      limit: 10,
-      paginationCount: 0,
-      news: [],
-      idEdit: null,
       errorPupUp: false,
-      errorMessage: "", // New variable for error message
+      errorMessage: '',
       buttons: [
         {
-          key: 1,
-          prevIcon: "addIcon",
-          name: "Add News",
+          key: 'add',
+          prevIcon: 'addIcon',
+          name: 'Add new',
           adminButton: true,
         },
         {
-          key: 2,
-          prevIcon: "adminBurger",
-          name: "News list",
+          key: 'list',
+          prevIcon: 'adminBurger',
+          name: 'News list',
+          adminButton: true,
           adminButtonSecond: true,
         },
       ],
     };
   },
-  async mounted() {
-    await this.getNews();
+  components: {
+    Add: () => import('~/components/adminka/AdminTagline.vue'),
+    List: () => import('~/components/adminka/AdminTaglineList.vue'),
   },
-  methods: {
-    toggleLanguage(key) {
-      this.activeLang = key;
-    },
-    changeButtonPage(key) {
-      this.activeBtn = key;
-      this.activeLang = "Tm";
-    },
-    itemEdit(data) {
-      this.changeButtonPage(1);
-      setTimeout(() => {
-        this.idEdit = data.newsId;
-      }, 0);
-    },
-    async getNews() {
-      try {
-        const { success, data } = await request({
-          url: "news/all",
-          data: {
-            page: this.page,
-            limit: this.limit,
-            deleted: false,
-          },
-        });
-        if (!success) return;
-        this.paginationCount = Math.ceil(data.count / this.limit);
-        this.news = data.rows || [];
-      } catch (error) {
-        console.log(error);
-        this.errorMessage = error;
-        this.errorPupUp = true;
+  computed: {
+    currentComponent() {
+      const view = this.$route.query.view;
+      switch (view) {
+        case 'list':
+          return 'List';
+        default:
+          return 'Add';
       }
     },
-    async updatePage(p) {
-      this.page = p;
-      await this.getNews();
+  },
+  methods: {
+    setView(view, item = {}) {
+      if (view === 'edit' && item.id) {
+        this.isEdit = true;
+        this.$router.push({ query: { view, id: item.id } });
+      } else {
+        this.isEdit = false;
+        this.$router.push({ query: { view } });
+      }
+      this.activeBtn = view;
     },
   },
 };
@@ -146,5 +108,8 @@ export default {
       }
     }
   }
+}
+.content {
+  padding: 0 2rem;
 }
 </style>

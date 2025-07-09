@@ -18,7 +18,7 @@ import { PaginationRequest } from '../common/interfaces';
 
 @UseInterceptors(responseInterceptor)
 @UseGuards(AuthGuard)
-@Controller('news')
+@Controller('tagline')
 export class TaglineController {
   constructor(private readonly taglineService: TaglineService) {}
 

@@ -193,6 +193,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+ul li {
+  list-style: none;
+}
 .pagination {
   display: flex;
   width: max-content;

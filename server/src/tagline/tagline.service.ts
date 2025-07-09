@@ -5,7 +5,7 @@ import { CreateTaglineDto } from './tagline.dto';
 
 @Injectable()
 export class TaglineService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) { }
 
   async create(dto: CreateTaglineDto) {
     try {
@@ -62,7 +62,7 @@ export class TaglineService {
           HttpStatus.NOT_FOUND,
         );
       }
-      return { data };
+      return data;
     } catch (err) {
       throw new HttpException(
         {
@@ -142,7 +142,8 @@ export class TaglineService {
         ORDER BY 
           RANDOM()
       `);
-      return;
+      console.log(rows)
+      return rows[0] || null;
     } catch (err) {
       throw new HttpException(
         {

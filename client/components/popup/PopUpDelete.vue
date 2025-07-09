@@ -1,10 +1,9 @@
 <template>
   <div :class="['popup-delete', { active: deletePupUp }]">
     <div class="popup-delete__box">
-      <h1>Hakykatdanam pozmak isleyanmi?</h1>
+      <h1>Do you really want to delete this item?</h1>
       <p>
-        Pozasyn gelmese pikirlen,yalnysma gyzykly makalalary elden gidirme!
-        unusli bol😳
+        You won't be able to recover it later.
       </p>
       <div class="popup-delete__buttons">
         <button @click="$emit('no')">NO</button>

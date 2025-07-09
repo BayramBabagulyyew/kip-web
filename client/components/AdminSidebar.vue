@@ -82,6 +82,12 @@ export default {
           icon: 'folder',
           name: 'Products/services',
         },
+        {
+          id: 8,
+          url: '/tagline',
+          icon: 'folder',
+          name: 'Tagline',
+        },
       ],
     };
   },

@@ -17,9 +17,12 @@ import { PrismaService } from './prisma/prisma.service';
 // import { ecology } from '@prisma/client';
 import * as nodemailer from 'nodemailer';
 import { PaginationRequest } from './common/interfaces';
+import { TaglineService } from './tagline/tagline.service';
 @Injectable()
 export class AppService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private taglineService: TaglineService) { }
 
   async fetchHomeOnly() {
     try {
@@ -33,11 +36,9 @@ export class AppService {
           contentTm: true,
           contentRu: true,
           contentEn: true,
-          taglineTm: true,
-          taglineRu: true,
-          taglineEn: true,
         },
       });
+      const tagline = await this.taglineService.findRandomOne();
       const dealership = await this.prismaService.partners.findMany({
         where: { deletedAt: null, type: 'dealership' },
         select: {
@@ -79,9 +80,9 @@ export class AppService {
         select: { catalogType: true, fileUrl: true },
       });
       const home = {
-        taglineTm: about.taglineTm,
-        taglineRu: about.taglineRu,
-        taglineEn: about.taglineEn,
+        taglineTm: tagline.taglineTm,
+        taglineRu: tagline.taglineRu,
+        taglineEn: tagline.taglineEn,
         contact: contact,
         dealership,
         galary: homeGalary,

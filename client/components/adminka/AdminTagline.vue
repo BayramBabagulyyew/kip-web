@@ -1,90 +1,92 @@
 <template>
-  <div class="admin-form">
+  <div>
     <base-languages @selectLanguage="toggleLanguage" :activeLang="activeLang" />
     <form @submit.prevent>
-      <admin-input
-        @updateValue="(val) => (main[`title${activeLang}`] = val)"
-        :value="main[`title${activeLang}`]"
-        label="Title"
-        class="mb-2"
-        placeholder="..."
-      />
-
-      <RichTextEditor
-        :model-value="main[`content${activeLang}`]"
-        @update="(val) => (main[`content${activeLang}`] = val)"
-        :language="activeLang"
-        label="Content"
-      />
       <RichTextEditor
         :model-value="main[`tagline${activeLang}`]"
         @update="(val) => (main[`tagline${activeLang}`] = val)"
         :language="activeLang"
         label="Tagline"
       />
-      <div class="flex flex-x-end">
-        <base-button @clickedButton="addAbout" style="width: 150px" class="admin-header__button">
-          Save
-        </base-button>
-      </div>
+      <base-button @clickedButton="saveData" style="width: 200px"> Save </base-button>
     </form>
-    <popup-error :errorPupUp="errorPupUp">Boş meýdanlary dolduryň!</popup-error>
+    <popup-error :errorPupUp="errorPupUp">{{ errorMessage }}</popup-error>
     <popup-success :activePupUp="activePupUp">Success</popup-success>
   </div>
 </template>
 <script>
-import { ADD_ABOUT, GET_ABOUT } from '@/api/admin.api';
-import { mapGetters } from 'vuex';
+import { request } from '@/api/generic.api';
 
 export default {
+  emits: ['setView'],
+  props: {
+    id: {
+      type: [String, Number],
+      default: null,
+    },
+  },
   data() {
     return {
       activeLang: 'Tm',
       activePupUp: false,
       errorPupUp: false,
+      errorMessage: 'Error saving data',
       main: {
-        titleTm: '',
-        titleRu: '',
-        titleEn: '',
-        contentTm: '',
-        contentRu: '',
-        contentEn: '',
-        taglineTm: '',
-        taglineRu: '',
-        taglineEn: '',
+        taglineTm: null,
+        taglineRu: null,
+        taglineEn: null,
       },
     };
   },
-
-  computed: {
-    ...mapGetters(['isPopup']),
-  },
-
-  async mounted() {
-    await this.fetchAbout();
+  watch: {
+    id: {
+      immediate: true,
+      handler(taglineId) {
+        if (taglineId) {
+          this.fetchTagline(taglineId);
+        } else {
+          this.main = {
+            taglineTm: '',
+            taglineRu: '',
+            taglineEn: '',
+          };
+        }
+      },
+    },
   },
 
   methods: {
-    async addAbout() {
+    async saveData() {
       try {
-        const {  success } = await ADD_ABOUT({
+        const id = this.$route.query.id;
+        const view = this.$route.query.view;
+        let url = 'tagline';
+        let method = 'POST';
+        if (id && view === 'edit') {
+          url = `tagline/${id}`;
+          method = 'PATCH';
+        }
+        const { success } = await request({
+          url,
+          method,
           data: {
-            titleTm: this.main.titleTm,
-            contentTm: this.main.contentTm,
-            titleRu: this.main.titleRu,
-            contentRu: this.main.contentRu,
-            titleEn: this.main.titleEn,
-            contentEn: this.main.contentEn,
             taglineTm: this.main.taglineTm,
             taglineRu: this.main.taglineRu,
             taglineEn: this.main.taglineEn,
           },
         });
-        if (!success) return;
-        this.activePupUp = true;
-        await this.fetchAbout();
+        if (success) {
+          this.main = {
+            taglineTm: '',
+            taglineRu: '',
+            taglineEn: '',
+          };
+          this.activePupUp = true;
+          this.$emit('setView', view === 'edit' ? 'list' : 'add');
+        }
       } catch (error) {
         console.log(error);
+        this.errorMessage = error.message;
         this.errorPupUp = true;
       }
       setTimeout(() => {
@@ -92,18 +94,18 @@ export default {
         this.errorPupUp = false;
       }, 2000);
     },
-
-    async fetchAbout() {
+    async fetchTagline(id) {
       try {
-        const { data, success } = await GET_ABOUT();
-        if (success) {
-          this.main = data;
-        }
+        const { data } = await request({
+          url: `tagline/${id}`,
+          method: 'GET',
+        });
+        this.main = data;
       } catch (error) {
-        console.error(error, 'NO INTERNET');
+        this.errorMessage = error.message;
+        console.error('Error fetching tagline:', error);
       }
     },
-
     toggleLanguage(key) {
       this.activeLang = key;
     },
@@ -111,32 +113,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.admin-form {
-  padding: 0 36px;
-}
-
-.admin-label {
-  color: var(--primary);
-  font-size: 14px;
-  font-weight: 700;
-  line-height: normal;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-  @media (max-width: 767px) {
-    margin-bottom: 6px;
-    font-size: 14px;
-  }
-}
-
-.editor-wrapper {
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 8px;
-  margin: 8px 0 20px;
-  background-color: #fff;
-
-  // Optional: shadow to match input components
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-</style>
+<style lang="scss" scoped></style>
