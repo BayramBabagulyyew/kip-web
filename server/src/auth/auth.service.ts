@@ -23,7 +23,8 @@ export class AuthService {
       const key: string = this.configService.get<string>('SUPER_KEY');
       console.log("originalKey", key, ' \n dto.key', dto.key);
       if (!dto.key || dto.key != key) {
-        throw new NotFoundException();
+        console.log("isNotEqualKeys")
+        throw new NotFoundException("Key is not found");
       }
 
       const condidate = await this.prismaService.users.findUnique({
