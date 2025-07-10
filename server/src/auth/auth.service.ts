@@ -21,6 +21,7 @@ export class AuthService {
   async signUp(dto: singUpDto) {
     try {
       const key: string = this.configService.get<string>('SUPER_KEY');
+      console.log("originalKey", key, ' \n dto.key', dto.key);
       if (!dto.key || dto.key != key) {
         throw new NotFoundException();
       }
