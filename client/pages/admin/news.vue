@@ -7,12 +7,10 @@
         :key="button.key"
         :prevIcon="button.prevIcon"
         @clickedButton="changeButtonPage(button.key)"
-        :class="[
-          'header-buttons__button',
-          { active: activeBtn === button.key },
-        ]"
+        :class="['header-buttons__button', { active: activeBtn === button.key }]"
         :adminButton="button.adminButton"
         :adminButtonSecond="button.adminButtonSecond"
+        npn
       >
         {{ button.name }}
       </base-button>
@@ -35,20 +33,18 @@
         :pageCount="paginationCount"
       ></base-pagination>
     </div>
-    <popup-error :errorPupUp="errorPupUp" :message="errorMessage">{{
-      errorMessage
-    }}</popup-error>
+    <popup-error :errorPupUp="errorPupUp" :message="errorMessage">{{ errorMessage }}</popup-error>
   </div>
 </template>
 
 <script>
-import { request } from "@/api/generic.api";
+import { request } from '@/api/generic.api';
 export default {
-  layout: "admin",
+  layout: 'admin',
   data() {
     return {
       activeBtn: 1,
-      activeLang: "Tm",
+      activeLang: 'Tm',
       id: null,
       page: 1,
       limit: 10,
@@ -56,18 +52,18 @@ export default {
       news: [],
       idEdit: null,
       errorPupUp: false,
-      errorMessage: "", // New variable for error message
+      errorMessage: '', // New variable for error message
       buttons: [
         {
           key: 1,
-          prevIcon: "addIcon",
-          name: "Add News",
+          prevIcon: 'addIcon',
+          name: 'Add News',
           adminButton: true,
         },
         {
           key: 2,
-          prevIcon: "adminBurger",
-          name: "News list",
+          prevIcon: 'adminBurger',
+          name: 'News list',
           adminButtonSecond: true,
         },
       ],
@@ -82,7 +78,7 @@ export default {
     },
     changeButtonPage(key) {
       this.activeBtn = key;
-      this.activeLang = "Tm";
+      this.activeLang = 'Tm';
     },
     itemEdit(data) {
       this.changeButtonPage(1);
@@ -93,7 +89,7 @@ export default {
     async getNews() {
       try {
         const { success, data } = await request({
-          url: "news/all",
+          url: 'news/all',
           data: {
             page: this.page,
             limit: this.limit,

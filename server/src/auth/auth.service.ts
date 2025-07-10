@@ -16,12 +16,12 @@ export class AuthService {
     private readonly prismaService: PrismaService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-  ) {}
+  ) { }
 
   async signUp(dto: singUpDto) {
     try {
       const key: string = this.configService.get<string>('SUPER_KEY');
-      if (!dto.key || dto.key !== key) {
+      if (!dto.key || dto.key != key) {
         throw new NotFoundException();
       }
 

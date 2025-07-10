@@ -67,7 +67,7 @@ export default {
   methods: {
     async addAbout() {
       try {
-        const {  success } = await ADD_ABOUT({
+        const { success } = await ADD_ABOUT({
           data: {
             titleTm: this.main.titleTm,
             contentTm: this.main.contentTm,
