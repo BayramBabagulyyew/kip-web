@@ -256,9 +256,6 @@ export default {
     padding: 0 40px;
     overflow: hidden;
 
-    &-navigations {
-    }
-
     &-prev-navigation {
       position: absolute;
       top: 50%;
@@ -303,12 +300,14 @@ export default {
   &__image {
     width: 100%;
     height: 160px;
+    //padding: 10px;
     cursor: pointer;
     img {
       width: 100%;
       height: 100%;
       object-fit: contain;
       transition: all 0.3s;
+      padding: 5%;
     }
     @media (max-width: 767px) {
       height: 90px;

@@ -10,15 +10,15 @@
     </div>
     <div class="sidebar__body">
       <div class="sidebar__profile">
-        <div class="sidebar__profile-image">
-          <!-- <img src="" alt="" /> -->
-        </div>
+        <img
+          class="sidebar__profile-image"
+          src="https://kip.tm/public/profile.svg"
+          alt="Profile image"
+        />
+
         <div class="sidebar__profile-content">
-          <!-- <h1 class="sidebar__name">Zuleyha Amanowa</h1> -->
-          <h2 class="sidebar__profile-role">Operator</h2>
-        </div>
-        <div class="sidebar__profile-more">
-          <base-icon icon="unfold_more" />
+          <h1 class="sidebar__name">Manager</h1>
+          <!-- <h2 class="sidebar__profile-role">Manager</h2> -->
         </div>
       </div>
       <nav class="sidebar__menu">
@@ -43,19 +43,19 @@ export default {
         {
           id: 2,
           url: ``,
-          icon: 'folder',
+          icon: 'home',
           name: 'About us',
         },
         {
           id: 3,
           url: '/news',
-          icon: 'folder',
+          icon: 'infoIcon',
           name: 'News',
         },
         {
           id: 4,
           url: '/projects',
-          icon: 'folder',
+          icon: 'file',
           name: 'Projects',
         },
         {
@@ -149,25 +149,20 @@ ul li {
   }
 
   &__profile-image {
-    margin-right: 24px;
+    margin-right: 2rem;
     min-width: 40px;
     height: 40px;
-    background-color: var(--primary);
+    // background-color: var(--primary);
     border-radius: 50%;
+    border: 2px solid var(--primary);
     position: relative;
-    &::before {
-      content: '';
-      width: 50px;
-      height: 50px;
-      border: 2px solid var(--primary);
-      border-radius: 50%;
-      position: absolute;
-      top: -5px;
-      left: -5px;
-    }
+
+    align-items: center;
+    justify-content: center;
     img {
-      width: 100%;
-      height: 100%;
+      width: 90%;
+      height: 90%;
+
       object-fit: cover;
       object-position: center;
     }
@@ -208,9 +203,6 @@ ul li {
 
   &__menu {
     margin-top: 36px;
-  }
-
-  &__menu-list {
   }
 
   &__menu-item {

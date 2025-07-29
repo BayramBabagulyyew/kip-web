@@ -69,7 +69,10 @@ export default {
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
         ...i18nHead.meta,
       ],
-      link: [{ rel: 'icon', type: '/kip-logo.svg', href: '/kip-logo.svg' }, ...i18nHead.link],
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: '/kip-logo.svg' },
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+         ...i18nHead.link],
     };
   },
 
@@ -90,6 +93,7 @@ export default {
   plugins: [
     { src: '@/plugins/vue-awesome-swiper', mode: 'client' },
     { src: '@/plugins/tinymce.js', mode: 'client' },
+    { src: '@/plugins/query-changer.js', mode: 'client' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

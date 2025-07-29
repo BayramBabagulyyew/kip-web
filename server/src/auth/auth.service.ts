@@ -48,6 +48,7 @@ export class AuthService {
       // const token= await this._createToken(user.userId)
       // return {...user, token: token}
     } catch (err) {
+      console.error(err);
       throw new HttpException(
         {
           statusCode: err.statusCode || HttpStatus.BAD_REQUEST,

@@ -22,8 +22,11 @@
 </template>
 
 <script>
+
+
 export default {
   layout: 'admin',
+
   data() {
     return {
       activeBtn: this.$route.query.view || 'add',
@@ -64,14 +67,7 @@ export default {
   },
   methods: {
     setView(view, item = {}) {
-      if (view === 'edit' && item.id) {
-        this.isEdit = true;
-        this.$router.push({ query: { view, id: item.id } });
-      } else {
-        this.isEdit = false;
-        this.$router.push({ query: { view } });
-      }
-      this.activeBtn = view;
+      this.$setView(view, item);
     },
   },
 };
