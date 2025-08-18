@@ -1,9 +1,24 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="intro" ref="aos">
+    <div class="intro__controls" v-if="intro?.video">
+      <button class="intro__control" @click="togglePlay">
+        <base-icon :icon="isPlaying && !isStopped ? 'pauseIcon' : 'playIcon'" />
+      </button>
+      <button class="intro__control" @click="toggleMute">
+        <base-icon :icon="isMuted ? 'volumeOffIcon' : 'volumeOnIcon'" />
+      </button>
+      <button class="intro__control" @click="stopVideo">
+        <base-icon icon="stopIcon" />
+      </button>
+    </div>
     <video
       v-if="intro?.video"
       ref="bgVideo"
-      :class="['intro__video', { 'intro__video--visible': isVideoLoaded }]"
+      :class="[
+        'intro__video',
+        { 'intro__video--visible': isVideoLoaded && !isStopped }
+      ]"
       :src="`${imageURL}${intro.video}`"
       muted
       loop
@@ -119,21 +134,56 @@ export default {
       openContact: false,
       observer: null,
       isVideoLoaded: false,
+      isPlaying: false,
+      isMuted: true,
+      isStopped: false,
     };
   },
   methods: {
     handleVideoLoaded() {
       this.isVideoLoaded = true;
-      this.$refs.bgVideo && this.$refs.bgVideo.play();
+      if (this.$refs.bgVideo) {
+        this.$refs.bgVideo.muted = this.isMuted;
+        this.$refs.bgVideo.play();
+        this.isPlaying = true;
+      }
+    },
+    togglePlay() {
+      if (!this.$refs.bgVideo) return;
+      if (this.isStopped) {
+        this.isStopped = false;
+        this.isVideoLoaded = true;
+        this.$refs.bgVideo.play();
+        this.isPlaying = true;
+        return;
+      }
+      if (this.isPlaying) {
+        this.$refs.bgVideo.pause();
+      } else {
+        this.$refs.bgVideo.play();
+      }
+      this.isPlaying = !this.isPlaying;
+    },
+    toggleMute() {
+      if (!this.$refs.bgVideo) return;
+      this.$refs.bgVideo.muted = !this.$refs.bgVideo.muted;
+      this.isMuted = this.$refs.bgVideo.muted;
+    },
+    stopVideo() {
+      if (!this.$refs.bgVideo) return;
+      this.$refs.bgVideo.pause();
+      this.$refs.bgVideo.currentTime = 0;
+      this.isPlaying = false;
+      this.isVideoLoaded = false;
+      this.isStopped = true;
     },
   },
   mounted() {
     if (this.$refs.aos) {
-      const options =
-        {
-          rootMargin: '0px 0px 0px 0px',
-          threshold: 0.1,
-        } || {};
+      const options = {
+        rootMargin: '0px 0px 0px 0px',
+        threshold: 0.1,
+      };
       this.observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry && entry.isIntersecting) {
@@ -149,7 +199,7 @@ export default {
     }
     this.observer.observe(this.$refs.aos);
   },
-  destroyed() {
+  unmounted() {
     this.observer.disconnect();
   },
 };
@@ -227,6 +277,25 @@ export default {
   position: relative;
   @media (max-width: 767px) {
     cursor: none;
+  }
+
+  &__controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 2;
+  }
+  &__control {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
   }
 
   /* intro, sag ashaky burchdaky blur */
