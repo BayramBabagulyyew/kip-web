@@ -1,5 +1,16 @@
 <template>
   <div class="intro" ref="aos">
+    <video
+      v-if="intro?.video"
+      ref="bgVideo"
+      :class="['intro__video', { 'intro__video--visible': isVideoLoaded }]"
+      :src="`${imageURL}${intro.video}`"
+      muted
+      loop
+      playsinline
+      preload="auto"
+      @loadeddata="handleVideoLoaded"
+    ></video>
     <div
       :class="['contact-modal', { active: openContact }]"
       @click.stop="openContact = false"
@@ -38,7 +49,7 @@
         </div>
       </div>
     </div>
-    <div class="intro__left-bg" />
+    <div :class="['intro__left-bg', { 'intro__left-bg--hidden': isVideoLoaded }]" />
     <h1 class="intro__title" v-html="intro[translator(`tagline`)]"></h1>
     <div class="intro__center-items">
       <div class="relative mobile-button-circle-primary" ref="contact">
@@ -91,6 +102,7 @@
 
 <script>
 import translate from '@/mixins/translate';
+import { mapGetters } from 'vuex';
 export default {
   props: {
     intro: {
@@ -99,11 +111,21 @@ export default {
     },
   },
   mixins: [translate],
+  computed: {
+    ...mapGetters(['imageURL']),
+  },
   data() {
     return {
       openContact: false,
       observer: null,
+      isVideoLoaded: false,
     };
+  },
+  methods: {
+    handleVideoLoaded() {
+      this.isVideoLoaded = true;
+      this.$refs.bgVideo && this.$refs.bgVideo.play();
+    },
   },
   mounted() {
     if (this.$refs.aos) {
@@ -220,6 +242,11 @@ export default {
     bottom: 0;
   } */
   &__left-bg {
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    &--hidden {
+      opacity: 0;
+    }
     &::before {
       content: '';
       width: 50%;
@@ -240,6 +267,20 @@ export default {
       width: 240px;
       height: 240px;
       z-index: -1;
+    }
+  }
+  &__video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    &--visible {
+      opacity: 1;
     }
   }
   &__title {
