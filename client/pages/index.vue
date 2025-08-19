@@ -2,7 +2,7 @@
   <div>
     <Header :links="links" :isPlaying="isVideoPlaying" />
     <main class="main">
-      <Intro id="home" url="#projects" :intro="intro" @isPlaying="isVideoPlaying" />
+      <Intro id="home" url="#projects" :intro="intro" @isPlaying="setVideoPlaying" />
       <About id="about" :aboutUs="aboutUs" />
       <!-- <Ehs id="ehs" /> -->
       <product-service id="products-services" :items="products" />
@@ -182,7 +182,7 @@ export default {
         console.error(error);
       }
     },
-    isVideoPlaying(value) {
+    setVideoPlaying(value) {
       this.isVideoPlaying = value;
     },
   },
