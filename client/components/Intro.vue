@@ -136,7 +136,7 @@ export default {
       openContact: false,
       observer: null,
       isVideoLoaded: false,
-      isPlayingisPlayingisPlaying: false,
+      isPlaying: false,
       isMuted: true,
       isStopped: false,
     };
@@ -148,6 +148,7 @@ export default {
         this.$refs.bgVideo.muted = this.isMuted;
         this.$refs.bgVideo.play();
         this.isPlaying = true;
+        this.$emit('isPlaying', this.isPlaying);
       }
     },
     togglePlay() {
@@ -157,10 +158,7 @@ export default {
         this.isVideoLoaded = true;
         this.$refs.bgVideo.play();
         this.isPlaying = true;
-        return;
-      }
-      if (this.isPlaying) {
-        if (!this.$refs.bgVideo) return;
+      } else if (this.isPlaying) {
         this.$refs.bgVideo.pause();
         this.$refs.bgVideo.currentTime = 0;
         this.isPlaying = false;
@@ -168,8 +166,9 @@ export default {
         this.isStopped = true;
       } else {
         this.$refs.bgVideo.play();
+        this.isPlaying = true;
       }
-      this.isPlaying = !this.isPlaying;
+      this.$emit('isPlaying', this.isPlaying);
     },
     toggleMute() {
       if (!this.$refs.bgVideo) return;

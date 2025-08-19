@@ -1,5 +1,5 @@
 <template>
-  <header class="header">
+  <header :class="['header', { 'header--white': isPlaying }]">
     <div class="header__container">
       <div class="header__body">
         <div :class="['burger-wrapper', { open: openLanguages }]" @click="toggleLanguages">
@@ -312,6 +312,12 @@ ul li {
     @media (max-width: 992px) {
       color: white;
     }
+  }
+}
+
+.header--white {
+  .menu__link {
+    color: #fff;
   }
 }
 .languages {
