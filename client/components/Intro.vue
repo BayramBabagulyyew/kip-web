@@ -1,26 +1,25 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="intro" ref="aos">
-    <div class="intro__controls" v-if="intro?.video">
-      <button class="intro__control" @click="togglePlay">
-        <base-icon :icon="isPlaying && !isStopped ? 'pauseIcon' : 'playIcon'" />
+    <div class="intro__controls">
+      <button class="intro__control" @click="togglePlay" v-if="intro?.video">
+        <base-icon
+          :icon="isPlaying && !isStopped ? 'stopIcon' : 'playIcon'"
+          style="font-size: 20px; width: 20px; height: 20px"
+        />
       </button>
-      <button class="intro__control" @click="toggleMute">
-        <base-icon :icon="isMuted ? 'volumeOffIcon' : 'volumeOnIcon'" />
-      </button>
-      <button class="intro__control" @click="stopVideo">
-        <base-icon icon="stopIcon" />
+      <button class="intro__control" @click="toggleMute" v-if="intro?.video && !this.isStopped">
+        <span :class="{ 'muted-slash': isMuted }" style="position: relative; display: inline-block">
+          <base-icon icon="volumeOffIcon" style="font-size: 20px; width: 20px; height: 20px" />
+        </span>
       </button>
     </div>
     <video
       v-if="intro?.video"
       ref="bgVideo"
-      :class="[
-        'intro__video',
-        { 'intro__video--visible': isVideoLoaded && !isStopped }
-      ]"
+      :class="['intro__video', { 'intro__video--visible': isVideoLoaded && !isStopped }]"
       :src="`${imageURL}${intro.video}`"
-      muted
+      :muted="isMuted"
       loop
       playsinline
       preload="auto"
@@ -83,7 +82,10 @@
         <!-- <img src="@/assets/img/logo-last.png" alt="logo" /> -->
       </div>
       <div class="relative mobile-button-circle-white" ref="project">
-        <base-button-circle :url="`https://kip.tm/public/kip_eng_presentation_${$i18n.locale}.pdf`" primary>
+        <base-button-circle
+          :url="`https://kip.tm/public/kip_eng_presentation_${$i18n.locale}.pdf`"
+          primary
+        >
           {{ $t('catalog') }}
         </base-button-circle>
         <!-- <base-icon icon="circleCursor" class="circle-cursor" /> -->
@@ -134,7 +136,7 @@ export default {
       openContact: false,
       observer: null,
       isVideoLoaded: false,
-      isPlaying: false,
+      isPlayingisPlayingisPlaying: false,
       isMuted: true,
       isStopped: false,
     };
@@ -158,7 +160,12 @@ export default {
         return;
       }
       if (this.isPlaying) {
+        if (!this.$refs.bgVideo) return;
         this.$refs.bgVideo.pause();
+        this.$refs.bgVideo.currentTime = 0;
+        this.isPlaying = false;
+        this.isVideoLoaded = false;
+        this.isStopped = true;
       } else {
         this.$refs.bgVideo.play();
       }
@@ -166,16 +173,8 @@ export default {
     },
     toggleMute() {
       if (!this.$refs.bgVideo) return;
-      this.$refs.bgVideo.muted = !this.$refs.bgVideo.muted;
-      this.isMuted = this.$refs.bgVideo.muted;
-    },
-    stopVideo() {
-      if (!this.$refs.bgVideo) return;
-      this.$refs.bgVideo.pause();
-      this.$refs.bgVideo.currentTime = 0;
-      this.isPlaying = false;
-      this.isVideoLoaded = false;
-      this.isStopped = true;
+      this.isMuted = !this.isMuted;
+      this.$refs.bgVideo.muted = this.isMuted;
     },
   },
   mounted() {
@@ -710,5 +709,17 @@ export default {
       }
     }
   }
+}
+
+.muted-slash::after {
+  content: '';
+  position: absolute;
+  left: 0px;
+  top: 40%;
+  width: 20px;
+  height: 3px;
+  background: white;
+  transform: rotate(45deg);
+  pointer-events: none;
 }
 </style>

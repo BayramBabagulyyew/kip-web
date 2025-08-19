@@ -1,8 +1,8 @@
 <template>
   <div>
-    <Header :links="links" />
+    <Header :links="links" :isPlaying="isVideoPlaying" />
     <main class="main">
-      <Intro id="home" url="#projects" :intro="intro" />
+      <Intro id="home" url="#projects" :intro="intro" @isPlaying="isVideoPlaying" />
       <About id="about" :aboutUs="aboutUs" />
       <!-- <Ehs id="ehs" /> -->
       <product-service id="products-services" :items="products" />
@@ -40,6 +40,7 @@ export default {
         clients: [],
         projects: [],
       },
+      isVideoPlaying: false, // To track if the video is playing
       isModalVisible: false, // For modal visibility
       selectedImage: '', // To store the clicked image URL
       links: [
@@ -109,6 +110,7 @@ export default {
         const { data, statusCode } = await GET_HOME();
         if (statusCode) {
           this.intro = data || {};
+          this.intro.video = 'kip_video.mp4';
         }
       } catch (error) {
         console.error(error);
@@ -179,6 +181,9 @@ export default {
       } catch (error) {
         console.error(error);
       }
+    },
+    isVideoPlaying(value) {
+      this.isVideoPlaying = value;
     },
   },
 };

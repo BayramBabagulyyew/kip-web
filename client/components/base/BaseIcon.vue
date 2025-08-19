@@ -3,20 +3,20 @@
 </template>
 
 <script>
-  import icons from '@/icons.js'
-  export default {
-    props: {
-      icon: {
-        type: String,
-        default: ''
-      }
+import icons from '@/icons.js';
+export default {
+  props: {
+    icon: {
+      type: String,
+      default: '',
     },
-    computed: {
-      path() {
-        return icons[this.icon]
-      }
-    }
-  }
+  },
+  computed: {
+    path() {
+      return icons[this.icon];
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped></style>
