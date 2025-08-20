@@ -110,7 +110,7 @@ export default {
         const { data, statusCode } = await GET_HOME();
         if (statusCode) {
           this.intro = data || {};
-          this.intro.video = 'kip_video.mp4';
+          this.intro.video = 'kip.webm';
         }
       } catch (error) {
         console.error(error);

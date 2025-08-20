@@ -90,8 +90,14 @@
         </base-button-circle>
         <!-- <base-icon icon="circleCursor" class="circle-cursor" /> -->
         <div class="button-arrow-title">
-          <base-icon icon="workBlackArrow" class="black-arrow" />
-          <h2 class="button-arrow-title__text">{{ $t('downloadCatalog') }}</h2>
+          <base-icon v-if="!isPlaying" icon="workBlackArrow" class="black-arrow" />
+          <base-icon v-if="isPlaying" icon="workWhiteArrow" class="black-arrow" />
+          <h2 v-if="!isPlaying" class="button-arrow-title__text">
+            {{ $t('downloadCatalog') }}
+          </h2>
+          <h2 v-if="isPlaying" class="button-arrow-title__text white">
+            {{ $t('downloadCatalog') }}
+          </h2>
           <base-icon icon="workBlackArrowMini" class="black-arrow-mini" />
         </div>
       </div>
@@ -109,7 +115,10 @@
     </div>
 
     <div class="representative" ref="representative">
-      <h2 class="representative__title">
+      <h2 v-if="!isPlaying" class="representative__title">
+        {{ $t('dealership') }}
+      </h2>
+      <h2 v-if="isPlaying" class="representative__title" style="color: white">
         {{ $t('dealership') }}
       </h2>
       <representative-home :representatives="intro?.dealership" />
