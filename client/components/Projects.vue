@@ -5,8 +5,8 @@
     </div>
     <div class="projects__row" ref="images">
       <div class="projects__item" v-for="project in projects" :key="project.projectId">
-        <!-- @click="$router.push(localeLocation(`/projects/${project.projectId}`))" -->
-        <a :href="`/${$i18n.locale}/projects/${project.projectId}`" class="projects__item">
+        <!-- @click="$router.push(localeLocation(`/projects/${project.slug}`))" -->
+        <a :href="`/${$i18n.locale}/projects/${project.slug}`" class="projects__item">
           <div class="projects__image">
             <img :src="`${imageURL}${project?.cover}`" alt="" />
           </div>

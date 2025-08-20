@@ -39,8 +39,9 @@ export class ProjectsController {
     return this.projectsService.fetchProjects(dto, req?.id ? req?.id : '');
   }
 
-  @Post('one/:projectId') // only for admin panel
-  fetchOneProject(@Param('projectId') projectId: string) {
+  @Post('one/:slug') // only for admin panel
+  fetchOneProject(@Param('slug') slug: string) {
+    const projectId = slug.split('_').pop();
     return this.projectsService.fetchOneProject(projectId);
   }
 

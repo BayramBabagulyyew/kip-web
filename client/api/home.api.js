@@ -4,8 +4,8 @@ export const GET_ABOUT = () => request({ url: `about`, method: "PATCH" });
 
 export const GET_PRODUCTS = () =>
   request({ url: `products-services`, method: "PATCH" });
-export const GET_PRODUCTS_ONE = ({ data }) =>
-  request({ url: `services/find/${data.id}`, method: "POST" });
+export const GET_PRODUCTS_ONE = ({ slug }) =>
+  request({ url: `services/find/${slug}`, method: "POST" });
 
 export const GET_PRODUCTS_LIMIT = () =>
   request({ url: `services/`, method: "PATCH" });
@@ -14,14 +14,14 @@ export const GET_HOME = () => request({ url: `home`, method: "PATCH" });
 
 export const GET_NEWS = ({ limit, page }) => request({ url: `news`, method: "PATCH", params:{limit, page } });
 export const GET_NEWS_ALL = ({ limit, page }) => request({ url: `news/all`, method: "POST", data: { limit, page } });
-export const GET_NEWS_ID = ({ data }) =>
-  request({ url: `news/one/${data.newsId}`, method: "GET" });
+export const GET_NEWS_ID = ({ slug }) =>
+  request({ url: `news/one/${slug}`, method: "GET" });
 
 export const GET_ABOUT_LIMIT = () =>
   request({ url: `projects/all`, method: "POST" });
 export const GET_PROJECTS = () => request({ url: `projects`, method: "PATCH" });
-export const GET_PROJECT_ONE = ({ data }) =>
-  request({ url: `projects/one/${data.projectId}`, method: "POST" });
+export const GET_PROJECT_ONE = ({ slug }) =>
+  request({ url: `projects/one/${slug}`, method: "POST" });
 
 export const POST_MAIL = ({ data }) =>
   request({ url: `mail`, method: "POST", data: data });

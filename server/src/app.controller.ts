@@ -170,10 +170,11 @@ export class AppController {
     return this.appService.removeService({ id: serviceId });
   }
 
-  @Post('services/find/:serviceId')
+  @Post('services/find/:slug')
   findService(
-    /* @Body() dto: findServiceDto*/ @Param('serviceId') serviceId: string,
+    /* @Body() dto: findServiceDto*/ @Param('slug') slug: string,
   ) {
+    const serviceId = slug.split('_').pop();
     return this.appService.findOneService({ id: serviceId });
   }
 

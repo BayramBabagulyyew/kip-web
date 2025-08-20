@@ -11,8 +11,8 @@
     </div>
     <div class="news-page__items">
       <div v-for="item in news" :key="item.newsId">
-        <!-- @click="$router.push(`/news/${item.newsId}`)" -->
-        <a :href="`/news/${item.newsId}`" class="news-page__item">
+        <!-- @click="$router.push(`/news/${item.slug}`)" -->
+        <a :href="`/news/${item.slug}`" class="news-page__item">
           <div class="news-page__image">
             <img :src="`${imageURL}${item?.image}`" alt="" />
           </div>

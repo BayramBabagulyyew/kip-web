@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { slugWithId } from 'src/utils';
 import { UpsertNewsDto, changeIsMainDto, changePriorityDto } from './news.dto';
 import { PaginationRequest } from '../common/interfaces';
 
@@ -139,7 +140,11 @@ export class NewsService {
           skip: pagination.skip,
           orderBy: [{ [`${pagination.order_by}`]: pagination.order_direction }],
         });
-        return { count, pageCount, rows };
+        const rowsWithSlug = rows.map((row) => ({
+          ...row,
+          slug: slugWithId(row.titleEn || row.titleTm || row.titleRu, row.newsId),
+        }));
+        return { count, pageCount, rows: rowsWithSlug };
       }
       // request send by client
       const count: number = await this.prismaService.news.count({
@@ -164,7 +169,11 @@ export class NewsService {
         skip: pagination.skip,
         orderBy: [{ [`${pagination.order_by}`]: pagination.order_direction }],
       });
-      return { count, pageCount, rows };
+      const rowsWithSlug = rows.map((row) => ({
+        ...row,
+        slug: slugWithId(row.titleEn || row.titleTm || row.titleRu, row.newsId),
+      }));
+      return { count, pageCount, rows: rowsWithSlug };
     } catch (err) {
       throw new HttpException(
         {

@@ -3,8 +3,8 @@
     <h1 class="services__title">{{ $t('productsServices') }}</h1>
     <div class="services__row" ref="images">
       <div class="services__item" v-for="item in items?.services" :key="item?.id">
-        <!-- @click="$router.push(localeLocation(`/products-services/${item?.id}`))" -->
-        <a :href="`/products-services/${item?.id}`">
+        <!-- @click="$router.push(localeLocation(`/products-services/${item?.slug}`))" -->
+        <a :href="`/products-services/${item?.slug}`">
           <div class="services__content">
             <div class="services__content-logo">
               <img :src="`${imageURL}${item?.logo}`" alt="" />
@@ -19,7 +19,7 @@
         class="services__item"
         v-for="item in items?.products"
         :key="item?.id"
-        @click="$router.push(localeLocation(`/products-services/${item?.id}`))"
+        @click="$router.push(localeLocation(`/products-services/${item?.slug}`))"
       >
         <!-- <div class="services__image">
           <img :src="`${imageURL}${item?.images[0]}`" alt="" />
