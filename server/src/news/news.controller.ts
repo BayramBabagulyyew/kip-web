@@ -38,8 +38,9 @@ export class NewsController {
   }
 
   @UseGuards(FackeGuard)
-  @Get('/one/:newsId')
-  fetchOneNews(@Param('newsId') newsId: string, @Req() req: RequestWithUser) {
+  @Get('/one/:slug')
+  fetchOneNews(@Param('slug') slug: string, @Req() req: RequestWithUser) {
+    const newsId = slug.split('_').pop();
     return this.newsService.fetchOneNews(newsId, req.id);
   }
 

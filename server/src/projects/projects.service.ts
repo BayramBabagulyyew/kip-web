@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { slugWithId } from 'src/utils';
 import {
   fetchCategoryProjectsDto,
   fetchProjectsDto,
@@ -163,7 +164,11 @@ export class ProjectsService {
         // orderBy: [{ priority: 'asc' }, { workDate: 'desc' }],
         orderBy: [{ workDate: 'desc' }],
       });
-      return { count, pageCount, rows };
+      const rowsWithSlug = rows.map((row) => ({
+        ...row,
+        slug: slugWithId(row.nameEn || row.nameTm || row.nameRu, row.projectId),
+      }));
+      return { count, pageCount, rows: rowsWithSlug };
     } catch (err) {
       throw new HttpException(
         {

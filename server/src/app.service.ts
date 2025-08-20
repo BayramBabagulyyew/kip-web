@@ -18,6 +18,7 @@ import { PrismaService } from './prisma/prisma.service';
 import * as nodemailer from 'nodemailer';
 import { PaginationRequest } from './common/interfaces';
 import { TaglineService } from './tagline/tagline.service';
+import { slugWithId } from 'src/utils';
 @Injectable()
 export class AppService {
   constructor(
@@ -198,7 +199,20 @@ export class AppService {
         take: pagination.limit,
         skip: pagination.skip,
       });
-      return { mainNews, news };
+      if (mainNews) {
+        mainNews = {
+          ...mainNews,
+          slug: slugWithId(
+            mainNews.titleEn || mainNews.titleTm || mainNews.titleRu,
+            mainNews.newsId,
+          ),
+        };
+      }
+      const newsWithSlug = news.map((row) => ({
+        ...row,
+        slug: slugWithId(row.titleEn || row.titleTm || row.titleRu, row.newsId),
+      }));
+      return { mainNews, news: newsWithSlug };
     } catch (err) {
       throw new HttpException(
         {
@@ -226,7 +240,11 @@ export class AppService {
         orderBy: { workDate: 'desc' },
         take: 6,
       });
-      return projects;
+      const projectsWithSlug = projects.map((row) => ({
+        ...row,
+        slug: slugWithId(row.nameEn || row.nameTm || row.nameRu, row.projectId),
+      }));
+      return projectsWithSlug;
     } catch (err) {
       throw new HttpException(
         {
@@ -369,7 +387,15 @@ export class AppService {
         where: { catalogType: 'productservices' },
         select: { catalogType: true, fileUrl: true },
       });
-      return { products, services, catalog };
+      const productsWithSlug = products.map((row) => ({
+        ...row,
+        slug: slugWithId(row.nameEn || row.nameTm || row.nameRu, row.id),
+      }));
+      const servicesWithSlug = services.map((row) => ({
+        ...row,
+        slug: slugWithId(row.nameEn || row.nameTm || row.nameRu, row.id),
+      }));
+      return { products: productsWithSlug, services: servicesWithSlug, catalog };
     } catch (err) {
       throw new HttpException(
         {
@@ -1252,7 +1278,11 @@ export class AppService {
         skip: skip,
         orderBy: [{ priority: 'asc' }, { createdAt: 'desc' }],
       });
-      return { count, pageCount, rows };
+      const rowsWithSlug = rows.map((row) => ({
+        ...row,
+        slug: slugWithId(row.nameEn || row.nameTm || row.nameRu, row.id),
+      }));
+      return { count, pageCount, rows: rowsWithSlug };
     } catch (err) {
       throw new HttpException(
         {

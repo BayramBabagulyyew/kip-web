@@ -11,11 +11,11 @@
       </div>
       <div class="services__row" ref="images">
         <div class="services__item" v-for="item in items" :key="item.id">
-          <!-- @click="$router.push(localeLocation(`/products-services/${item?.id}`))" -->
+          <!-- @click="$router.push(localeLocation(`/products-services/${item?.slug}`))" -->
           <!-- <div class="services__image">
             <img :src="`${imageURL}${item?.images[0]}`" alt="" />
           </div> -->
-          <a :href="`/products-services/${item?.id}`">
+          <a :href="`/products-services/${item?.slug}`">
             <div class="services__content">
               <div class="services__content-logo">
                 <img :src="`${imageURL}${item?.logo}`" alt="" />

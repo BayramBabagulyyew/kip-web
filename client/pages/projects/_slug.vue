@@ -1,79 +1,114 @@
 <template>
-  <div class="products" ref="aos">
-    <div class="products__container">
-      <div class="products__arrow">
+  <div class="projects-id" ref="aos">
+    <div class="projects-id__container">
+      <div class="projects-id__arrow">
         <base-icon
           icon="arrowLeft"
           class="project-icon"
-          @clicked="$router.back(localeLocation(-1))"
+          @clicked="$router.push(localeLocation(`/${$i18n.locale}/projects`))"
         />
       </div>
-      <div class="products__project">
-        <div class="products__project-image">
-          <img :src="`${imageURL}${product?.logo}`" alt="" />
+      <div class="projects-id__project">
+        <div class="projects-id__project-image" style="margin-right: 15px">
+          <!-- <img src="@/assets/img/mennan.svg" alt="" /> -->
+          <img
+            :src="`${imageURL}${project.cover}`"
+            alt=""
+            @click="openModal(`${imageURL}${project.cover}`)"
+          />
         </div>
-        <div class="products__project-content">
-          <p class="products__project-text">
-            <!-- <span>Name:</span> -->
-            <!-- <span>{{ translateName(product) }}</span> -->
+        <div class="projects-id__project-content">
+          <p class="projects-id__project-text">
+            <span class="projects-id__project-span">{{ $t('company') }}:</span>
+            <span>
+              {{ project?.[translator('company')] }}
+            </span>
           </p>
-          <!-- <p class="products__project-text">
-            <span>Type:</span>
-            <span>{{ product?.type }}</span>
-          </p> -->
+          <p class="projects-id__project-text">
+            <span class="projects-id__project-span">{{ $t('engineeringPeriod') }}:</span>
+            <span>
+              {{
+                new Date(project?.workDate).toLocaleString(translateLanguage(project), {
+                  month: 'long',
+                })
+              }}, {{ new Date(project?.workDate).getFullYear() }}
+            </span>
+            <span
+              v-if="
+                project?.endDate &&
+                new Date(project?.workDate).getMonth() !== new Date(project?.endDate).getMonth()
+              "
+            >
+              -
+              {{
+                new Date(project?.endDate).toLocaleString(translateLanguage(project), {
+                  month: 'long',
+                })
+              }}, {{ new Date(project?.endDate).getFullYear() }}
+            </span>
+          </p>
+          <p class="projects-id__project-text">
+            <span v-html="project[translator(`name`)]" style="font-weight: 600"></span>
+          </p>
         </div>
       </div>
-      <p style="color: #183a60; font-size: large; font-weight: 600; margin-bottom: 10px">
-        {{ product[translator('name')] }}
-      </p>
-      <div class="products__description-wrapper">
-        <h1 class="products__description-title">{{ $t('description') }}</h1>
-
+      <div class="projects-id__description-wrapper">
+        <h1 class="projects-id__description-title">{{ $t('description') }}</h1>
         <p
-          class="products__description-description inner_description"
-          style="line-height: 2em; text-align: justify; text-indent: 2em"
-          v-html="product?.[translator(`content`)]"
+          class="projects-id__description-description"
+          v-html="project?.[translator(`description`)]"
         ></p>
-        <!-- v-html="translateContent(item)" -->
       </div>
-      <!-- <div class="products__images-wrapper">
-        <h1 class="products__images-title">{{ $t("imagesText") }}</h1>
-        <div class="products__images-row" ref="images">
+      <div class="projects-id__images-wrapper">
+        <!-- <h1 class="projects-id__images-title">{{ $t("photo") }}</h1> -->
+        <div class="projects-id__images-row" ref="images">
           <div
-            class="products__images-img"
-            v-for="photo in product?.images"
+            class="projects-id__images-img"
+            v-for="photo in project?.images"
             :key="photo"
+            @click="openModal(`${imageURL}${photo}`)"
           >
             <img :src="`${imageURL}${photo}`" alt="" />
           </div>
         </div>
-      </div> -->
+      </div>
+      <ImagePreviewModal
+        :imageUrl="selectedImage"
+        :isVisible="isModalVisible"
+        @close="closeModal"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import { GET_PRODUCTS_ONE } from '@/api/home.api';
+import { GET_PROJECT_ONE } from '@/api/home.api';
 import translate from '@/mixins/translate';
 import { mapGetters } from 'vuex';
+import ImagePreviewModal from '~/components/ImagePreviewModal.vue';
 
 export default {
+  components: {
+    ImagePreviewModal,
+  },
   mixins: [translate],
   computed: {
     ...mapGetters(['imageURL']),
   },
   data() {
     return {
-      product: {
+      project: {
         images: {
           type: Array,
           default: () => [],
         },
       },
+      isModalVisible: false,
+      selectedImage: '',
     };
   },
   async mounted() {
-    await this.fetchProducts();
+    await this.fetchProject();
     if (this.$refs.aos) {
       const options =
         {
@@ -96,26 +131,32 @@ export default {
   },
 
   methods: {
-    async fetchProducts() {
+    async fetchProject() {
       try {
-        const { data, statusCode } = await GET_PRODUCTS_ONE({
-          data: {
-            id: this.$route.params.id,
-          },
+        const { data, statusCode } = await GET_PROJECT_ONE({
+          slug: this.$route.params.slug,
         });
         if (statusCode) {
-          this.product = data || {};
+          this.project = data || {};
         }
       } catch (error) {
         console.error(error);
       }
+    },
+    openModal(imageUrl) {
+      this.selectedImage = imageUrl;
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
+      this.selectedImage = '';
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.products {
+.projects-id {
   padding: 120px 0;
   @media (max-width: 767px) {
     padding: 30px 0;
@@ -155,18 +196,22 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 980px;
     margin-bottom: 30px;
   }
 
   &__project-image {
-    max-width: 180px;
-    height: 100px;
+    flex: 0 0 25%;
+    height: 155px;
     img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
       object-position: center;
+      border-radius: 4px;
+    }
+    @media (max-width: 479px) {
+      flex: 0 0 50%;
+      height: 130px;
     }
   }
 
@@ -174,6 +219,7 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    width: 750px;
   }
 
   &__project-text {
@@ -181,11 +227,13 @@ export default {
     font-size: 16px;
     font-weight: 400;
     line-height: normal;
-    text-transform: capitalize;
+    text-transform: initial;
   }
 
   &__project-span {
     margin-right: 4px;
+    font-weight: 600;
+    text-transform: initial;
   }
 
   &__description-wrapper {
@@ -197,7 +245,7 @@ export default {
     font-size: 30px;
     font-weight: 400;
     letter-spacing: 0.45px;
-    text-transform: capitalize;
+    // text-transform: capitalize;
     padding-bottom: 7px;
     position: relative;
     display: inline-block;
@@ -226,16 +274,12 @@ export default {
     }
   }
 
-  .inner_description > ul {
-    list-style-type: unset !important;
-  }
-
   &__description-description {
-    list-style-type: unset;
     color: #000;
     font-size: 17px;
+    text-indent: 2em;
     font-weight: 500;
-    line-height: normal;
+    line-height: 2em;
     @media (max-width: 767px) {
       font-size: 15px;
     }
@@ -286,13 +330,16 @@ export default {
     overflow-x: auto;
     max-width: 100%;
     padding-bottom: 10px;
-    transition: 1s all;
-    transform: translateY(120px);
-    opacity: 0;
-    &.aos {
-      opacity: 1;
-      transform: translateY(0px);
+
+    @media (min-width: 767px) {
       transition: 1s all;
+      transform: translateY(120px);
+      opacity: 0;
+      &.aos {
+        opacity: 1;
+        transform: translateY(0px);
+        transition: 1s all;
+      }
     }
     @media (max-width: 479px) {
       gap: 16px;
@@ -303,10 +350,8 @@ export default {
     flex: 0 0 25%;
     height: 155px;
     img {
-      max-width: 100%;
-      width: auto;
-      max-height: 100%;
-      height: auto;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       object-position: center;
       border-radius: 4px;

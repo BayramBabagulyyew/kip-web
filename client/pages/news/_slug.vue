@@ -66,7 +66,7 @@ export default {
     async fetchNews() {
       try {
         const { data, statusCode } = await GET_NEWS_ID({
-          data: { newsId: this.$route.params.id },
+          slug: this.$route.params.slug,
         });
         if (statusCode) this.news = data;
         // console.log(this.news);
