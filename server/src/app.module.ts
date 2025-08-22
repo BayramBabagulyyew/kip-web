@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { SlugUtil } from '@utils/slug.util';
 import { join, resolve } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -9,8 +10,8 @@ import { ImagesModule } from './images/images.module';
 import { NewsModule } from './news/news.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ProjectsModule } from './projects/projects.module';
-import { UsersModule } from './users/users.module';
 import { TaglineModule } from './tagline/tagline.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -27,9 +28,9 @@ import { TaglineModule } from './tagline/tagline.module';
     NewsModule,
     ProjectsModule,
     ImagesModule,
-    TaglineModule
+    TaglineModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, SlugUtil],
 })
-export class AppModule {}
+export class AppModule { }

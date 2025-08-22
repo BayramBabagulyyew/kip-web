@@ -22,12 +22,9 @@
           />
         </div>
         <h1 class="news-id__title">
-          {{ news?.[translator("title")] }}
+          {{ news?.[translator('title')] }}
         </h1>
-        <p
-          class="news-id__description"
-          v-html="news?.[translator(`content`)]"
-        ></p>
+        <p class="news-id__description" v-html="news?.[translator(`content`)]"></p>
         <p class="news-id__date">
           {{ new Date(news?.createdAt).toLocaleDateString() }}
         </p>
@@ -37,10 +34,10 @@
 </template>
 
 <script>
-import { GET_NEWS_ID } from "@/api/home.api";
-import translate from "@/mixins/translate";
-import { mapGetters } from "vuex";
-import ImagePreviewModal from "~/components/ImagePreviewModal.vue";
+import { GET_NEWS_SLUG } from '@/api/home.api';
+import translate from '@/mixins/translate';
+import { mapGetters } from 'vuex';
+import ImagePreviewModal from '~/components/ImagePreviewModal.vue';
 
 export default {
   components: {
@@ -48,13 +45,13 @@ export default {
   },
   mixins: [translate],
   computed: {
-    ...mapGetters(["imageURL"]),
+    ...mapGetters(['imageURL']),
   },
   data() {
     return {
       news: {},
       isModalVisible: false,
-      selectedImage: "",
+      selectedImage: '',
     };
   },
 
@@ -65,7 +62,7 @@ export default {
   methods: {
     async fetchNews() {
       try {
-        const { data, statusCode } = await GET_NEWS_ID({
+        const { data, statusCode } = await GET_NEWS_SLUG({
           slug: this.$route.params.slug,
         });
         if (statusCode) this.news = data;
@@ -80,7 +77,7 @@ export default {
     },
     closeModal() {
       this.isModalVisible = false;
-      this.selectedImage = "";
+      this.selectedImage = '';
     },
   },
 };
@@ -153,7 +150,7 @@ export default {
   &__title {
     margin-bottom: 10px;
     color: var(--primary);
-    font-family: "Oxanium";
+    font-family: 'Oxanium';
     font-size: 24px;
     font-style: normal;
     font-weight: 600;

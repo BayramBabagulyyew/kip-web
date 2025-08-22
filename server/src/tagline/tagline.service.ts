@@ -142,7 +142,6 @@ export class TaglineService {
         ORDER BY 
           RANDOM()
       `);
-      console.log(rows)
       return rows[0] || null;
     } catch (err) {
       throw new HttpException(

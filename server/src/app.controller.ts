@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UploadedFile,
   UploadedFiles,
@@ -32,7 +33,7 @@ import { responseInterceptor } from './utils/response.interceptor';
 @UseInterceptors(responseInterceptor)
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
   @UseInterceptors(FileInterceptor('fileUrl'))
   @Post('/upload')
@@ -170,17 +171,29 @@ export class AppController {
     return this.appService.removeService({ id: serviceId });
   }
 
-  @Post('services/find/:slug')
+  @Post('services/find/:id')
   findService(
+    /* @Body() dto: findServiceDto*/ @Param('id') id: string,
+  ) {
+    return this.appService.findOneService({ id });
+  }
+
+  @Get('services/name/:slug')
+  findServiceViaSlug(
     /* @Body() dto: findServiceDto*/ @Param('slug') slug: string,
   ) {
-    const serviceId = slug.split('_').pop();
-    return this.appService.findOneService({ id: serviceId });
+    return this.appService.findOneServiceViaSlug(slug);
   }
 
   @Patch('/services')
   findServices(@Body() dto: fetchNewsDto) {
     return this.appService.findServices(dto);
+  }
+
+  @Get('/services/make-slug')
+  slugMaker(@Query('key') key: string) {
+    if (key !== 'make-me-a-slug-123') return 'Not Allowed';
+    return this.appService.makeSlug();
   }
 
   @Post('/catalog/upsert')

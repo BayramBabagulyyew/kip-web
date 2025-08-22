@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   Post,
+  Query,
   Req,
   UseGuards,
   UseInterceptors,
@@ -20,7 +22,7 @@ import { ProjectsService } from './projects.service';
 @UseInterceptors(responseInterceptor)
 @Controller('projects')
 export class ProjectsController {
-  constructor(private readonly projectsService: ProjectsService) {}
+  constructor(private readonly projectsService: ProjectsService) { }
 
   @UseGuards(AuthGuard)
   @Post('/upsert')
@@ -39,10 +41,14 @@ export class ProjectsController {
     return this.projectsService.fetchProjects(dto, req?.id ? req?.id : '');
   }
 
-  @Post('one/:slug') // only for admin panel
-  fetchOneProject(@Param('slug') slug: string) {
-    const projectId = slug.split('_').pop();
-    return this.projectsService.fetchOneProject(projectId);
+  @Post('one/:id') // only for admin panel
+  fetchOneProject(@Param('id') id: string) {
+    return this.projectsService.fetchOneProject(id);
+  }
+
+  @Get('name/:slug') // only for admin panel
+  fetchOneProjectViaSlug(@Param('slug') slug: string) {
+    return this.projectsService.fetchOneProjectViaSlug(slug);
   }
 
   @UseGuards(AuthGuard)
@@ -55,5 +61,11 @@ export class ProjectsController {
       projectId,
       req?.id ? req?.id : '',
     );
+  }
+
+  @Get('/make-slug')
+  slugMaker(@Query('key') key: string) {
+    if (key !== 'make-me-a-slug-123') return 'Not Allowed';
+    return this.projectsService.makeSlug();
   }
 }

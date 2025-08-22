@@ -10,20 +10,21 @@ import {
   upsertServiceDto,
   upsetAboutDto,
 } from '@utils/app.dto';
-import { existsSync, mkdirSync, unlinkSync, writeFileSync } from 'fs';
+import { SlugUtil } from '@utils/slug.util';
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
+import * as nodemailer from 'nodemailer';
 import { extname, join, resolve } from 'path';
 import { v4 } from 'uuid';
-import { PrismaService } from './prisma/prisma.service';
-// import { ecology } from '@prisma/client';
-import * as nodemailer from 'nodemailer';
 import { PaginationRequest } from './common/interfaces';
+import { PrismaService } from './prisma/prisma.service';
 import { TaglineService } from './tagline/tagline.service';
-import { slugWithId } from 'src/utils';
 @Injectable()
 export class AppService {
   constructor(
     private readonly prismaService: PrismaService,
-    private taglineService: TaglineService) { }
+    private taglineService: TaglineService,
+    private readonly slugUtil: SlugUtil,
+  ) { }
 
   async fetchHomeOnly() {
     try {
@@ -155,6 +156,7 @@ export class AppService {
           titleTm: true,
           contentTm: true,
           titleRu: true,
+          slug: true,
           contentRu: true,
           titleEn: true,
           contentEn: true,
@@ -174,6 +176,7 @@ export class AppService {
             titleEn: true,
             contentEn: true,
             createdAt: true,
+            slug: true,
           },
           orderBy: [{ [`${pagination.order_by}`]: pagination.order_direction }],
         });
@@ -189,6 +192,7 @@ export class AppService {
           image: true,
           titleTm: true,
           contentTm: true,
+          slug: true,
           titleRu: true,
           contentRu: true,
           titleEn: true,
@@ -199,20 +203,8 @@ export class AppService {
         take: pagination.limit,
         skip: pagination.skip,
       });
-      if (mainNews) {
-        mainNews = {
-          ...mainNews,
-          slug: slugWithId(
-            mainNews.titleEn || mainNews.titleTm || mainNews.titleRu,
-            mainNews.newsId,
-          ),
-        };
-      }
-      const newsWithSlug = news.map((row) => ({
-        ...row,
-        slug: slugWithId(row.titleEn || row.titleTm || row.titleRu, row.newsId),
-      }));
-      return { mainNews, news: newsWithSlug };
+
+      return { mainNews, news };
     } catch (err) {
       throw new HttpException(
         {
@@ -227,6 +219,7 @@ export class AppService {
 
   async fetchProjects() {
     try {
+
       const projects = await this.prismaService.projects.findMany({
         where: { deletedAt: null },
         select: {
@@ -235,16 +228,13 @@ export class AppService {
           nameTm: true,
           nameRu: true,
           nameEn: true,
+          slug: true,
         },
         // orderBy: { priority: 'asc' },
-        orderBy: { workDate: 'desc' },
+        orderBy: [{ createdAt: 'desc' }],
         take: 6,
       });
-      const projectsWithSlug = projects.map((row) => ({
-        ...row,
-        slug: slugWithId(row.nameEn || row.nameTm || row.nameRu, row.projectId),
-      }));
-      return projectsWithSlug;
+      return projects;
     } catch (err) {
       throw new HttpException(
         {
@@ -360,6 +350,7 @@ export class AppService {
           nameEn: true,
           nameRu: true,
           nameTm: true,
+          slug: true,
           priority: true,
           logo: true,
           images: true,
@@ -375,6 +366,7 @@ export class AppService {
           nameEn: true,
           nameRu: true,
           nameTm: true,
+          slug: true,
           priority: true,
           logo: true,
           images: true,
@@ -387,15 +379,7 @@ export class AppService {
         where: { catalogType: 'productservices' },
         select: { catalogType: true, fileUrl: true },
       });
-      const productsWithSlug = products.map((row) => ({
-        ...row,
-        slug: slugWithId(row.nameEn || row.nameTm || row.nameRu, row.id),
-      }));
-      const servicesWithSlug = services.map((row) => ({
-        ...row,
-        slug: slugWithId(row.nameEn || row.nameTm || row.nameRu, row.id),
-      }));
-      return { products: productsWithSlug, services: servicesWithSlug, catalog };
+      return { products, services, catalog };
     } catch (err) {
       throw new HttpException(
         {
@@ -421,6 +405,7 @@ export class AppService {
           contentRu: true,
           titleEn: true,
           contentEn: true,
+          slug: true,
         },
       });
       if (!mainNews?.newsId) {
@@ -435,6 +420,7 @@ export class AppService {
             contentRu: true,
             titleEn: true,
             contentEn: true,
+            slug: true,
           },
           orderBy: { createdAt: 'desc' },
         });
@@ -452,6 +438,7 @@ export class AppService {
           nameEn: true,
           nameRu: true,
           nameTm: true,
+          slug: true,
         },
         orderBy: { priority: 'asc' },
       });
@@ -478,6 +465,7 @@ export class AppService {
           nameTm: true,
           nameRu: true,
           nameEn: true,
+          slug: true,
         },
         orderBy: { priority: 'asc' },
         take: 10,
@@ -740,51 +728,6 @@ export class AppService {
         where: { deletedAt: null },
       });
 
-      if (
-        dto.presentationEn &&
-        dto.presentationEn != condidate.presentationEn
-      ) {
-        const uploadPath = resolve(
-          __dirname,
-          '..',
-          `${process.env.STATIC_FOLDER}`,
-          `${condidate.presentationEn}`,
-        );
-        if (!existsSync(uploadPath)) {
-          unlinkSync(uploadPath);
-        }
-      }
-
-      if (
-        dto.presentationTm &&
-        dto.presentationTm != condidate.presentationTm
-      ) {
-        const uploadPath = resolve(
-          __dirname,
-          '..',
-          `${process.env.STATIC_FOLDER}`,
-          `${condidate.presentationTm}`,
-        );
-        if (!existsSync(uploadPath)) {
-          unlinkSync(uploadPath);
-        }
-      }
-
-      if (
-        dto.presentationRu &&
-        dto.presentationRu != condidate.presentationRu
-      ) {
-        const uploadPath = resolve(
-          __dirname,
-          '..',
-          `${process.env.STATIC_FOLDER}`,
-          `${condidate.presentationTm}`,
-        );
-        if (!existsSync(uploadPath)) {
-          unlinkSync(uploadPath);
-        }
-      }
-
       const about = await this.prismaService.about.upsert({
         where: { aboutId: condidate?.aboutId ? condidate?.aboutId : '' },
         create: {
@@ -798,9 +741,6 @@ export class AppService {
           taglineTm: dto.taglineTm,
           taglineRu: dto.taglineRu,
           taglineEn: dto.taglineEn,
-          presentationRu: dto.presentationRu,
-          presentationEn: dto.presentationEn,
-          presentationTm: dto.presentationTm,
         },
         update: {
           titleTm: dto.titleTm,
@@ -813,10 +753,7 @@ export class AppService {
           taglineTm: dto.taglineTm,
           taglineRu: dto.taglineRu,
           taglineEn: dto.taglineEn,
-          deletedAt: null,
-          presentationRu: dto.presentationRu,
-          presentationEn: dto.presentationEn,
-          presentationTm: dto.presentationTm,
+          deletedAt: null
         },
       });
       return about;
@@ -1161,6 +1098,7 @@ export class AppService {
           contentEn: dto.contentEn,
           contentRu: dto.contentRu,
           contentTm: dto.contentTm,
+          slug: this.slugUtil.slugify(dto.nameEn),
           logo: dto.logo,
           images: dto.images,
           nameEn: dto.nameEn,
@@ -1173,6 +1111,7 @@ export class AppService {
           contentEn: dto.contentEn,
           contentRu: dto.contentRu,
           contentTm: dto.contentTm,
+          slug: this.slugUtil.slugify(dto.nameEn),
           logo: dto.logo,
           images: dto.images,
           nameEn: dto.nameEn,
@@ -1248,6 +1187,41 @@ export class AppService {
     }
   }
 
+  async findOneServiceViaSlug(slug: string) {
+    try {
+      const item = await this.prismaService.productServices.findFirst({
+        where: { slug: slug, deletedAt: null },
+        select: {
+          id: true,
+          nameEn: true,
+          nameRu: true,
+          nameTm: true,
+          slug: true,
+          priority: true,
+          type: true,
+          contentEn: true,
+          contentRu: true,
+          contentTm: true,
+          images: true,
+          logo: true,
+          createdAt: true,
+        },
+        orderBy: { type: 'asc' },
+      });
+      return item;
+    } catch (err) {
+      throw new HttpException(
+        {
+          statusCode: err?.response?.statusCode || HttpStatus.BAD_REQUEST,
+          success: false,
+          message: err.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+
   async findServices(dto: fetchNewsDto) {
     try {
       const limit: number = dto.limit || 10;
@@ -1265,6 +1239,7 @@ export class AppService {
           nameEn: true,
           nameRu: true,
           nameTm: true,
+          slug: true,
           images: true,
           priority: true,
           type: true,
@@ -1278,15 +1253,37 @@ export class AppService {
         skip: skip,
         orderBy: [{ priority: 'asc' }, { createdAt: 'desc' }],
       });
-      const rowsWithSlug = rows.map((row) => ({
-        ...row,
-        slug: slugWithId(row.nameEn || row.nameTm || row.nameRu, row.id),
-      }));
-      return { count, pageCount, rows: rowsWithSlug };
+      return { count, pageCount, rows };
     } catch (err) {
       throw new HttpException(
         {
           statusCode: err?.response?.statusCode || HttpStatus.BAD_REQUEST,
+          success: false,
+          message: err.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  async makeSlug() {
+    try {
+      console.group("slugger")
+      const news = await this.prismaService.productServices.findMany({});
+      for (let i = 0; i < news.length; i++) {
+        const element = news[i];
+        const slug = this.slugUtil.slugify(element.nameEn);
+        console.log(slug);
+        await this.prismaService.productServices.update({
+          where: { id: element.id },
+          data: { slug: slug },
+        });
+      }
+      return { message: 'slugs updated' };
+    } catch (err) {
+      throw new HttpException(
+        {
+          statusCode: err.statusCode || HttpStatus.BAD_REQUEST,
           success: false,
           message: err.message,
         },

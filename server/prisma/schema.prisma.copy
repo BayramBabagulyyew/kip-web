@@ -9,38 +9,43 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum partnerTypeEnum {
+  dealership
+  clients
+  projects
+}
+
 model users {
   userId    String     @id @unique @default(cuid())
   username  String     @unique
   password  String
-  createdAt DateTime   @default(now())
-  deletedAt DateTime?
   about     about[]
-  gallery   gallery[]
-  readMails mails[]
   news      news[]
-  partners  partners[]
   projects  projects[]
+  gallery   gallery[]
+  partners  partners[]
+  readMails mails[]
+  createdAt DateTime   @default(dbgenerated("NOW()"))
+  deletedAt DateTime?
 }
 
 model news {
   newsId       String    @id @unique @default(cuid())
   titleTm      String
+  contentTm    String    @db.Text
   titleRu      String
+  contentRu    String    @db.Text
   titleEn      String
-  slug         String    @unique
+  contentEn    String    @db.Text
   image        String
   video        String?
   published    Boolean
   isMain       Boolean   @default(false)
-  createdAt    DateTime  @default(now())
+  homeActivity Boolean   @default(false)
+  priority     Int?      @unique
+  createdAt    DateTime  @default(dbgenerated("NOW()"))
   deletedAt    DateTime?
   authorId     String
-  contentEn    String
-  contentRu    String
-  contentTm    String
-  priority     Int?      @unique
-  homeActivity Boolean   @default(false)
   author       users     @relation(fields: [authorId], references: [userId])
 }
 
@@ -49,23 +54,22 @@ model projects {
   nameTm        String
   nameRu        String
   nameEn        String
-  slug          String    @unique
-  descriptionTm String
-  descriptionRu String
-  descriptionEn String
+  descriptionTm String    @db.Text
+  descriptionRu String    @db.Text
+  descriptionEn String    @db.Text
+  companyTm     String?
+  companyEn     String?
+  companyRu     String?
   logo          String
-  workDate      DateTime  @db.Date
+  workDate      DateTime  @db.Date()
+  endDate       DateTime? @db.Date()
   images        String[]
-  createdAt     DateTime  @default(now())
-  deletedAt     DateTime?
-  authorId      String
+  cover         String
   priority      Int?      @unique
   homeActivity  Boolean   @default(false)
-  cover         String
-  companyTm     String?   @db.VarChar(255)
-  companyRu     String?   @db.VarChar(255)
-  companyEn     String?   @db.VarChar(255)
-  endDate       DateTime? @default(now()) @db.Timestamp(6)
+  createdAt     DateTime  @default(dbgenerated("NOW()"))
+  deletedAt     DateTime?
+  authorId      String
   author        users     @relation(fields: [authorId], references: [userId])
 }
 
@@ -73,51 +77,54 @@ model partners {
   partnerId String          @id @unique @default(cuid())
   website   String?
   fileUrl   String
-  type      partnerTypeEnum
-  createdAt DateTime        @default(now())
-  deletedAt DateTime?
   priority  Int?
+  type      partnerTypeEnum
   authorId  String
   author    users           @relation(fields: [authorId], references: [userId])
+  createdAt DateTime        @default(dbgenerated("NOW()"))
+  deletedAt DateTime?
 }
 
 model gallery {
   galleryId String    @id @unique @default(cuid())
   priority  Int?      @unique
   image     String
-  createdAt DateTime  @default(now())
-  deletedAt DateTime?
   authorId  String
   author    users     @relation(fields: [authorId], references: [userId])
+  createdAt DateTime  @default(dbgenerated("NOW()"))
+  deletedAt DateTime?
 }
 
 model mails {
   mailId    String    @id @unique @default(cuid())
   name      String
   email     String
-  comment   String
-  createdAt DateTime  @default(now())
-  deletedAt DateTime?
-  readBy    String?
   fileUrl   String?
+  comment   String    @db.Text
+  readBy    String?
   readUser  users?    @relation(fields: [readBy], references: [userId])
+  createdAt DateTime  @default(dbgenerated("NOW()"))
+  deletedAt DateTime?
 }
 
 model about {
-  aboutId   String    @id @unique @default(cuid())
-  titleTm   String
-  contentTm String
-  titleRu   String
-  contentRu String
-  titleEn   String
-  contentEn String
-  authorId  String
-  createdAt DateTime  @default(now())
-  deletedAt DateTime?
-  taglineEn String
-  taglineRu String
-  taglineTm String
-  author    users     @relation(fields: [authorId], references: [userId])
+  aboutId        String    @id @unique @default(cuid())
+  titleTm        String
+  contentTm      String    @db.Text
+  titleRu        String
+  contentRu      String    @db.Text
+  titleEn        String
+  contentEn      String    @db.Text
+  taglineTm      String
+  taglineRu      String
+  taglineEn      String
+  authorId       String
+  presentationTm String?
+  presentationRu String?
+  presentationEn String?
+  author         users     @relation(fields: [authorId], references: [userId])
+  createdAt      DateTime  @default(dbgenerated("NOW()"))
+  deletedAt      DateTime?
 }
 
 model contact {
@@ -130,32 +137,32 @@ model contact {
   addressTm     String
   addressRu     String
   addressEn     String
-  createdAt     DateTime @default(now())
+  createdAt     DateTime @default(dbgenerated("NOW()"))
   updatedAt     DateTime @updatedAt
 }
 
 model information {
   infoId    String   @id @unique @default(cuid())
-  info1     Json?
-  info2     Json?
-  info3     Json?
-  info4     Json?
-  createdAt DateTime @default(now())
+  info1     Json?    @db.JsonB
+  info2     Json?    @db.JsonB
+  info3     Json?    @db.JsonB
+  info4     Json?    @db.JsonB
+  createdAt DateTime @default(dbgenerated("NOW()"))
   updatedAt DateTime @updatedAt
 }
 
 model ecology {
   ecologyId String   @id @unique @default(cuid())
   images    String[] @default([])
-  contentTm String
-  contentRu String
-  contentEn String
-  video     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  titleEn   String
-  titleRu   String
   titleTm   String
+  titleRu   String
+  titleEn   String
+  contentTm String   @db.Text()
+  contentRu String   @db.Text()
+  contentEn String   @db.Text()
+  video     String?
+  createdAt DateTime @default(dbgenerated("NOW()"))
+  updatedAt DateTime @updatedAt
 }
 
 model productServices {
@@ -163,7 +170,6 @@ model productServices {
   nameTm    String
   nameEn    String
   nameRu    String
-  slug      String                  @unique
   logo      String
   contentTm String
   contentRu String
@@ -171,7 +177,7 @@ model productServices {
   images    String[]
   type      productServicesTypeEnum
   priority  Int?
-  createdAt DateTime                @default(now())
+  createdAt DateTime                @default(dbgenerated("NOW()"))
   updatedAt DateTime                @updatedAt
   deletedAt DateTime?
 }
@@ -180,31 +186,27 @@ model catalogs {
   catalogId   String          @id @unique @default(cuid())
   catalogType catalogTypeEnum @unique
   fileUrl     String
-  createdAt   DateTime        @default(now())
+  createdAt   DateTime        @default(dbgenerated("NOW()"))
   updatedAt   DateTime        @updatedAt
-}
-
-model taglines {
-  id        String    @id @default(cuid()) @db.VarChar(191)
-  taglineTm String?
-  taglineRu String?
-  taglineEn String?
-  createdAt DateTime? @default(now()) @db.Timestamp(6)
-  updatedAt DateTime? @default(now()) @updatedAt @db.Timestamp(6)
-}
-
-enum partnerTypeEnum {
-  dealership
-  clients
-  projects
 }
 
 enum productServicesTypeEnum {
   service
   product
+  // type1 @map("service")
+  // type2 @map("product")
 }
 
 enum catalogTypeEnum {
   home
   productservices
+}
+
+model taglines {
+  id        String   @id @unique @default(cuid())
+  taglineTm String
+  taglineRu String
+  taglineEn String
+  createdAt DateTime @default(dbgenerated("NOW()"))
+  updatedAt DateTime @updatedAt
 }

@@ -188,12 +188,17 @@ export default {
   mounted() {
     if (this.$refs.aos) {
       const options = {
-        rootMargin: '0px 0px 0px 0px',
-        threshold: 0.1,
+        root: null, // viewport
+        rootMargin: '0px',
+        threshold: 0.2, // consider "out" when <20% visible
       };
+
       this.observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-          if (entry && entry.isIntersecting) {
+          if (!entry) return;
+
+          // apply your AOS classes (unchanged)
+          if (entry.isIntersecting) {
             this.$refs.image.classList.add('aos');
             this.$refs.contact.classList.add('aos');
             this.$refs.project.classList.add('aos');
@@ -201,11 +206,61 @@ export default {
             this.$refs.titleBlock.classList.add('aos');
             this.$refs.swiper.classList.add('aos');
           }
+
+          // --- NEW: handle video play/pause on viewport enter/leave ---
+          const vid = this.$refs.bgVideo;
+          if (!vid) return;
+
+          if (!entry.isIntersecting) {
+            // leaving the screen → pause & reset
+            if (!vid.paused) vid.pause();
+            vid.currentTime = 0;
+            this.isPlaying = false;
+            this.isVideoLoaded = false;
+            this.autoPaused = true;
+            // do NOT mark as manually stopped; but reflect stopped UI state
+            this.isStopped = true;
+            this.$emit('isPlaying', this.isPlaying);
+          } else {
+            // back on screen → resume only if not manually stopped
+            if (this.autoPaused && !this.manuallyStopped) {
+              this.isStopped = false;
+              this.isVideoLoaded = true;
+              vid.muted = this.isMuted;
+              vid.play();
+              this.isPlaying = true;
+              this.autoPaused = false;
+              this.$emit('isPlaying', this.isPlaying);
+            }
+          }
         });
       }, options);
+
+      this.observer.observe(this.$refs.aos);
     }
-    this.observer.observe(this.$refs.aos);
   },
+
+  // mounted() {
+  //   if (this.$refs.aos) {
+  //     const options = {
+  //       rootMargin: '0px 0px 0px 0px',
+  //       threshold: 0.1,
+  //     };
+  //     this.observer = new IntersectionObserver((entries) => {
+  //       entries.forEach((entry) => {
+  //         if (entry && entry.isIntersecting) {
+  //           this.$refs.image.classList.add('aos');
+  //           this.$refs.contact.classList.add('aos');
+  //           this.$refs.project.classList.add('aos');
+  //           this.$refs.representative.classList.add('aos');
+  //           this.$refs.titleBlock.classList.add('aos');
+  //           this.$refs.swiper.classList.add('aos');
+  //         }
+  //       });
+  //     }, options);
+  //   }
+  //   this.observer.observe(this.$refs.aos);
+  // },
   unmounted() {
     this.observer.disconnect();
   },

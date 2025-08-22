@@ -106,7 +106,6 @@ export default {
         return new Date(this.main.workDate).toISOString().split('T')[0]; // format as YYYY-MM-DD
       },
       set(value) {
-        console.log(value);
         this.main.workDate = value; // optionally: new Date(value).toISOString()
       },
     },
@@ -116,7 +115,6 @@ export default {
         return new Date(this.main.endDate).toISOString().split('T')[0]; // format as YYYY-MM-DD
       },
       set(value) {
-        console.log(value);
         this.main.endDate = value; // optionally: new Date(value).toISOString()
       },
     },

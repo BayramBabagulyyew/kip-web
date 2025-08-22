@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { GET_PRODUCTS_ONE } from '@/api/home.api';
+import { GET_PRODUCTS_SLUG } from '@/api/home.api';
 import translate from '@/mixins/translate';
 import { mapGetters } from 'vuex';
 
@@ -98,7 +98,7 @@ export default {
   methods: {
     async fetchProducts() {
       try {
-        const { data, statusCode } = await GET_PRODUCTS_ONE({
+        const { data, statusCode } = await GET_PRODUCTS_SLUG({
           slug: this.$route.params.slug,
         });
         if (statusCode) {

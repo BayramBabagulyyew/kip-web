@@ -141,15 +141,6 @@ export class upsetAboutDto {
   @IsNotEmpty()
   @IsString()
   readonly taglineEn: string;
-  @IsOptional()
-  @IsString()
-  readonly presentationTm: string;
-  @IsOptional()
-  @IsString()
-  readonly presentationRu: string;
-  @IsOptional()
-  @IsString()
-  readonly presentationEn: string;
 }
 
 export class sendMailDto {
@@ -237,6 +228,7 @@ export class findServiceDto {
   @IsNotEmpty()
   @IsString()
   readonly id: string;
+
 }
 
 export class upsertCatalogDto {

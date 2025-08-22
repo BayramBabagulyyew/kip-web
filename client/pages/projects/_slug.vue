@@ -82,9 +82,9 @@
 </template>
 
 <script>
-import { GET_PROJECT_ONE } from '@/api/home.api';
 import translate from '@/mixins/translate';
 import { mapGetters } from 'vuex';
+import { GET_PROJECT_SLUG } from '~/api/home.api';
 import ImagePreviewModal from '~/components/ImagePreviewModal.vue';
 
 export default {
@@ -133,7 +133,7 @@ export default {
   methods: {
     async fetchProject() {
       try {
-        const { data, statusCode } = await GET_PROJECT_ONE({
+        const { data, statusCode } = await GET_PROJECT_SLUG({
           slug: this.$route.params.slug,
         });
         if (statusCode) {

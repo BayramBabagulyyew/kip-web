@@ -1,12 +1,15 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { SlugUtil } from '@utils/slug.util';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { slugWithId } from 'src/utils';
-import { UpsertNewsDto, changeIsMainDto, changePriorityDto } from './news.dto';
 import { PaginationRequest } from '../common/interfaces';
+import { UpsertNewsDto, changeIsMainDto, changePriorityDto } from './news.dto';
 
 @Injectable()
 export class NewsService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly slugUtil: SlugUtil,
+  ) { }
 
   async upsertNews(dto: UpsertNewsDto, userId: string) {
     try {
@@ -35,6 +38,7 @@ export class NewsService {
           titleTm: dto.titleTm,
           titleRu: dto.titleRu,
           titleEn: dto.titleEn,
+          slug: this.slugUtil.slugify(dto.titleEn),
           contentTm: dto.contentTm,
           contentRu: dto.contentRu,
           contentEn: dto.contentEn,
@@ -51,6 +55,7 @@ export class NewsService {
           titleTm: dto.titleTm,
           titleRu: dto.titleRu,
           titleEn: dto.titleEn,
+          slug: this.slugUtil.slugify(dto.titleEn),
           contentTm: dto.contentTm,
           contentRu: dto.contentRu,
           contentEn: dto.contentEn,
@@ -130,6 +135,7 @@ export class NewsService {
             titleTm: true,
             titleRu: true,
             titleEn: true,
+            slug: true,
             contentTm: true,
             contentRu: true,
             contentEn: true,
@@ -140,11 +146,7 @@ export class NewsService {
           skip: pagination.skip,
           orderBy: [{ [`${pagination.order_by}`]: pagination.order_direction }],
         });
-        const rowsWithSlug = rows.map((row) => ({
-          ...row,
-          slug: slugWithId(row.titleEn || row.titleTm || row.titleRu, row.newsId),
-        }));
-        return { count, pageCount, rows: rowsWithSlug };
+        return { count, pageCount, rows };
       }
       // request send by client
       const count: number = await this.prismaService.news.count({
@@ -159,6 +161,7 @@ export class NewsService {
           titleTm: true,
           titleRu: true,
           titleEn: true,
+          slug: true,
           contentTm: true,
           contentRu: true,
           contentEn: true,
@@ -169,11 +172,7 @@ export class NewsService {
         skip: pagination.skip,
         orderBy: [{ [`${pagination.order_by}`]: pagination.order_direction }],
       });
-      const rowsWithSlug = rows.map((row) => ({
-        ...row,
-        slug: slugWithId(row.titleEn || row.titleTm || row.titleRu, row.newsId),
-      }));
-      return { count, pageCount, rows: rowsWithSlug };
+      return { count, pageCount, rows };
     } catch (err) {
       throw new HttpException(
         {
@@ -197,6 +196,7 @@ export class NewsService {
             titleTm: true,
             titleRu: true,
             titleEn: true,
+            slug: true,
             contentTm: true,
             contentRu: true,
             contentEn: true,
@@ -226,6 +226,7 @@ export class NewsService {
           titleTm: true,
           titleRu: true,
           titleEn: true,
+          slug: true,
           contentTm: true,
           contentRu: true,
           contentEn: true,
@@ -251,6 +252,77 @@ export class NewsService {
       );
     }
   }
+
+
+
+  async fetchOneNewsViaSlug(slug: string, userId: string) {
+    try {
+      const user = await this._userExists(userId);
+      if (user?.userId?.length > 0) {
+        const news = await this.prismaService.news.findFirst({
+          where: { slug: slug },
+          select: {
+            newsId: true,
+            titleTm: true,
+            titleRu: true,
+            titleEn: true,
+            slug: true,
+            contentTm: true,
+            contentRu: true,
+            contentEn: true,
+            image: true,
+            video: true,
+            published: true,
+            isMain: true,
+            priority: true,
+            createdAt: true,
+            deletedAt: true,
+            authorId: true,
+            author: {
+              select: {
+                userId: true,
+                username: true,
+                createdAt: true,
+              },
+            },
+          },
+        });
+        return news;
+      }
+      const news = await this.prismaService.news.findFirst({
+        where: { slug: slug, deletedAt: null },
+        select: {
+          newsId: true,
+          titleTm: true,
+          titleRu: true,
+          titleEn: true,
+          slug: true,
+          contentTm: true,
+          contentRu: true,
+          contentEn: true,
+          image: true,
+          video: true,
+          published: true,
+          isMain: true,
+          priority: true,
+          createdAt: true,
+          deletedAt: true,
+          authorId: true,
+        },
+      });
+      return news;
+    } catch (err) {
+      throw new HttpException(
+        {
+          statusCode: err.statusCode || HttpStatus.BAD_REQUEST,
+          success: false,
+          message: err.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
 
   async changePriority(dto: changePriorityDto) {
     // todo nuzhno budet obdumat logiku!
@@ -334,5 +406,31 @@ export class NewsService {
       where: { userId: userId, deletedAt: null },
     });
     return user;
+  }
+
+  async makeSlug() {
+    try {
+      console.group("slugger")
+      const news = await this.prismaService.news.findMany({});
+      for (let i = 0; i < news.length; i++) {
+        const element = news[i];
+        const slug = this.slugUtil.slugify(element.titleEn);
+        console.log(slug);
+        await this.prismaService.news.update({
+          where: { newsId: element.newsId },
+          data: { slug: slug },
+        });
+      }
+      return { message: 'slugs updated' };
+    } catch (err) {
+      throw new HttpException(
+        {
+          statusCode: err.statusCode || HttpStatus.BAD_REQUEST,
+          success: false,
+          message: err.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }

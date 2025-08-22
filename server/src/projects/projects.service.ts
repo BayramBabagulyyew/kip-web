@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { SlugUtil } from '@utils/slug.util';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { slugWithId } from 'src/utils';
 import {
   fetchCategoryProjectsDto,
   fetchProjectsDto,
@@ -9,7 +9,10 @@ import {
 
 @Injectable()
 export class ProjectsService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly slugUtil: SlugUtil
+  ) { }
 
   /* PROJECTS BEGIN */
   async upsertProject(dto: upsertProjectDto, userId: string) {
@@ -45,6 +48,7 @@ export class ProjectsService {
           descriptionRu: dto.descriptionRu,
           nameEn: dto.nameEn,
           descriptionEn: dto.descriptionEn,
+          slug: this.slugUtil.slugify(dto.nameEn),
           cover: dto.cover,
           logo: dto.logo,
           companyEn: dto.companyEn,
@@ -64,6 +68,7 @@ export class ProjectsService {
           descriptionRu: dto.descriptionRu,
           nameEn: dto.nameEn,
           descriptionEn: dto.descriptionEn,
+          slug: this.slugUtil.slugify(dto.nameEn),
           cover: dto.cover,
           companyEn: dto.companyEn,
           companyRu: dto.companyRu,
@@ -143,6 +148,7 @@ export class ProjectsService {
           nameTm: true,
           nameRu: true,
           nameEn: true,
+          slug: true,
           descriptionTm: true,
           descriptionRu: true,
           descriptionEn: true,
@@ -161,14 +167,10 @@ export class ProjectsService {
         },
         take: Number(limit),
         skip: skip,
-        // orderBy: [{ priority: 'asc' }, { workDate: 'desc' }],
-        orderBy: [{ workDate: 'desc' }],
+        orderBy: [{ createdAt: 'desc' }],
+
       });
-      const rowsWithSlug = rows.map((row) => ({
-        ...row,
-        slug: slugWithId(row.nameEn || row.nameTm || row.nameRu, row.projectId),
-      }));
-      return { count, pageCount, rows: rowsWithSlug };
+      return { count, pageCount, rows };
     } catch (err) {
       throw new HttpException(
         {
@@ -209,6 +211,7 @@ export class ProjectsService {
           nameTm: true,
           nameRu: true,
           nameEn: true,
+          slug: true,
           descriptionTm: true,
           descriptionRu: true,
           descriptionEn: true,
@@ -227,7 +230,7 @@ export class ProjectsService {
         },
         take: Number(limit),
         skip: skip,
-        orderBy: [{ priority: 'asc' }, { createdAt: 'desc' }],
+        orderBy: [{ createdAt: 'desc' }],
       });
       return { count, pageCount, rows };
     } catch (err) {
@@ -251,6 +254,7 @@ export class ProjectsService {
           nameEn: true,
           nameRu: true,
           nameTm: true,
+          slug: true,
           descriptionEn: true,
           descriptionRu: true,
           descriptionTm: true,
@@ -283,6 +287,50 @@ export class ProjectsService {
     }
   }
 
+
+  async fetchOneProjectViaSlug(slug: string) {
+    try {
+      const project = await this.prismaService.projects.findFirst({
+        where: { slug: slug },
+        select: {
+          projectId: true,
+          nameEn: true,
+          nameRu: true,
+          nameTm: true,
+          slug: true,
+          descriptionEn: true,
+          descriptionRu: true,
+          descriptionTm: true,
+          companyEn: true,
+          companyTm: true,
+          companyRu: true,
+          workDate: true,
+          endDate: true,
+          logo: true,
+          images: true,
+          cover: true,
+          priority: true,
+          homeActivity: true,
+          createdAt: true,
+        },
+      });
+      if (!project) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.NOT_FOUND,
+            success: false,
+            message: 'Habar  tapylmady',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      return project;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+
   /* PROJECTS END */
 
   private async _userExists(userId: string): Promise<boolean> {
@@ -293,5 +341,31 @@ export class ProjectsService {
       return true;
     }
     return false;
+  }
+
+  async makeSlug() {
+    try {
+      console.group("slugger")
+      const news = await this.prismaService.projects.findMany({});
+      for (let i = 0; i < news.length; i++) {
+        const element = news[i];
+        const slug = this.slugUtil.slugify(element.nameEn);
+        console.log(slug);
+        await this.prismaService.projects.update({
+          where: { projectId: element.projectId },
+          data: { slug: slug },
+        });
+      }
+      return { message: 'slugs updated' };
+    } catch (err) {
+      throw new HttpException(
+        {
+          statusCode: err.statusCode || HttpStatus.BAD_REQUEST,
+          success: false,
+          message: err.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }

@@ -12,7 +12,7 @@
       <div class="projects__items" ref="images">
         <div v-for="project in projects.rows" :key="project.projectId" class="projects-item">
           <!-- @click="openInNewTab(project.slug)" -->
-          <a :href="`${project.slug}`" class="projects-item">
+          <a :href="`projects/${project.slug}`" class="projects-item">
             <div class="projects-item__image">
               <img :src="`${imageURL}${project?.cover}`" alt="" />
             </div>

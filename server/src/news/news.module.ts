@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { NewsService } from './news.service';
+import { SlugUtil } from '@utils/slug.util';
 import { NewsController } from './news.controller';
+import { NewsService } from './news.service';
 
 @Module({
   controllers: [NewsController],
-  providers: [NewsService],
+  providers: [NewsService, SlugUtil],
 })
-export class NewsModule {}
+export class NewsModule { }
