@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="intro" ref="aos">
-    <div class="intro__controls">
+    <!-- <div class="intro__controls">
       <button class="intro__control" @click="togglePlay" v-if="intro?.video">
         <base-icon
           :icon="isPlaying && !isStopped ? 'stopIcon' : 'playIcon'"
@@ -13,8 +13,8 @@
           <base-icon icon="volumeOffIcon" style="font-size: 20px; width: 20px; height: 20px" />
         </span>
       </button>
-    </div>
-    <video
+    </div> -->
+    <!-- <video
       v-if="intro?.video"
       ref="bgVideo"
       :class="['intro__video', { 'intro__video--visible': isVideoLoaded && !isStopped }]"
@@ -24,7 +24,7 @@
       playsinline
       preload="auto"
       @loadeddata="handleVideoLoaded"
-    ></video>
+    ></video> -->
     <div
       :class="['contact-modal', { active: openContact }]"
       @click.stop="openContact = false"
