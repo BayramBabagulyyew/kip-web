@@ -33,7 +33,7 @@ import { responseInterceptor } from './utils/response.interceptor';
 @UseInterceptors(responseInterceptor)
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) { }
+  constructor(private readonly appService: AppService) {}
 
   @UseInterceptors(FileInterceptor('fileUrl'))
   @Post('/upload')
@@ -172,9 +172,7 @@ export class AppController {
   }
 
   @Post('services/find/:id')
-  findService(
-    /* @Body() dto: findServiceDto*/ @Param('id') id: string,
-  ) {
+  findService(/* @Body() dto: findServiceDto*/ @Param('id') id: string) {
     return this.appService.findOneService({ id });
   }
 

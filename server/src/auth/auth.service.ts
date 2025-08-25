@@ -16,15 +16,13 @@ export class AuthService {
     private readonly prismaService: PrismaService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-  ) { }
+  ) {}
 
   async signUp(dto: singUpDto) {
     try {
       const key: string = this.configService.get<string>('SUPER_KEY');
-      console.log("originalKey", key, ' \n dto.key', dto.key);
       if (!dto.key || dto.key != key) {
-        console.log("isNotEqualKeys")
-        throw new NotFoundException("Key is not found");
+        throw new NotFoundException('Key is not found');
       }
 
       const condidate = await this.prismaService.users.findUnique({
@@ -48,7 +46,6 @@ export class AuthService {
       // const token= await this._createToken(user.userId)
       // return {...user, token: token}
     } catch (err) {
-      console.error(err);
       throw new HttpException(
         {
           statusCode: err.statusCode || HttpStatus.BAD_REQUEST,
