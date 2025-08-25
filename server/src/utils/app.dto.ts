@@ -228,7 +228,6 @@ export class findServiceDto {
   @IsNotEmpty()
   @IsString()
   readonly id: string;
-
 }
 
 export class upsertCatalogDto {

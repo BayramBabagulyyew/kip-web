@@ -21,7 +21,7 @@ import { NewsService } from './news.service';
 @UseInterceptors(responseInterceptor)
 @Controller('news')
 export class NewsController {
-  constructor(private readonly newsService: NewsService) { }
+  constructor(private readonly newsService: NewsService) {}
 
   @UseGuards(AuthGuard)
   @Post('/upsert')
@@ -46,7 +46,10 @@ export class NewsController {
 
   @UseGuards(FackeGuard)
   @Get('/name/:slug')
-  fetchOneNewsViaSlug(@Param('slug') slug: string, @Req() req: RequestWithUser) {
+  fetchOneNewsViaSlug(
+    @Param('slug') slug: string,
+    @Req() req: RequestWithUser,
+  ) {
     return this.newsService.fetchOneNewsViaSlug(slug, req.id);
   }
 
@@ -56,12 +59,10 @@ export class NewsController {
     return this.newsService.removeNews(newsId, req.id);
   }
 
-
   @UseGuards(FackeGuard)
   @Get('/make-slug')
   slugMaker(@Query('key') key: string) {
     if (key !== 'make-me-a-slug-123') return 'Not Allowed';
     return this.newsService.makeSlug();
   }
-
 }

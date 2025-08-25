@@ -9,7 +9,7 @@ export class NewsService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly slugUtil: SlugUtil,
-  ) { }
+  ) {}
 
   async upsertNews(dto: UpsertNewsDto, userId: string) {
     try {
@@ -253,8 +253,6 @@ export class NewsService {
     }
   }
 
-
-
   async fetchOneNewsViaSlug(slug: string, userId: string) {
     try {
       const user = await this._userExists(userId);
@@ -322,7 +320,6 @@ export class NewsService {
       );
     }
   }
-
 
   async changePriority(dto: changePriorityDto) {
     // todo nuzhno budet obdumat logiku!
@@ -410,12 +407,10 @@ export class NewsService {
 
   async makeSlug() {
     try {
-      console.group("slugger")
       const news = await this.prismaService.news.findMany({});
       for (let i = 0; i < news.length; i++) {
         const element = news[i];
         const slug = this.slugUtil.slugify(element.titleEn);
-        console.log(slug);
         await this.prismaService.news.update({
           where: { newsId: element.newsId },
           data: { slug: slug },

@@ -7,4 +7,4 @@ import { TaglineService } from './tagline.service';
   providers: [TaglineService],
   exports: [TaglineService],
 })
-export class TaglineModule { }
+export class TaglineModule {}

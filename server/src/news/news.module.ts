@@ -7,4 +7,4 @@ import { NewsService } from './news.service';
   controllers: [NewsController],
   providers: [NewsService, SlugUtil],
 })
-export class NewsModule { }
+export class NewsModule {}

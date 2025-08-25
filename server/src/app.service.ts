@@ -24,22 +24,10 @@ export class AppService {
     private readonly prismaService: PrismaService,
     private taglineService: TaglineService,
     private readonly slugUtil: SlugUtil,
-  ) { }
+  ) {}
 
   async fetchHomeOnly() {
     try {
-      const about = await this.prismaService.about.findFirst({
-        where: { deletedAt: null },
-        select: {
-          aboutId: true,
-          titleTm: true,
-          titleRu: true,
-          titleEn: true,
-          contentTm: true,
-          contentRu: true,
-          contentEn: true,
-        },
-      });
       const tagline = await this.taglineService.findRandomOne();
       const dealership = await this.prismaService.partners.findMany({
         where: { deletedAt: null, type: 'dealership' },
@@ -219,7 +207,6 @@ export class AppService {
 
   async fetchProjects() {
     try {
-
       const projects = await this.prismaService.projects.findMany({
         where: { deletedAt: null },
         select: {
@@ -609,10 +596,7 @@ export class AppService {
       };
       transporter.sendMail(details, (err) => {
         if (err) {
-          console.error(err);
           // console.log('>>>>>>>>>>>>>>>>>>>>>> error');
-        } else {
-          console.warn('OK');
         }
       });
       return { message: 'mail send successfully' };
@@ -753,7 +737,7 @@ export class AppService {
           taglineTm: dto.taglineTm,
           taglineRu: dto.taglineRu,
           taglineEn: dto.taglineEn,
-          deletedAt: null
+          deletedAt: null,
         },
       });
       return about;
@@ -1221,7 +1205,6 @@ export class AppService {
     }
   }
 
-
   async findServices(dto: fetchNewsDto) {
     try {
       const limit: number = dto.limit || 10;
@@ -1268,12 +1251,10 @@ export class AppService {
 
   async makeSlug() {
     try {
-      console.group("slugger")
       const news = await this.prismaService.productServices.findMany({});
       for (let i = 0; i < news.length; i++) {
         const element = news[i];
         const slug = this.slugUtil.slugify(element.nameEn);
-        console.log(slug);
         await this.prismaService.productServices.update({
           where: { id: element.id },
           data: { slug: slug },

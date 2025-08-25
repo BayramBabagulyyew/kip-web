@@ -11,8 +11,8 @@ import {
 export class ProjectsService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly slugUtil: SlugUtil
-  ) { }
+    private readonly slugUtil: SlugUtil,
+  ) {}
 
   /* PROJECTS BEGIN */
   async upsertProject(dto: upsertProjectDto, userId: string) {
@@ -168,7 +168,6 @@ export class ProjectsService {
         take: Number(limit),
         skip: skip,
         orderBy: [{ createdAt: 'desc' }],
-
       });
       return { count, pageCount, rows };
     } catch (err) {
@@ -287,7 +286,6 @@ export class ProjectsService {
     }
   }
 
-
   async fetchOneProjectViaSlug(slug: string) {
     try {
       const project = await this.prismaService.projects.findFirst({
@@ -330,7 +328,6 @@ export class ProjectsService {
     }
   }
 
-
   /* PROJECTS END */
 
   private async _userExists(userId: string): Promise<boolean> {
@@ -345,12 +342,10 @@ export class ProjectsService {
 
   async makeSlug() {
     try {
-      console.group("slugger")
       const news = await this.prismaService.projects.findMany({});
       for (let i = 0; i < news.length; i++) {
         const element = news[i];
         const slug = this.slugUtil.slugify(element.nameEn);
-        console.log(slug);
         await this.prismaService.projects.update({
           where: { projectId: element.projectId },
           data: { slug: slug },

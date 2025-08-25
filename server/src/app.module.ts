@@ -33,4 +33,4 @@ import { UsersModule } from './users/users.module';
   controllers: [AppController],
   providers: [AppService, SlugUtil],
 })
-export class AppModule { }
+export class AppModule {}
