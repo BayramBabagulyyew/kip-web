@@ -5,7 +5,7 @@ import { CreateTaglineDto } from './tagline.dto';
 
 @Injectable()
 export class TaglineService {
-  constructor(private readonly prismaService: PrismaService) { }
+  constructor(private readonly prismaService: PrismaService) {}
 
   async create(dto: CreateTaglineDto) {
     try {

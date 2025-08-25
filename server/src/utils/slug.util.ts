@@ -1,5 +1,4 @@
 export class SlugUtil {
-
   slugify(text: string): string {
     return text
       .toString()
