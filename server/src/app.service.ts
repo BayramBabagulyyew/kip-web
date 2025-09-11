@@ -24,7 +24,7 @@ export class AppService {
     private readonly prismaService: PrismaService,
     private taglineService: TaglineService,
     private readonly slugUtil: SlugUtil,
-  ) {}
+  ) { }
 
   async fetchHomeOnly() {
     try {

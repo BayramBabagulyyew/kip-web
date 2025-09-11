@@ -79,6 +79,9 @@ model partners {
   priority  Int?
   authorId  String
   author    users           @relation(fields: [authorId], references: [userId])
+  name      String?
+  text      String?
+  media     Json?
 }
 
 model gallery {
