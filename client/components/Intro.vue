@@ -415,7 +415,7 @@ export default {
     }
   }
   &__title {
-    padding-top: 150px;
+    padding-top: 100px;
     margin-left: 50px;
     color: #fff;
     font-size: 34px;
