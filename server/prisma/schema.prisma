@@ -80,7 +80,7 @@ model partners {
   authorId  String
   author    users           @relation(fields: [authorId], references: [userId])
   nameTm    String?
-  nameRU    String?
+  nameRu    String?
   nameEn    String?
   textTm    String?
   textRu    String?

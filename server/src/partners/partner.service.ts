@@ -17,8 +17,12 @@ export class PartnerService {
           authorId: userId,
           website: dto?.website ? dto?.website : null,
           priority: dto?.priority ? dto?.priority : null,
-          name: dto?.name ? dto?.name : null,
-          text: dto?.text ? dto?.text : null,
+          nameTm: dto?.nameTm ? dto?.nameTm : null,
+          nameRu: dto?.nameRu ? dto?.nameTm : null,
+          nameEn: dto?.nameTm ? dto?.nameTm : null,
+          textTm: dto?.textTm ? dto?.textTm : null,
+          textEn: dto?.textEn ? dto?.textEn : null,
+          textRu: dto?.textRu ? dto?.textRu : null,
           media: dto?.media ? dto?.media : null,
         }
       });
@@ -47,10 +51,10 @@ export class PartnerService {
         });
         return { count, pageCount, rows };
       } else {
-        const count: number = await this.prismaService.partners.count({ where: { type: partnerTypeEnum.dealership, name: { not: null } } });
+        const count: number = await this.prismaService.partners.count({ where: { type: partnerTypeEnum.dealership, nameEn: { not: null } } });
         const pageCount = Math.ceil(count / pagination.limit);
         const rows = await this.prismaService.partners.findMany({
-          where: { type: partnerTypeEnum.dealership, name: { not: null } },
+          where: { type: partnerTypeEnum.dealership, nameEn: { not: null } },
           take: Number(pagination.limit),
           skip: pagination.skip,
           orderBy: [{ [`${pagination.order_by}`]: pagination.order_direction }],
@@ -112,8 +116,12 @@ export class PartnerService {
           authorId: userId,
           website: dto?.website ? dto?.website : null,
           priority: dto?.priority ? dto?.priority : null,
-          name: dto?.name ? dto?.name : null,
-          text: dto?.text ? dto?.text : null,
+          nameTm: dto?.nameTm ? dto?.nameTm : null,
+          nameRu: dto?.nameRu ? dto?.nameTm : null,
+          nameEn: dto?.nameTm ? dto?.nameTm : null,
+          textTm: dto?.textTm ? dto?.textTm : null,
+          textEn: dto?.textEn ? dto?.textEn : null,
+          textRu: dto?.textRu ? dto?.textRu : null,
           media: dto?.media ? dto?.media : null,
         }
       });

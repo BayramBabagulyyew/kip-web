@@ -19,11 +19,27 @@ export class CreatePartnerDto {
 
   @IsOptional()
   @IsString()
-  name: string;
+  nameTm: string;
 
   @IsOptional()
   @IsString()
-  text: string;
+  textTm: string;
+
+  @IsOptional()
+  @IsString()
+  nameRu: string;
+
+  @IsOptional()
+  @IsString()
+  textRu: string;
+
+  @IsOptional()
+  @IsString()
+  nameEn: string;
+
+  @IsOptional()
+  @IsString()
+  textEn: string;
 
   @IsOptional()
   @IsString()
