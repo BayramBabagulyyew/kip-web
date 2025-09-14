@@ -79,8 +79,12 @@ model partners {
   priority  Int?
   authorId  String
   author    users           @relation(fields: [authorId], references: [userId])
-  name      String?
-  text      String?
+  nameTm    String?
+  nameRU    String?
+  nameEn    String?
+  textTm    String?
+  textRu    String?
+  textEn    String?
   media     Json?
 }
 
