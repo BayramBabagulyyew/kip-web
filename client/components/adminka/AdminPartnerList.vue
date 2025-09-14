@@ -4,7 +4,7 @@
       <thead>
         <tr>
           <th>№</th>
-          <th>Tagline</th>
+          <th>Partner</th>
           <th>Created Date</th>
           <th>Actions</th>
         </tr>
@@ -12,7 +12,7 @@
       <tbody>
         <tr v-for="(item, index) in items" :key="item.id">
           <td>{{ (page - 1) * limit + index + 1 }}</td>
-          <td v-html="item.taglineTm"></td>
+          <td><img :src="`${imageURL}${item?.fileUrl}`" :alt="item.nameEn" /></td>
           <td class="date">{{ new Date(item?.createdAt).toLocaleDateString('ru-RU') }}</td>
           <td>
             <div class="controller">
@@ -33,6 +33,7 @@
 
 <script>
 import { request } from '@/api/generic.api';
+import { mapGetters } from 'vuex';
 export default {
   emits: ['setView'],
   async mounted() {
@@ -50,6 +51,9 @@ export default {
       limit: 10,
       currentId: null,
     };
+  },
+  computed: {
+    ...mapGetters(['imageURL']),
   },
   methods: {
     async fetchAbout() {
@@ -93,6 +97,7 @@ export default {
         this.errorPupUp = true;
       }
     },
+
     setViewUpdate(item) {
       this.$router.push({ query: { view: 'edit', id: item.id } });
     },

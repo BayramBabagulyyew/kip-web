@@ -41,7 +41,7 @@ export class PartnerService {
   async findAll(pagination: PaginationRequest, userId: string) {
     try {
       if (userId) {
-        const count: number = await this.prismaService.partners.count({ where: { type: partnerTypeEnum.dealership } });
+        const count: number = await this.prismaService.partners.count({ where: { type: partnerTypeEnum.dealership, deletedAt: null } });
         const pageCount = Math.ceil(count / pagination.limit);
         const rows = await this.prismaService.partners.findMany({
           where: { type: partnerTypeEnum.dealership },
@@ -54,7 +54,7 @@ export class PartnerService {
         const count: number = await this.prismaService.partners.count({ where: { type: partnerTypeEnum.dealership, nameEn: { not: null } } });
         const pageCount = Math.ceil(count / pagination.limit);
         const rows = await this.prismaService.partners.findMany({
-          where: { type: partnerTypeEnum.dealership, nameEn: { not: null } },
+          where: { type: partnerTypeEnum.dealership, nameEn: { not: null }, deletedAt: null },
           take: Number(pagination.limit),
           skip: pagination.skip,
           orderBy: [{ [`${pagination.order_by}`]: pagination.order_direction }],
@@ -76,7 +76,7 @@ export class PartnerService {
   async findone(id: string) {
     try {
       const data = await this.prismaService.partners.findFirst({
-        where: { partnerId: id },
+        where: { partnerId: id, deletedAt: null },
       });
       if (!data) {
         throw new HttpException(
@@ -100,7 +100,7 @@ export class PartnerService {
   async update(id: string, dto: CreatePartnerDto, userId: string) {
     try {
       const oldData = await this.prismaService.partners.findFirst({
-        where: { partnerId: id },
+        where: { partnerId: id, deletedAt: null },
       });
       if (!oldData) {
         throw new HttpException(
@@ -109,7 +109,7 @@ export class PartnerService {
         );
       }
       const tagline = await this.prismaService.partners.update({
-        where: { partnerId: id },
+        where: { partnerId: id, deletedAt: null },
         data: {
           fileUrl: dto.fileUrl,
           type: dto.type,
@@ -142,7 +142,7 @@ export class PartnerService {
     try {
 
       const tagline = await this.prismaService.partners.findFirst({
-        where: { partnerId: id },
+        where: { partnerId: id, deletedAt: null },
       });
 
       if (!tagline) {
