@@ -29,9 +29,7 @@
               :value="main?.dealership?.website"
               class="mb-2"
             />
-            <base-button @clickedButton="upsertData('dealership')">
-              Save
-            </base-button>
+            <base-button @clickedButton="upsertData('dealership')"> Save </base-button>
           </form>
           <div class="admin-partners__block-row-wrapper">
             <base-uploaded-file
@@ -75,9 +73,7 @@
               :value="main?.clients?.website"
               class="mb-2"
             />
-            <base-button @clickedButton="upsertData('clients')">
-              Save
-            </base-button>
+            <base-button @clickedButton="upsertData('clients')"> Save </base-button>
           </form>
           <div class="admin-partners__block-row-wrapper">
             <base-uploaded-file
@@ -121,9 +117,7 @@
               :value="main?.projects?.website"
               class="mb-2"
             />
-            <base-button @clickedButton="upsertData('projects')"
-              >Save</base-button
-            >
+            <base-button @clickedButton="upsertData('projects')">Save</base-button>
           </form>
           <div class="admin-partners__block-row-wrapper">
             <base-uploaded-file
@@ -143,19 +137,15 @@
     </div>
     <popup-error :errorPupUp="errorPupUp">{{ errorMessage }}</popup-error>
     <popup-success :activePupUp="activePupUp"></popup-success>
-    <pop-up-delete
-      :deletePupUp="deletePupUp"
-      @no="deletePupUp = false"
-      @confirm="confirm"
-    />
+    <pop-up-delete :deletePupUp="deletePupUp" @no="deletePupUp = false" @confirm="confirm" />
   </div>
 </template>
 
 <script>
-import { request } from "@/api/generic.api";
+import { request } from '@/api/generic.api';
 
 export default {
-  layout: "admin",
+  layout: 'admin',
   data() {
     return {
       datas: {
@@ -167,29 +157,29 @@ export default {
       errorPupUp: false,
       paginationCount: 0,
       deletePupUp: false,
-      errorMessage: "Boş meydanlary dolduryň!",
+      errorMessage: 'Boş meydanlary dolduryň!',
       id: null,
       main: {
         dealership: {
-          partnerId: "",
+          partnerId: '',
           website: null,
           fileUrl: null,
           priority: null,
-          type: "dealership",
+          type: 'dealership',
         },
         clients: {
-          partnerId: "",
+          partnerId: '',
           website: null,
           fileUrl: null,
           priority: null,
-          type: "clients",
+          type: 'clients',
         },
         projects: {
-          partnerId: "",
+          partnerId: '',
           website: null,
           fileUrl: null,
           priority: null,
-          type: "projects",
+          type: 'projects',
         },
       },
     };
@@ -200,15 +190,13 @@ export default {
   methods: {
     partnerEdit(data, str) {
       // console.log(this.main[str], data);
-      data["type"] = str;
-      Object.keys(this.main[str]).forEach(
-        (key) => (this.main[str][key] = data[key])
-      );
+      data['type'] = str;
+      Object.keys(this.main[str]).forEach((key) => (this.main[str][key] = data[key]));
     },
     async getGalleries() {
       try {
         const { success, data } = await request({
-          url: "images/partners/all",
+          url: 'images/partners/all',
         });
         if (!success) return;
         this.paginationCount = Math.ceil(data.count / this.limit);
@@ -226,25 +214,23 @@ export default {
     async upsertData(str) {
       if (!this.main[str].priority || !this.main[str].fileUrl) {
         this.errorPupUp = true;
-        this.errorMessage = "Boş meydanlary doldury";
+        this.errorMessage = 'Boş meydanlary doldury';
         setTimeout(() => {
           this.errorPupUp = false;
         }, 2000);
       } else {
         try {
           const { success, data } = await request({
-            url: "images/partners/upsert",
+            url: 'images/partners/upsert',
             data: this.main[str],
           });
           if (!success) return;
           await this.getGalleries();
-          Object.keys(this.main[str]).forEach(
-            (key) => (this.main[str][key] = null)
-          );
+          Object.keys(this.main[str]).forEach((key) => (this.main[str][key] = null));
         } catch (error) {
           // console.log(error.response);
           if (error.response.data.statusCode === 611) {
-            this.errorMessage = "Bul piority eyam bar";
+            this.errorMessage = 'Bul piority eyam bar';
             this.errorPupUp = true;
             setTimeout(() => {
               this.errorPupUp = false;
@@ -268,7 +254,7 @@ export default {
     async uploadPhoto(file, str) {
       try {
         const { success, data } = await request({
-          url: "upload",
+          url: 'upload',
           data: {
             fileUrl: file,
           },
@@ -300,7 +286,7 @@ export default {
     padding-bottom: 7px;
     display: inline-block;
     &::after {
-      content: "";
+      content: '';
       width: 70%;
       height: 1px;
       background-color: red;

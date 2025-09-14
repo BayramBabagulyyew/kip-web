@@ -91,6 +91,7 @@ export default defineComponent({
                 bullist numlist outdent indent | removeformat | link image media |
                 code fullscreen preview print | table hr pagebreak emoticons |
                 ltr rtl | template`,
+      font_size_formats: '8pt 10pt 11pt 12pt 14pt 16pt 17pt 18pt 24pt 36pt 48pt 72pt',
       skin_url: '/tinymce/skins/ui/oxide',
       content_css: '/tinymce/skins/content/default/content.css',
       icons_url: '/tinymce/icons/default/icons.js',

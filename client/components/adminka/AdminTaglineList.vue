@@ -12,7 +12,7 @@
       <tbody>
         <tr v-for="(item, index) in items" :key="item.id">
           <td>{{ (page - 1) * limit + index + 1 }}</td>
-          <td>{{ item.taglineTm }}</td>
+          <td v-html="item.taglineTm"></td>
           <td class="date">{{ new Date(item?.createdAt).toLocaleDateString('ru-RU') }}</td>
           <td>
             <div class="controller">

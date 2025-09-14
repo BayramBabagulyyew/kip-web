@@ -60,9 +60,9 @@ export default {
         },
         {
           id: 5,
-          url: '/partners',
+          url: '/collaborators',
           icon: 'folder',
-          name: 'Partners',
+          name: 'Collaborators',
         },
         {
           id: 6,
@@ -83,10 +83,16 @@ export default {
           name: 'Products/services',
         },
         {
-          id: 8,
+          id: 9,
           url: '/tagline',
           icon: 'folder',
           name: 'Tagline',
+        },
+        {
+          id: 10,
+          url: '/partners',
+          icon: 'folder',
+          name: 'Partners',
         },
       ],
     };
