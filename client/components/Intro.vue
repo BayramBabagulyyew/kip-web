@@ -415,7 +415,7 @@ export default {
     }
   }
   &__title {
-    padding-top: 100px;
+    padding-top: 150px;
     margin-left: 50px;
     color: #fff;
     font-size: 34px;
@@ -432,7 +432,7 @@ export default {
     }
     @media (max-width: 767px) {
       margin-left: 20px;
-      font-size: 18px;
+      font-size: 22px;
     }
   }
 
