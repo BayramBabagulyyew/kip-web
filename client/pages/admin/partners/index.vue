@@ -22,8 +22,6 @@
 </template>
 
 <script>
-
-
 export default {
   layout: 'admin',
 
@@ -43,7 +41,7 @@ export default {
         {
           key: 'list',
           prevIcon: 'adminBurger',
-          name: 'News list',
+          name: 'list',
           adminButton: true,
           adminButtonSecond: true,
         },
@@ -51,8 +49,8 @@ export default {
     };
   },
   components: {
-    Add: () => import('~/components/adminka/AdminTagline.vue'),
-    List: () => import('~/components/adminka/AdminTaglineList.vue'),
+    Add: () => import('~/components/adminka/AdminPartner.vue'),
+    List: () => import('~/components/adminka/AdminPartnerList.vue'),
   },
   computed: {
     currentComponent() {
