@@ -36,16 +36,24 @@ export class PartnerController {
     return this.partnerService.findAll(pagination, req?.id || '');
   }
 
-  @Get(':slug')
-  getOne(@Param('slug') slug: string) {
-    return this.partnerService.findone(slug);
-  }
-
   @UseGuards(AuthGuard)
   @Get('by/:id')
   fetchOneBySlug(@Param('id') id: string) {
     return this.partnerService.findone(id);
   }
+
+  @UseGuards(FackeGuard)
+  @Get('/make-slug')
+  slugMaker(@Query('key') key: string) {
+    if (key !== 'make-me-a-slug-123') return 'Not Allowed';
+    return this.partnerService.makeSlug();
+  }
+
+  @Get(':slug')
+  getOne(@Param('slug') slug: string) {
+    return this.partnerService.findone(slug);
+  }
+
 
 
   @UseGuards(AuthGuard)
@@ -60,11 +68,5 @@ export class PartnerController {
     return this.partnerService.remove(id);
   }
 
-  @UseGuards(FackeGuard)
-  @Get('/make-slug')
-  slugMaker(@Query('key') key: string) {
-    if (key !== 'make-me-a-slug-123') return 'Not Allowed';
-    return this.partnerService.makeSlug();
-  }
 }
 
