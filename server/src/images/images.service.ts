@@ -3,7 +3,6 @@ import { FileHelper } from '@utils/file-delete.util';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { upsertGallaryDto } from './dto/gallery.dto';
 import { upsertPartnersDto } from './dto/partners.dto';
-import { QueryImagesDto } from './dto/query.dto';
 
 @Injectable()
 export class ImagesService {
@@ -94,15 +93,15 @@ export class ImagesService {
     }
   }
 
-  async fetchGallary(dto: QueryImagesDto, userId: string) {
+  async fetchGallary(dto: any, userId: string) {
     try {
       const limit: number = dto.limit || 10;
       const page: number = dto.page || 1;
       const skip: number = (page - 1) * Number(limit);
       let where: { deletedAt: null };
-      console.log(dto, "=-=-=-=-=-");
-      if (dto.partnerId) {
-        where['partnerId'] = dto.partnerId;
+      console.log(dto.query.partnerId, "=-=-=-=-=-");
+      if (dto.query.partnerId) {
+        where['partnerId'] = dto.query.partnerId;
       }
 
       if (!userId) {
