@@ -99,6 +99,7 @@ export class ImagesService {
       const page: number = dto.page || 1;
       const skip: number = (page - 1) * Number(limit);
       let where: { deletedAt: null };
+      console.log(dto);
       if (dto.partnerId) {
         where['partnerId'] = dto.partnerId;
       }
