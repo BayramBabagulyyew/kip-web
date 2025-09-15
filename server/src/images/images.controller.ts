@@ -17,6 +17,7 @@ import { responseInterceptor } from 'src/utils/response.interceptor';
 import { upsertGallaryDto } from './dto/gallery.dto';
 import { upsertPartnersDto } from './dto/partners.dto';
 import { ImagesService } from './images.service';
+import { QueryImagesDto } from './dto/query.dto';
 
 @UseInterceptors(responseInterceptor)
 @Controller('images')
@@ -44,7 +45,7 @@ export class ImagesController {
   @UseGuards(FackeGuard)
   @Get('/gallery/all')
   fetchGallary(
-    @PaginationParams() query: any,
+    @PaginationParams() query: QueryImagesDto,
     @Req() req: RequestWithUser,
   ) {
     return this.imagesService.fetchGallary(query, req?.id ?? '');
