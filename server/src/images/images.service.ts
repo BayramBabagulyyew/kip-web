@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { FileHelper } from '@utils/file-delete.util';
+import { Prisma } from 'generated/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { upsertGallaryDto } from './dto/gallery.dto';
 import { upsertPartnersDto } from './dto/partners.dto';
@@ -98,11 +99,12 @@ export class ImagesService {
       const limit: number = dto.limit || 10;
       const page: number = dto.page || 1;
       const skip: number = (page - 1) * Number(limit);
-      let where: { deletedAt: null };
+      const where: Prisma.galleryWhereInput = { deletedAt: null };
       console.log(dto.partnerId, "=-=-=-=-=-");
       if (dto.partnerId) {
-        where['partnerId'] = dto.partnerId;
+        where.partnerId = dto.partnerId;
       }
+      console.log(where, "=-=-=-=-=-");
 
       if (!userId) {
         // web client
