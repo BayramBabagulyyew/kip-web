@@ -128,11 +128,11 @@ export class ImagesService {
       }
       // admin
       const count: number = await this.prismaService.gallery.count({
-        where: { deletedAt: null },
+        where,
       });
       const pageCount = Math.ceil(count / limit);
       const rows = await this.prismaService.gallery.findMany({
-        where: { deletedAt: null, partnerId: null },
+        where,
         select: {
           galleryId: true,
           image: true,
