@@ -51,10 +51,8 @@ export class PartnerController {
 
   @Get(':slug')
   getOne(@Param('slug') slug: string) {
-    return this.partnerService.findone(slug);
+    return this.partnerService.findBySlug(slug);
   }
-
-
 
   @UseGuards(AuthGuard)
   @Patch(':id')

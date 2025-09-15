@@ -66,27 +66,32 @@ export default {
         },
         {
           id: 5,
+          name: 'Partners',
+          url: 'partners',
+        },
+        {
+          id: 6,
           name: 'news',
           url: '#news',
         },
         {
-          id: 6,
+          id: 7,
           name: 'projects',
           url: '#projects',
         },
         {
-          id: 7,
+          id: 8,
           name: 'gallery',
           url: '#gallery',
         },
         {
-          id: 8,
+          id: 9,
           name: 'achievements',
           url: '#achievements',
         },
 
         {
-          id: 9,
+          id: 10,
           name: 'contactUs',
           url: '#careers',
         },

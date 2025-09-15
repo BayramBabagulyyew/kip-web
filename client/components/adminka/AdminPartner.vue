@@ -1,7 +1,7 @@
 <template>
   <div>
     <base-languages @selectLanguage="toggleLanguage" :activeLang="activeLang" />
-    <form style="display: flex; flex-direction: column; gap: 5px">
+    <form @submit.prevent style="display: flex; flex-direction: column; gap: 5px">
       <div class="left-item">
         <base-file-input
           imgUpload
@@ -16,8 +16,8 @@
       <admin-input
         label="Title"
         placeholder="..."
-        @updateValue="(val) => (main[`title${activeLang}`] = val)"
-        :value="main[`title${activeLang}`] ?? ''"
+        @updateValue="(val) => (main[`name${activeLang}`] = val)"
+        :value="main[`name${activeLang}`] ?? ''"
         class="mb-2"
       />
       <admin-input
@@ -27,7 +27,7 @@
         placeholder="..."
       />
       <admin-input
-        @updateValue="(val) => (mainc[`priority`] = val)"
+        @updateValue="(val) => (main[`priority`] = val)"
         :value="main?.[`priority`]"
         label="priority"
         placeholder="..."
@@ -67,7 +67,6 @@ export default {
       errorPupUp: false,
       errorMessage: 'Error saving data',
       main: {
-        partnerId: this.$route.query.id ?? '',
         textTm: '',
         textRu: '',
         textEn: '',
@@ -75,9 +74,10 @@ export default {
         nameEn: '',
         nameRu: '',
         website: '',
-        prioriy: '',
+        priority: '',
         fileUrl: '',
         media: '',
+        type: '',
       },
     };
   },
@@ -92,18 +92,17 @@ export default {
           this.fetchPartner(partnerId);
         } else {
           this.main = {
-            partnerId: this.$route.query.id ?? '',
             textTm: '',
             textRu: '',
             textEn: '',
-            partnerId: '',
             nameTm: '',
             nameEn: '',
             nameRu: '',
             website: '',
-            prioriy: '',
+            priority: '',
             fileUrl: '',
             media: '',
+            type: '',
           };
         }
       },
@@ -111,50 +110,61 @@ export default {
   },
 
   methods: {
-    // async saveData() {
-    // try {
-    //   const id = this.$route.query.id;
-    //   const view = this.$route.query.view;
-    //   console.log(main, '=-=-=--');
-    //   let url = 'partner';
-    //   let method = 'POST';
-    //   if (id && view === 'edit') {
-    //     url = `partner/${id}`;
-    //     method = 'PATCH';
-    //   }
-    // const { success } = await request({
-    //   url,
-    //   method,
-    //   data: this.main,
-    // });
-    // console.log(success);
-    // if (success) {
-    //   this.main = {
-    //     textTm: '',
-    //     textRu: '',
-    //     textEn: '',
-    //     partnerId: '',
-    //     nameTm: '',
-    //     nameEn: '',
-    //     nameRu: '',
-    //     website: '',
-    //     prioriy: '',
-    //     fileUrl: '',
-    //     media: '',
-    //   };
-    //   this.activePupUp = true;
-    //   this.$emit('setView', view === 'edit' ? 'list' : 'add');
-    // }
-    // } catch (error) {
-    //   console.log(error);
-    // this.errorMessage = error.message;
-    // this.errorPupUp = true;
-    // }
-    // setTimeout(() => {
-    //   this.activePupUp = false;
-    //   this.errorPupUp = false;
-    // }, 2000);
-    // },
+    async saveData() {
+      try {
+        const id = this.$route.query.id;
+        const view = this.$route.query.view;
+        console.log(this.main, '=-=-=--');
+        let url = 'partner';
+        let method = 'POST';
+        if (id && view === 'edit') {
+          url = `partner/${id}`;
+          method = 'PATCH';
+        }
+        const { success } = await request({
+          url,
+          method,
+          data: {
+            textTm: this.main.textTm,
+            textRu: this.main.textRu,
+            textEn: this.main.textEn,
+            nameTm: this.main.nameTm,
+            nameEn: this.main.nameEn,
+            nameRu: this.main.nameRu,
+            website: this.main.website,
+            priority: this.main.priority,
+            fileUrl: this.main.fileUrl,
+            media: this.main.media,
+            type: this.main.type,
+          },
+        });
+        console.log(success);
+        if (success) {
+          this.main = {
+            textTm: '',
+            textRu: '',
+            textEn: '',
+            nameTm: '',
+            nameEn: '',
+            nameRu: '',
+            website: '',
+            priority: '',
+            fileUrl: '',
+            media: '',
+          };
+          this.activePupUp = true;
+          this.$emit('setView', view === 'edit' ? 'list' : 'add');
+        }
+      } catch (error) {
+        console.log(error);
+        this.errorMessage = error.message;
+        this.errorPupUp = true;
+      }
+      setTimeout(() => {
+        this.activePupUp = false;
+        this.errorPupUp = false;
+      }, 2000);
+    },
     async fetchPartner(id) {
       try {
         const { data } = await request({
