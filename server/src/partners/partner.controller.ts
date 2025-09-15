@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UseGuards,
   UseInterceptors,
@@ -17,6 +18,7 @@ import { PaginationParams } from '../common/decorators/pagination-params.decorat
 import { PaginationRequest } from '../common/interfaces';
 import { PartnerService } from './partner.service';
 import { CreatePartnerDto } from './partners/create-partner.dto';
+import { FackeGuard } from 'src/auth/facke.guard';
 
 @UseInterceptors(responseInterceptor)
 @UseGuards(AuthGuard)
@@ -34,10 +36,16 @@ export class PartnerController {
     return this.partnerService.findAll(pagination, req?.id || '');
   }
 
-  @Get(':id')
-  fetchOneNews(@Param('id') id: string) {
+  @Get(':slug')
+  getOne(@Param('slug') slug: string) {
+    return this.partnerService.findone(slug);
+  }
+
+  @Get('by/:id')
+  fetchOneBySlug(@Param('id') id: string) {
     return this.partnerService.findone(id);
   }
+
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() dto: CreatePartnerDto, @Req() req: RequestWithUser) {
@@ -45,7 +53,15 @@ export class PartnerController {
   }
 
   @Delete(':id')
-  removeNews(@Param('id') id: string) {
+  remove(@Param('id') id: string) {
     return this.partnerService.remove(id);
   }
+
+  @UseGuards(FackeGuard)
+  @Get('/make-slug')
+  slugMaker(@Query('key') key: string) {
+    if (key !== 'make-me-a-slug-123') return 'Not Allowed';
+    return this.partnerService.makeSlug();
+  }
 }
+

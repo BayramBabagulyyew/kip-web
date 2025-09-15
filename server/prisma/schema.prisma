@@ -85,7 +85,7 @@ model partners {
   textTm    String?
   textRu    String?
   textEn    String?
-  media     Json?
+  slug      String?         @unique
   gallery   gallery[]
 }
 

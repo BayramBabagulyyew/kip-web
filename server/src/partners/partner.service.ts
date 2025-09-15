@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { FileHelper } from '@utils/file-delete.util';
+import { SlugUtil } from '@utils/slug.util';
 import { partnerTypeEnum } from 'generated/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { PaginationRequest } from '../common/interfaces';
@@ -7,7 +8,10 @@ import { CreatePartnerDto } from './partners/create-partner.dto';
 
 @Injectable()
 export class PartnerService {
-  constructor(private readonly prismaService: PrismaService) { }
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly slugUtil: SlugUtil,
+  ) { }
 
   async create(dto: CreatePartnerDto, userId: string) {
     try {
@@ -24,7 +28,7 @@ export class PartnerService {
           textTm: dto?.textTm ? dto?.textTm : null,
           textEn: dto?.textEn ? dto?.textEn : null,
           textRu: dto?.textRu ? dto?.textRu : null,
-          media: dto?.media ? dto?.media : null,
+          slug: this.slugUtil.slugify(dto.nameEn)
         }
       });
     } catch (err) {
@@ -98,6 +102,30 @@ export class PartnerService {
     }
   }
 
+  async findBySlug(slug: string) {
+    try {
+      const data = await this.prismaService.partners.findFirst({
+        where: { slug: slug, deletedAt: null },
+      });
+      if (!data) {
+        throw new HttpException(
+          { statusCode: 404, success: false, message: 'Partner not found' },
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      return data;
+    } catch (err) {
+      throw new HttpException(
+        {
+          statusCode: err.statusCode || HttpStatus.BAD_REQUEST,
+          success: false,
+          message: err.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
   async update(id: string, dto: CreatePartnerDto, userId: string) {
     try {
       const oldData = await this.prismaService.partners.findFirst({
@@ -123,7 +151,6 @@ export class PartnerService {
           textTm: dto?.textTm ? dto?.textTm : null,
           textEn: dto?.textEn ? dto?.textEn : null,
           textRu: dto?.textRu ? dto?.textRu : null,
-          media: dto?.media ? dto?.media : null,
         }
       });
       return tagline;
@@ -153,10 +180,6 @@ export class PartnerService {
         );
       }
       FileHelper.deleteFileSilent(tagline.fileUrl)
-      const jsonMedia = typeof (tagline.media) === 'string' ? JSON.parse(tagline?.media) : []
-      jsonMedia?.map(eachMedia => {
-        FileHelper.deleteFileSilent(eachMedia)
-      })
 
       await this.prismaService.partners.delete({ where: { partnerId: id } });
       return { message: 'deleted' };
@@ -168,6 +191,30 @@ export class PartnerService {
           message: err.message,
         },
         err.statusCode ?? HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  async makeSlug() {
+    try {
+      const partners = await this.prismaService.partners.findMany({});
+      for (let i = 0; i < partners.length; i++) {
+        const element = partners[i];
+        const slug = this.slugUtil.slugify(element.nameEn);
+        await this.prismaService.partners.update({
+          where: { partnerId: element.partnerId },
+          data: { slug: slug },
+        });
+      }
+      return { message: 'slugs updated' };
+    } catch (err) {
+      throw new HttpException(
+        {
+          statusCode: err.statusCode || HttpStatus.BAD_REQUEST,
+          success: false,
+          message: err.message,
+        },
+        HttpStatus.BAD_REQUEST,
       );
     }
   }
