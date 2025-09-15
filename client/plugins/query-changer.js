@@ -1,11 +1,8 @@
 export default ({ app }, inject) => {
-  const setView = (view, item = {}) => {
-    console.log('setView', view, item);
-
+  const setView = (view, id) => {
     const query = { view };
-
-    if (view === 'edit' && item.id) {
-      query.id = item.id;
+    if (view === 'edit' && id) {
+      query.id = id;
     }
 
     app.router.push({ query });

@@ -1,6 +1,6 @@
 <template>
   <div class="admin-news">
-    <admin-header>Tagline</admin-header>
+    <admin-header>Partners</admin-header>
     <div class="header-buttons">
       <base-button
         v-for="button in buttons"
@@ -61,11 +61,12 @@ export default {
         default:
           return 'Add';
       }
+      a;
     },
   },
   methods: {
     setView(view, item = {}) {
-      this.$setView(view, item);
+      this.$setView(view, item.partnerId);
     },
   },
 };

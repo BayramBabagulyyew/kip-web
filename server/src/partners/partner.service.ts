@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { FileHelper } from '@utils/file-delete.util';
 import { partnerTypeEnum } from 'generated/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { PaginationRequest } from '../common/interfaces';
@@ -142,7 +143,7 @@ export class PartnerService {
     try {
 
       const tagline = await this.prismaService.partners.findFirst({
-        where: { partnerId: id, deletedAt: null },
+        where: { partnerId: id },
       });
 
       if (!tagline) {
@@ -151,6 +152,11 @@ export class PartnerService {
           HttpStatus.NOT_FOUND,
         );
       }
+      FileHelper.deleteFileSilent(tagline.fileUrl)
+      const jsonMedia = typeof (tagline.media) === 'string' ? JSON.parse(tagline?.media) : []
+      jsonMedia?.map(eachMedia => {
+        FileHelper.deleteFileSilent(eachMedia)
+      })
 
       await this.prismaService.partners.delete({ where: { partnerId: id } });
       return { message: 'deleted' };
@@ -161,7 +167,7 @@ export class PartnerService {
           success: false,
           message: err.message,
         },
-        HttpStatus.BAD_REQUEST,
+        err.statusCode ?? HttpStatus.BAD_REQUEST,
       );
     }
   }

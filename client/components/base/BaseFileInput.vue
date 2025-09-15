@@ -8,14 +8,18 @@
       <div v-if="!imgPath" class="file-input__content">
         <base-icon icon="adminImg"></base-icon>
       </div>
-      <img v-else :src="`${imageURL}${imgPath || 'c87ea29b-d35f-4d66-9884-94ecbf5c4478.jpg'}`" alt="" />
+      <img
+        v-else
+        :src="`${imageURL}${imgPath || 'c87ea29b-d35f-4d66-9884-94ecbf5c4478.jpg'}`"
+        alt=""
+      />
     </label>
     <base-icon v-if="imgUpload" icon="imgUpload" class="file-input__icon" />
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 export default {
   props: {
     imgUpload: {
@@ -37,11 +41,11 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["imageURL"]),
+    ...mapGetters(['imageURL']),
   },
   watch: {
     image: function (newVal) {
-      if (!newVal || newVal === "") {
+      if (!newVal || newVal === '') {
         this.imgPath = null;
       } else {
         this.imgPath = newVal;
@@ -51,7 +55,7 @@ export default {
   methods: {
     change(event) {
       // this.imgPath = URL.createObjectURL(event?.target?.files[0]);
-      this.$emit("file", event.target.files[0]);
+      this.$emit('file', event.target.files[0]);
     },
   },
 };
@@ -85,7 +89,7 @@ export default {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      object-fit: cover;
+      object-fit: contain;
       object-position: center;
     }
   }

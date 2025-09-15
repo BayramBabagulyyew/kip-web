@@ -5,6 +5,8 @@
         <tr>
           <th>№</th>
           <th>Partner</th>
+          <th>Partner Name</th>
+          <th>Active</th>
           <th>Created Date</th>
           <th>Actions</th>
         </tr>
@@ -13,6 +15,8 @@
         <tr v-for="(item, index) in items" :key="item.id">
           <td>{{ (page - 1) * limit + index + 1 }}</td>
           <td><img :src="`${imageURL}${item?.fileUrl}`" :alt="item.nameEn" /></td>
+          <td>{{ item.nameEn }}</td>
+          <td>{{ item.nameEn ? 'Active' : 'Inactive' }}</td>
           <td class="date">{{ new Date(item?.createdAt).toLocaleDateString('ru-RU') }}</td>
           <td>
             <div class="controller">
@@ -77,13 +81,13 @@ export default {
       }
     },
     itemDelete(data) {
-      this.currentId = data.id;
+      this.currentId = data.partnerId;
       this.deletePupUp = true;
     },
     async confirmDelete() {
       try {
         const { success } = await request({
-          url: `tagline/${this.currentId}`,
+          url: `partner/${this.currentId}`,
           method: 'DELETE',
         });
         if (success) {
@@ -99,6 +103,7 @@ export default {
     },
 
     setViewUpdate(item) {
+      console.log(item, '=-=-=--');
       this.$router.push({ query: { view: 'edit', id: item.id } });
     },
   },

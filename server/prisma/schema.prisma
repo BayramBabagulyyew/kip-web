@@ -86,6 +86,7 @@ model partners {
   textRu    String?
   textEn    String?
   media     Json?
+  gallery   gallery[]
 }
 
 model gallery {
@@ -96,6 +97,8 @@ model gallery {
   deletedAt DateTime?
   authorId  String
   author    users     @relation(fields: [authorId], references: [userId])
+  partnerId String?
+  partner   partners? @relation(fields: [partnerId], references: [partnerId])
 }
 
 model mails {

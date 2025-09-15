@@ -22,8 +22,6 @@
 </template>
 
 <script>
-
-
 export default {
   layout: 'admin',
 
@@ -67,7 +65,7 @@ export default {
   },
   methods: {
     setView(view, item = {}) {
-      this.$setView(view, item);
+      this.$setView(view, item.id);
     },
   },
 };

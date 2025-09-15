@@ -20,6 +20,10 @@ export class upsertGallaryDto {
   @IsOptional()
   @IsString()
   readonly authorId: string;
+  @IsOptional()
+  @IsString()
+  readonly partnerId: string;
+
 }
 
 export class fetchGallaryDto {

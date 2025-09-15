@@ -7,7 +7,7 @@ import { upsertPartnersDto } from './dto/partners.dto';
 
 @Injectable()
 export class ImagesService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) { }
 
   /* GALLARY BEGIN */
   async upsertGallary(dto: upsertGallaryDto, userId: string) {
@@ -33,12 +33,14 @@ export class ImagesService {
           image: dto.image,
           authorId: userId,
           priority: dto?.priority ? dto?.priority : null,
+          partnerId: dto?.partnerId ? dto?.partnerId : null,
         },
         update: {
           image: dto.image,
           authorId: userId,
           priority: dto?.priority ? dto?.priority : null,
           deletedAt: null,
+          partnerId: dto?.partnerId ? dto?.partnerId : null,
         },
       });
       return item;
@@ -101,7 +103,7 @@ export class ImagesService {
       if (!userId) {
         // web client
         const count: number = await this.prismaService.gallery.count({
-          where: { deletedAt: null },
+          where: { deletedAt: null, partnerId: null },
         });
         const pageCount = Math.ceil(count / limit);
         const rows = await this.prismaService.gallery.findMany({
@@ -124,7 +126,7 @@ export class ImagesService {
       });
       const pageCount = Math.ceil(count / limit);
       const rows = await this.prismaService.gallery.findMany({
-        where: { deletedAt: null },
+        where: { deletedAt: null, partnerId: null },
         select: {
           galleryId: true,
           image: true,
