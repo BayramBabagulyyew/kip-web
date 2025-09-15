@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   Req,
   UseGuards,
   UseInterceptors,
@@ -45,10 +46,11 @@ export class ImagesController {
   @UseGuards(FackeGuard)
   @Get('/gallery/all')
   fetchGallary(
-    @PaginationParams() query: QueryImagesDto,
+    @PaginationParams() query: PaginationDto,
+    @Query('partnerId') partnerId: string,
     @Req() req: RequestWithUser,
   ) {
-    return this.imagesService.fetchGallary(query, req?.id ?? '');
+    return this.imagesService.fetchGallary({ ...query, partnerId }, req?.id ?? '');
   }
 
   @UseGuards(AuthGuard)
