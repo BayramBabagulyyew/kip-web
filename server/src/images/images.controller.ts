@@ -18,7 +18,6 @@ import { responseInterceptor } from 'src/utils/response.interceptor';
 import { upsertGallaryDto } from './dto/gallery.dto';
 import { upsertPartnersDto } from './dto/partners.dto';
 import { ImagesService } from './images.service';
-import { QueryImagesDto } from './dto/query.dto';
 
 @UseInterceptors(responseInterceptor)
 @Controller('images')
