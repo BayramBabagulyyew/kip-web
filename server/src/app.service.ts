@@ -237,10 +237,10 @@ export class AppService {
   async fetchGalary(pagination: PaginationRequest) {
     try {
       const count = await this.prismaService.gallery.count({
-        where: { deletedAt: null },
+        where: { deletedAt: null, partnerId: null },
       });
       const gallery = await this.prismaService.gallery.findMany({
-        where: { deletedAt: null },
+        where: { deletedAt: null, partnerId: null },
         select: {
           galleryId: true,
           image: true,

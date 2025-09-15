@@ -56,10 +56,10 @@ export class PartnerService {
         });
         return { count, pageCount, rows };
       } else {
-        const count: number = await this.prismaService.partners.count({ where: { type: partnerTypeEnum.dealership, nameEn: { not: null } } });
+        const count: number = await this.prismaService.partners.count({ where: { type: partnerTypeEnum.dealership, deletedAt: null } });
         const pageCount = Math.ceil(count / pagination.limit);
         const rows = await this.prismaService.partners.findMany({
-          where: { type: partnerTypeEnum.dealership, nameEn: { not: null }, deletedAt: null },
+          where: { type: partnerTypeEnum.dealership, deletedAt: null },
           take: Number(pagination.limit),
           skip: pagination.skip,
           orderBy: [{ [`${pagination.order_by}`]: pagination.order_direction }],

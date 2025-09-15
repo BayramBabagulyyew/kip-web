@@ -14,12 +14,7 @@
         />
       </div>
       <div class="admin-gallery__row mb-1">
-        <base-file-input
-          @file="uploadPhoto"
-          :image="main.image"
-          style="height: 200px"
-          imgUpload
-        />
+        <base-file-input @file="uploadPhoto" :image="main.image" style="height: 200px" imgUpload />
       </div>
       <div class="admin-gallery__row mb-2">
         <base-button @clickedButton="upsertData">Save</base-button>
@@ -53,17 +48,17 @@
 </template>
 
 <script>
-import { request } from "../..//api/generic.api";
+import { request } from '../..//api/generic.api';
 export default {
-  layout: "admin",
+  layout: 'admin',
   data() {
     return {
-      activeLang: "Tm",
+      activeLang: 'Tm',
       activePupUp: false,
       errorPupUp: false,
       paginationCount: 0,
       deletePupUp: false,
-      errorMessage: "Boş meydanlary dolduryň!",
+      errorMessage: 'Boş meydanlary dolduryň!',
       id: null,
       page: 1,
       limit: 12,
@@ -82,8 +77,8 @@ export default {
     async uploadPhoto(file) {
       try {
         const { success, data } = await request({
-          method: "POST",
-          url: "upload",
+          method: 'POST',
+          url: 'upload',
           data: {
             fileUrl: file,
           },
@@ -98,8 +93,8 @@ export default {
     async getGalleries() {
       try {
         const { success, data } = await request({
-          method: "GET",
-          url: "images/gallery/all",
+          method: 'GET',
+          url: 'images/gallery/all',
           params: {
             page: this.page,
             limit: this.limit,
@@ -135,14 +130,14 @@ export default {
     async upsertData() {
       if (!this.main.image) {
         this.errorPupUp = true;
-        this.errorMessage = "Boş meýdanlary dolduryň";
+        this.errorMessage = 'Boş meýdanlary dolduryň';
         setTimeout(() => {
           this.errorPupUp = false;
         }, 2000);
       } else {
         try {
           const { success, data } = await request({
-            url: "images/gallery/upsert",
+            url: 'images/gallery/upsert',
             data: this.main,
           });
           if (!success) return;
@@ -151,7 +146,7 @@ export default {
         } catch (error) {
           console.log(error.response);
           if (error.response.data.statusCode === 611) {
-            this.errorMessage = "Bul piority eyam bar";
+            this.errorMessage = 'Bul piority eyam bar';
             this.errorPupUp = true;
             setTimeout(() => {
               this.errorPupUp = false;
@@ -172,15 +167,6 @@ export default {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 26px;
-  }
-
-  &__item {
-  }
-
-  &__item-image {
-  }
-
-  &__item-icons {
   }
 }
 </style>

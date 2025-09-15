@@ -21,7 +21,7 @@ import { ImagesService } from './images.service';
 @UseInterceptors(responseInterceptor)
 @Controller('images')
 export class ImagesController {
-  constructor(private readonly imagesService: ImagesService) {}
+  constructor(private readonly imagesService: ImagesService) { }
 
   @UseGuards(AuthGuard)
   @Post('/gallery/upsert')
@@ -44,7 +44,7 @@ export class ImagesController {
   @UseGuards(FackeGuard)
   @Get('/gallery/all')
   fetchGallary(
-    @PaginationParams() query: PaginationDto,
+    @PaginationParams() query: any,
     @Req() req: RequestWithUser,
   ) {
     return this.imagesService.fetchGallary(query, req?.id ?? '');

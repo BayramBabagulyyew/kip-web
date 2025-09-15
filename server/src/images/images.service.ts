@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { FileHelper } from '@utils/file-delete.util';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { upsertGallaryDto } from './dto/gallery.dto';
 import { upsertPartnersDto } from './dto/partners.dto';
@@ -94,20 +93,24 @@ export class ImagesService {
     }
   }
 
-  async fetchGallary(dto: PaginationDto, userId: string) {
+  async fetchGallary(dto: any, userId: string) {
     try {
       const limit: number = dto.limit || 10;
       const page: number = dto.page || 1;
       const skip: number = (page - 1) * Number(limit);
+      let where: { deletedAt: null };
+      if (dto.partnerId) {
+        where['partnerId'] = dto.partnerId;
+      }
 
       if (!userId) {
         // web client
         const count: number = await this.prismaService.gallery.count({
-          where: { deletedAt: null, partnerId: null },
+          where,
         });
         const pageCount = Math.ceil(count / limit);
         const rows = await this.prismaService.gallery.findMany({
-          where: { deletedAt: null },
+          where,
           select: {
             galleryId: true,
             image: true,

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <base-languages @selectLanguage="toggleLanguage" :activeLang="activeLang" />
     <form @submit.prevent style="display: flex; flex-direction: column; gap: 5px">
       <div class="left-item">
@@ -39,7 +39,28 @@
         :language="activeLang"
         label="Text"
       />
-      <base-button @clickedButton="saveData" style="width: 200px"> Save </base-button>
+      <div class="left-item" v-if="this.$route.query.id">
+        <base-file-input
+          @file="uploadGallery"
+          :image="main.image"
+          style="height: 200px"
+          imgUpload
+        />
+        <div class=".row">
+          <base-uploaded-file
+            adminCrash
+            imgUpload
+            v-for="item in galleries"
+            :key="item.galleryId"
+            :image="item.image"
+            @itemDelete="() => itemDelete(item)"
+            :positionNumber="item.priority"
+          />
+        </div>
+      </div>
+      <base-button @clickedButton="saveData" style="width: 200px; left: 80%; position: relative">
+        Save
+      </base-button>
     </form>
     <popup-error :errorPupUp="errorPupUp">{{ errorMessage }}</popup-error>
     <popup-success :activePupUp="activePupUp">Success</popup-success>
@@ -57,6 +78,9 @@ export default {
       default: null,
     },
   },
+  mounted() {
+    this.getGalleries();
+  },
   computed: {
     ...mapGetters(['imageURL']),
   },
@@ -66,6 +90,16 @@ export default {
       activePupUp: false,
       errorPupUp: false,
       errorMessage: 'Error saving data',
+      galleries: [],
+      gallery: {
+        galleryId: null,
+        priority: null,
+        image: null,
+        partnerId: this.$route.query.id || null,
+      },
+      page: 1,
+      limit: 10,
+      paginationCount: 0,
       main: {
         textTm: '',
         textRu: '',
@@ -110,11 +144,26 @@ export default {
   },
 
   methods: {
+    async uploadPhoto(file) {
+      try {
+        const { success, data } = await request({
+          url: 'upload',
+          data: {
+            fileUrl: file,
+            partnerId: this.$route.query.id,
+          },
+          file: true,
+        });
+        if (!success) return;
+        this.main.image = data.url;
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async saveData() {
       try {
         const id = this.$route.query.id;
         const view = this.$route.query.view;
-        console.log(this.main, '=-=-=--');
         let url = 'partner';
         let method = 'POST';
         if (id && view === 'edit') {
@@ -138,7 +187,7 @@ export default {
             type: this.main.type,
           },
         });
-        console.log(success);
+
         if (success) {
           this.main = {
             textTm: '',
@@ -168,7 +217,7 @@ export default {
     async fetchPartner(id) {
       try {
         const { data } = await request({
-          url: `partner/${id}`,
+          url: `partner/by/${id}`,
           method: 'GET',
         });
         this.main = data;
@@ -177,7 +226,25 @@ export default {
         console.error('Error fetching tagline:', error);
       }
     },
-    async uploadPhoto(file) {
+    async getGalleries() {
+      try {
+        const { success, data } = await request({
+          method: 'GET',
+          url: 'images/gallery/all',
+          params: {
+            page: this.page,
+            limit: this.limit,
+            partnerId: this.$route.query.id || null,
+          },
+        });
+        if (!success) return;
+        this.paginationCount = Math.ceil(data.count / this.limit);
+        this.galleries = data.rows || [];
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async uploadGallery(file) {
       try {
         const { success, data } = await request({
           url: 'upload',
@@ -187,7 +254,14 @@ export default {
           file: true,
         });
         if (!success) return;
-        this.main.images.unshift(data.url);
+
+        this.gallery.image = data.url;
+        const { success1, data1 } = await request({
+          url: 'images/gallery/upsert',
+          data: this.gallery,
+        });
+        if (!success1) return;
+        getGalleries();
       } catch (error) {
         console.log(error);
       }
@@ -200,7 +274,14 @@ export default {
 </script>
 
 <style>
+.row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 26px;
+}
+
 .left-item {
+  gap: 26px;
   cursor: pointer;
   transition: 0.3s;
   max-width: 300px;

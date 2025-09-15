@@ -135,7 +135,7 @@ export default {
   }
 
   &__image {
-    width: 100%;
+    width: 250px;
     margin-bottom: 20px;
     img {
       width: 100%;
