@@ -197,7 +197,7 @@ export class PartnerService {
 
   async makeSlug() {
     try {
-      const partners = await this.prismaService.partners.findMany({});
+      const partners = await this.prismaService.partners.findMany({ where: { deletedAt: null, slug: null, nameEn: { not: null } } });
       for (let i = 0; i < partners.length; i++) {
         const element = partners[i];
         const slug = this.slugUtil.slugify(element.nameEn);
