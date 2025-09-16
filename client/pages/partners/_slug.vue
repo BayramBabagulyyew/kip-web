@@ -119,7 +119,7 @@ export default {
           params: {
             page: this.page,
             limit: this.limit,
-            partnerId: this.$route.query.id || null,
+            partnerId: this.data.partnerId || null,
           },
         });
         console.log(data.rows);
