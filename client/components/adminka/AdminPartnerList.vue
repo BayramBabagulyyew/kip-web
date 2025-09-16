@@ -68,6 +68,7 @@ export default {
           params: {
             page: this.page,
             limit: this.limit,
+            admin: 'true',
           },
         });
         console.log(data);

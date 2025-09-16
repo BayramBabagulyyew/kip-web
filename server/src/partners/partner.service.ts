@@ -43,9 +43,9 @@ export class PartnerService {
     }
   }
 
-  async findAll(pagination: PaginationRequest, userId: string) {
+  async findAll(pagination: PaginationRequest, userId: string, admin: string) {
     try {
-      if (userId) {
+      if (admin === 'true') {
         const count: number = await this.prismaService.partners.count({ where: { type: partnerTypeEnum.dealership, deletedAt: null } });
         const pageCount = Math.ceil(count / pagination.limit);
         const rows = await this.prismaService.partners.findMany({

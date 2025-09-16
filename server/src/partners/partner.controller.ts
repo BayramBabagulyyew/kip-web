@@ -34,8 +34,8 @@ export class PartnerController {
 
   @UseGuards(FackeGuard)
   @Get()
-  findAll(@PaginationParams() pagination: PaginationRequest, @Req() req: RequestWithUser) {
-    return this.partnerService.findAll(pagination, req?.id || '');
+  findAll(@PaginationParams() pagination: PaginationRequest, @Query('admin') admin: string, @Req() req: RequestWithUser) {
+    return this.partnerService.findAll(pagination, req?.id || '', admin);
   }
 
   @UseGuards(AuthGuard)
