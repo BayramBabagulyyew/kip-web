@@ -260,19 +260,29 @@ export default {
 
   &__images {
     display: grid;
-    margin: 5% 20% 0;
+    justify-content: center;
+    margin: 5% auto 0 auto;
     text-align: justify;
-
     grid-template-columns: repeat(3, 1fr);
     gap: 25px;
+    max-width: 1100px;
+
+    @media (max-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+      max-width: 730px;
+    }
 
     @media (max-width: 767px) {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(1, 1fr);
+      gap: 16px;
+      max-width: 95vw;
+      margin: 5% 25% 0;
     }
 
     @media (max-width: 479px) {
       grid-template-columns: 1fr;
       gap: 14px;
+      max-width: 100vw;
     }
   }
 
