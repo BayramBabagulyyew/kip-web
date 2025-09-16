@@ -1,7 +1,7 @@
 <template>
-  <div class="news-page">
+  <div class="partners-page">
     <div class="__container">
-      <div class="news-page__back">
+      <div class="partners-page__back">
         <base-icon
           icon="arrowLeft"
           class="project-icon"
@@ -9,22 +9,22 @@
         />
       </div>
     </div>
-    <div class="news-page__items">
+    <div class="partners-page__items">
       <div v-for="item in datas" :key="item.slug">
-        <!-- @click="$router.push(`/news/${item.slug}`)" -->
-        <a :href="`/partners/${item.slug}`" class="news-page__item">
-          <div class="news-page__image">
+        <!-- @click="$router.push(`/partners/${item.slug}`)" -->
+        <a :href="`/partners/${item.slug}`" class="partners-page__item">
+          <div class="partners-page__image">
             <img :src="`${imageURL}${item?.fileUrl}`" :alt="item.slug" />
           </div>
-          <div class="news-page__content">
-            <h1 class="news-page__title">
-              {{ item?.[translator('name')] }}
-            </h1>
-            <div
-              class="news-page__description"
-              v-html="cropText(item?.[translator(`text`)], item?.[translator('name')]?.length)"
-            ></div>
-          </div>
+          <!--          <div class="partners-page__content">-->
+          <!--            <h1 class="partners-page__title">-->
+          <!--              {{ item?.[translator('name')] }}-->
+          <!--            </h1>-->
+          <!--            <div-->
+          <!--              class="partners-page__description"-->
+          <!--              v-html="cropText(item?.[translator(`text`)], item?.[translator('name')]?.length)"-->
+          <!--            ></div>-->
+          <!--          </div>-->
         </a>
       </div>
     </div>
@@ -39,7 +39,7 @@
 
 <script>
 import { request } from '@/api/generic.api';
-import translate, { translator } from '@/mixins/translate';
+import translate from '@/mixins/translate';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -94,7 +94,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.news-page {
+.partners-page {
   padding: 40px 0;
   @media (max-width: 767px) {
     padding: 30px 0;
@@ -137,12 +137,8 @@ export default {
   &__items {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    column-gap: 24px;
-    row-gap: 40px;
-    margin-top: 30px;
-    max-width: 1200px;
-    margin: 30px auto 0;
-    padding: 0 20px;
+    row-gap: 50px;
+    margin: 0 20% 0;
     @media (max-width: 767px) {
       display: grid;
       grid-template-columns: 1fr;
@@ -152,11 +148,10 @@ export default {
 
   &__item {
     display: grid;
-    grid-template-columns: minmax(100px, 160px) 1fr;
-    // background-color: red;
-    // height: 130px;
+    max-width: 250px;
     gap: 10px;
     align-items: center;
+    justify-content: center;
     transition: 0.3s all;
     cursor: pointer;
     &:hover {
@@ -178,12 +173,6 @@ export default {
       object-position: center;
       border-radius: 4px;
     }
-  }
-
-  &__content {
-    display: flex;
-    flex-direction: column;
-    height: 130px;
   }
 
   &__title {

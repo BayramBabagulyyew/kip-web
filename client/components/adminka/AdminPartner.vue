@@ -46,17 +46,18 @@
           style="height: 200px"
           imgUpload
         />
-        <div class=".row">
-          <base-uploaded-file
-            adminCrash
-            imgUpload
-            v-for="item in galleries"
-            :key="item.galleryId"
-            :image="item.image"
-            @itemDelete="() => itemDelete(item)"
-            :positionNumber="item.priority"
-          />
-        </div>
+      </div>
+      <div class="row">
+        <base-uploaded-file
+          adminCrash
+          imgUpload
+          v-for="item in galleries"
+          :key="item.galleryId"
+          :image="item.image"
+          @itemDelete="() => itemDelete(item)"
+          :positionNumber="item.priority"
+          style="max-width: 250px"
+        />
       </div>
       <base-button @clickedButton="saveData" style="width: 200px; left: 80%; position: relative">
         Save
@@ -64,6 +65,11 @@
     </form>
     <popup-error :errorPupUp="errorPupUp">{{ errorMessage }}</popup-error>
     <popup-success :activePupUp="activePupUp">Success</popup-success>
+    <pop-up-delete
+        :deletePupUp="deletePupUp"
+        @no="deletePupUp = false"
+        @confirm="confirm"
+    ></pop-up-delete>
   </div>
 </template>
 <script>
@@ -79,18 +85,20 @@ export default {
     },
   },
   mounted() {
-    this.getGalleries();
+    if (this.$route.query.id) this.getGalleries();
   },
   computed: {
     ...mapGetters(['imageURL']),
   },
   data() {
     return {
+      deletePupUp: false,
       activeLang: 'Tm',
       activePupUp: false,
       errorPupUp: false,
       errorMessage: 'Error saving data',
       galleries: [],
+      selGallery: null,
       gallery: {
         galleryId: null,
         priority: null,
@@ -118,6 +126,8 @@ export default {
   toggleLanguage(key) {
     this.activeLang = key;
   },
+
+
   watch: {
     id: {
       immediate: true,
@@ -144,6 +154,23 @@ export default {
   },
 
   methods: {
+    itemDelete(data) {
+      this.selGallery = data.galleryId;
+      this.deletePupUp = true;
+    },
+    async confirm() {
+      try {
+        const { success } = await request({
+          url: `images/gallery/remove/${this.selGallery}`,
+        });
+        if (!success) return;
+        this.deletePupUp = false;
+        this.selGallery = null;
+        await this.getGalleries();
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async uploadPhoto(file) {
       try {
         const { success, data } = await request({
@@ -226,6 +253,29 @@ export default {
         console.error('Error fetching tagline:', error);
       }
     },
+
+    async uploadGallery(file) {
+      try {
+        const { success, data } = await request({
+          url: 'upload',
+          data: {
+            fileUrl: file,
+          },
+          file: true,
+        });
+        if (!success) return;
+
+        this.gallery.image = data.url;
+        const { success1 } = await request({
+          url: 'images/gallery/upsert',
+          data: this.gallery,
+        });
+        if (!success1) return;
+        await this.getGalleries();
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async getGalleries() {
       try {
         const { success, data } = await request({
@@ -244,28 +294,6 @@ export default {
         console.log(error);
       }
     },
-    async uploadGallery(file) {
-      try {
-        const { success, data } = await request({
-          url: 'upload',
-          data: {
-            fileUrl: file,
-          },
-          file: true,
-        });
-        if (!success) return;
-
-        this.gallery.image = data.url;
-        const { success1, data1 } = await request({
-          url: 'images/gallery/upsert',
-          data: this.gallery,
-        });
-        if (!success1) return;
-        getGalleries();
-      } catch (error) {
-        console.log(error);
-      }
-    },
     toggleLanguage(key) {
       this.activeLang = key;
     },
@@ -275,7 +303,8 @@ export default {
 
 <style>
 .row {
-  display: grid;
+  display: flex;
+  flex-direction: row;
   grid-template-columns: repeat(4, 1fr);
   gap: 26px;
 }

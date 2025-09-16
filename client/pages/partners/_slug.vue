@@ -27,6 +27,18 @@
         <p class="news-id__description" v-html="data?.[translator(`text`)]"></p>
       </div>
     </div>
+
+    <div class="gallery-page__images" ref="images">
+      <div
+        class="gallery-page__image"
+        v-for="(item, index) in gallery"
+        :key="item.galleryId"
+        @click="showGallery(index)"
+        :ref="index === gallery.length - 1 ? 'lastImage' : null"
+      >
+        <img :src="`${imageURL}${item?.image}`" alt="" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -47,6 +59,13 @@ export default {
   data() {
     return {
       data: {},
+      gallery: [],
+      hasMore: true,
+      loading: false,
+      page: 1,
+      limit: 3,
+      currentSlideIndex: 0,
+      currentImage: Number,
       isModalVisible: false,
       selectedImage: '',
     };
@@ -54,6 +73,8 @@ export default {
 
   async mounted() {
     await this.fetchData();
+    await this.fetchGallery();
+    console.log('done');
   },
 
   methods: {
@@ -63,7 +84,6 @@ export default {
           method: 'GET',
           url: `partner/${this.$route.params.slug}`,
         });
-        console.log(data, '=-=-=-=-');
         this.data = data;
         // console.log(this.news);
       } catch (error) {
@@ -78,6 +98,64 @@ export default {
       this.isModalVisible = false;
       this.selectedImage = '';
     },
+    showGallery(index) {
+      this.currentSlideIndex = index;
+      document.body.classList.add('no-scroll');
+      this.isImage = true;
+    },
+
+    closeGallery() {
+      document.body.classList.remove('no-scroll');
+      this.isImage = false;
+    },
+
+    async fetchGallery() {
+      if (this.loading || !this.hasMore) return;
+      this.loading = true;
+      try {
+        const { success, data } = await request({
+          method: 'GET',
+          url: 'images/gallery/all',
+          params: {
+            page: this.page,
+            limit: this.limit,
+            partnerId: this.$route.query.id || null,
+          },
+        });
+        console.log(data.rows);
+        if (success && data.rows.length) {
+          this.gallery.push(...data.rows);
+          this.page++;
+          if (data.count <= this.gallery.length) this.hasMore = false;
+        } else {
+          this.hasMore = false;
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    createScrollObserver() {
+      const options = { root: null, rootMargin: '0px', threshold: 1.0 };
+      this.scrollObserver = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          this.fetchGallery();
+        }
+      }, options);
+    },
+
+    observeLastImage() {
+      if (this.scrollObserver && this.$refs.lastImage) {
+        const el = Array.isArray(this.$refs.lastImage)
+          ? this.$refs.lastImage[0]
+          : this.$refs.lastImage;
+        if (el) {
+          this.scrollObserver.observe(el);
+        }
+      }
+    },
   },
 };
 </script>
@@ -87,8 +165,6 @@ export default {
   padding: 40px 0;
   @media (max-width: 767px) {
     padding: 30px 0 20px 0;
-  }
-  &__container {
   }
 
   &__back {
@@ -175,6 +251,46 @@ export default {
     font-weight: 500;
     line-height: normal;
     text-align: right;
+  }
+}
+.gallery-page {
+  @media (max-width: 767px) {
+    padding: 30px 0;
+  }
+
+  &__images {
+    display: grid;
+    margin: 5% 20% 0;
+    text-align: justify;
+
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+
+    @media (max-width: 767px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 479px) {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+  }
+
+  &__image {
+    height: 280px;
+    width: 350px;
+    cursor: pointer;
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 4px;
+      object-fit: cover;
+    }
+
+    @media (max-width: 479px) {
+      height: 240px;
+    }
   }
 }
 </style>
