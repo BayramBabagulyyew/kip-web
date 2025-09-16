@@ -31,6 +31,8 @@ export class PartnerController {
     return this.partnerService.create(dto, req.id ?? '');
   }
 
+
+  @UseGuards(FackeGuard)
   @Get()
   findAll(@PaginationParams() pagination: PaginationRequest, @Req() req: RequestWithUser) {
     return this.partnerService.findAll(pagination, req?.id || '');
