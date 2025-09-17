@@ -41,7 +41,7 @@ export class AppService {
         take: 5,
       });
       const homeGalary = await this.prismaService.gallery.findMany({
-        where: { deletedAt: null },
+        where: { deletedAt: null, partnerId: null },
         select: {
           galleryId: true,
           image: true,
@@ -265,7 +265,7 @@ export class AppService {
   async fetchGallaryAll() {
     try {
       const gallery = await this.prismaService.gallery.findMany({
-        where: { deletedAt: null },
+        where: { deletedAt: null, partnerId: null },
         select: {
           galleryId: true,
           image: true,
@@ -458,7 +458,7 @@ export class AppService {
         take: 10,
       });
       const gallery = await this.prismaService.gallery.findMany({
-        where: { deletedAt: null },
+        where: { deletedAt: null, partnerId: null },
         select: {
           galleryId: true,
           image: true,
