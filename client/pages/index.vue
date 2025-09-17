@@ -66,7 +66,7 @@ export default {
         },
         {
           id: 5,
-          name: 'Partners',
+          name: 'partners',
           url: 'partners',
         },
         {
