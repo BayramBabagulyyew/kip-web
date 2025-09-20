@@ -64,11 +64,11 @@ export default {
           name: 'productsServices',
           url: '#products-services',
         },
-        {
-          id: 5,
-          name: 'partners',
-          url: 'partners',
-        },
+        // {
+        //   id: 5,
+        //   name: 'partners',
+        //   url: 'partners',
+        // },
         {
           id: 6,
           name: 'news',
