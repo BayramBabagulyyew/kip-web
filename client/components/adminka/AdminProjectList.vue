@@ -29,20 +29,16 @@
         </tr>
       </tbody>
     </base-table>
-    <pop-up-delete
-      :deletePupUp="deletePupUp"
-      @no="deletePupUp = false"
-      @confirm="confirm"
-    />
+    <pop-up-delete :deletePupUp="deletePupUp" @no="deletePupUp = false" @confirm="confirm" />
   </div>
 </template>
 
 <script>
-import { request } from "@/api/generic.api";
-import { mapGetters } from "vuex";
+import { request } from '@/api/generic.api';
 import { truncateHtml } from '@/mixins/truncate';
+import { mapGetters } from 'vuex';
 export default {
-  emits: ["itemEdit"],
+  emits: ['itemEdit'],
   props: {
     datas: {
       type: Array,
@@ -68,7 +64,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["imageURL"]),
+    ...mapGetters(['imageURL']),
   },
   methods: {
     truncateHtml,
@@ -83,7 +79,7 @@ export default {
         });
         if (!success) return;
         this.deletePupUp = false;
-        this.$emit("itemDelete");
+        this.$emit('itemDelete');
       } catch (error) {
         console.log(error);
       }

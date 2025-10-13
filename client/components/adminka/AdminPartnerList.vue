@@ -27,6 +27,12 @@
         </tr>
       </tbody>
     </base-table>
+    <base-pagination
+      v-if="paginationCount > 1"
+      :modelValue="page"
+      @clickPage="(pagination) => updatePage(pagination)"
+      :pageCount="paginationCount"
+    ></base-pagination>
     <pop-up-delete
       :deletePupUp="deletePupUp"
       @no="deletePupUp = false"
@@ -54,6 +60,7 @@ export default {
       page: 1,
       limit: 10,
       currentId: null,
+      paginationCount: 0,
     };
   },
   computed: {
@@ -74,6 +81,7 @@ export default {
         console.log(data);
         if (success) {
           this.items = await data.rows;
+          this.paginationCount = Math.ceil(data.count / this.limit);
         }
       } catch (error) {
         console.error('Error fetching tagline:', error);
@@ -104,8 +112,11 @@ export default {
     },
 
     setViewUpdate(item) {
-      console.log(item, '=-=-=--');
       this.$router.push({ query: { view: 'edit', id: item.id } });
+    },
+    async updatePage(p) {
+      this.page = p;
+      await this.fetchAbout();
     },
   },
 };
