@@ -12,33 +12,27 @@ export class ProjectsService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly slugUtil: SlugUtil,
-  ) {}
+  ) { }
 
   /* PROJECTS BEGIN */
   async upsertProject(dto: upsertProjectDto, userId: string) {
     try {
-      const userExists = await this._userExists(userId);
-      if (!userExists) {
-        throw new HttpException(
-          { statusCode: 602, success: false, message: `user is not exists` },
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-      const condidate = await this.prismaService.projects.findFirst({
-        where: {
-          AND: [{ priority: dto.priority }, { priority: { not: null } }],
-        },
-      });
-      if (condidate?.projectId && condidate?.projectId != dto?.projectId) {
-        throw new HttpException(
-          {
-            statusCode: 611,
-            success: false,
-            message: `project priority is busy`,
-          },
-          HttpStatus.BAD_REQUEST,
-        );
-      }
+
+      // const condidate = await this.prismaService.projects.findFirst({
+      //   where: {
+      //     AND: [{ priority: dto.priority }, { priority: { not: null } }],
+      //   },
+      // });
+      // if (condidate?.projectId && condidate?.projectId != dto?.projectId) {
+      //   throw new HttpException(
+      //     {
+      //       statusCode: 611,
+      //       success: false,
+      //       message: `project priority is busy`,
+      //     },
+      //     HttpStatus.BAD_REQUEST,
+      //   );
+      // }
       const project = await this.prismaService.projects.upsert({
         where: { projectId: dto?.projectId ? dto?.projectId : '' },
         create: {
@@ -59,7 +53,7 @@ export class ProjectsService {
           authorId: userId,
           homeActivity: dto?.homeActivity ? dto?.homeActivity : false,
           images: dto.images,
-          priority: dto?.priority ? dto?.priority : null,
+          // priority: dto?.priority ? dto?.priority : null,
         },
         update: {
           nameTm: dto.nameTm,
@@ -79,18 +73,18 @@ export class ProjectsService {
           authorId: userId,
           homeActivity: dto?.homeActivity ? dto?.homeActivity : false,
           images: dto.images,
-          priority: dto?.priority ? dto?.priority : null,
+          // priority: dto?.priority ? dto?.priority : null,
         },
       });
       return project;
     } catch (err) {
       throw new HttpException(
         {
-          statusCode: err?.response?.statusCode || HttpStatus.BAD_REQUEST,
+          statusCode: err?.response?.statusCode,
           success: false,
           message: err.message,
         },
-        HttpStatus.BAD_REQUEST,
+        err?.type || HttpStatus.BAD_REQUEST,
       );
     }
   }

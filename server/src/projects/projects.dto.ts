@@ -1,11 +1,10 @@
 import {
   IsBoolean,
   IsDateString,
-  IsInt,
   IsNotEmpty,
   IsNumber,
   IsOptional,
-  IsString,
+  IsString
 } from 'class-validator';
 
 export class upsertProjectCategoryDto {
@@ -85,9 +84,9 @@ export class upsertProjectDto {
   @IsString()
   readonly cover: string;
 
-  @IsOptional()
-  @IsInt()
-  readonly priority: number;
+  // @IsOptional()
+  // @IsInt()
+  // readonly priority: number;
 
   @IsOptional()
   @IsBoolean()

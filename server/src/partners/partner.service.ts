@@ -151,6 +151,7 @@ export class PartnerService {
           textTm: dto?.textTm ? dto?.textTm : null,
           textEn: dto?.textEn ? dto?.textEn : null,
           textRu: dto?.textRu ? dto?.textRu : null,
+          slug: this.slugUtil.slugify(dto.nameEn)
         }
       });
       return tagline;
