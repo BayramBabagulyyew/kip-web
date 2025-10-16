@@ -2,7 +2,11 @@
   <header :class="['header', { 'header--white': isPlaying }]">
     <div class="header__container">
       <div class="header__body">
-        <div :class="['burger-wrapper', { open: openLanguages }]" @click="toggleLanguages">
+        <div
+          :class="['burger-wrapper', { open: openLanguages }]"
+          @mouseenter="openLanguages = true"
+          @mouseleave="openLanguages = false"
+        >
           <div class="burger">
             <svg class="icon" viewBox="0 0 48 48" role="img" aria-label="Globe icon">
               <path d="M0 0h48v48H0z" fill="none" />
@@ -12,10 +16,7 @@
               />
             </svg>
           </div>
-          <div class="languages" @mouseleave="openLanguages = false">
-            <div class="languages__icon">
-              <base-icon icon="closeIcon" @clicked="toggleLanguages" />
-            </div>
+          <div class="languages">
             <div class="languages__block">
               <h2 class="languages__title">{{ $t('lan') }}</h2>
               <div class="languages__link-wrapper">
@@ -123,10 +124,6 @@ export default {
   },
 
   methods: {
-    toggleLanguages() {
-      this.openLanguages = !this.openLanguages;
-    },
-
     showBody() {
       if (document.querySelector('.wrapper').classList.contains('_lock')) {
         document.querySelector('.wrapper').classList.remove('_lock');

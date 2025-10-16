@@ -138,7 +138,7 @@ export default {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     row-gap: 50px;
-    margin: 0 20% 0;
+    margin: 2% 20% 0;
     @media (max-width: 767px) {
       display: grid;
       grid-template-columns: 1fr;
@@ -157,6 +157,7 @@ export default {
     &:hover {
       transform: scale(1.04);
     }
+    margin: 0 5% 0;
     @media (max-width: 767px) {
       cursor: none;
     }

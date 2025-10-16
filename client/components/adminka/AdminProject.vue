@@ -24,7 +24,7 @@
       />
 
       <div class="flex gap-10">
-        <admin-input
+        <!-- <admin-input
           @updateValue="(val) => (main[`priority`] = val)"
           :value="main[`priority`]"
           label="Priority"
@@ -32,7 +32,7 @@
           type="number"
           style="width: 200px"
           appendIcon="starIcon"
-        />
+        /> -->
         <div class="text-editor-wrapper__calendar" style="width: 200px">
           <admin-input
             label="START DATE"
@@ -141,7 +141,6 @@ export default {
         endDate: '',
         images: [],
         cover: '',
-        priority: null,
         logo: 'dd',
       },
     };
@@ -190,7 +189,6 @@ export default {
           this.main.nameEn = '';
           this.main.descriptionEn = '';
           this.main.images = [];
-          this.main.priority = null;
           this.main.company = null;
           this.main.workDate = null;
           this.main.cover = null;
