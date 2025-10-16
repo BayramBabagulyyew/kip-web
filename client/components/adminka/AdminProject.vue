@@ -194,14 +194,11 @@ export default {
           this.main.cover = null;
           this.main.authorId = null;
         } catch (error) {
-          console.log(error.response);
-          if (error?.response?.data?.statusCode === 611) {
-            this.errorMessage = 'Bul piority eyam bar';
-            this.errorPupUp = true;
-            setTimeout(() => {
-              this.errorPupUp = false;
-            }, 2000);
-          }
+          this.errorMessage = error.response.data.message || 'Ýalňyşlyk ýüze çykdy!';
+          this.errorPupUp = true;
+          setTimeout(() => {
+            this.errorPupUp = false;
+          }, 2000);
         }
       }
     },

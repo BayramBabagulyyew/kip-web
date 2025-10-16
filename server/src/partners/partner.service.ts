@@ -18,7 +18,7 @@ export class PartnerService {
       const oldData = await this.prismaService.partners.create({
         data: {
           fileUrl: dto.fileUrl,
-          type: dto.type,
+          type: dto.type ?? 'dealership',
           authorId: userId,
           website: dto?.website ? dto?.website : null,
           priority: dto?.priority ? dto?.priority : null,
@@ -49,7 +49,7 @@ export class PartnerService {
         const count: number = await this.prismaService.partners.count({ where: { type: partnerTypeEnum.dealership, deletedAt: null } });
         const pageCount = Math.ceil(count / pagination.limit);
         const rows = await this.prismaService.partners.findMany({
-          where: { type: partnerTypeEnum.dealership },
+          where: { type: partnerTypeEnum.dealership, deletedAt: null },
           take: Number(pagination.limit),
           skip: pagination.skip,
           orderBy: [{ [`${pagination.order_by}`]: pagination.order_direction }],
@@ -141,7 +141,7 @@ export class PartnerService {
         where: { partnerId: id, deletedAt: null },
         data: {
           fileUrl: dto.fileUrl,
-          type: dto.type,
+          type: dto.type ?? 'dealership',
           authorId: userId,
           website: dto?.website ? dto?.website : null,
           priority: dto?.priority ? dto?.priority : null,
