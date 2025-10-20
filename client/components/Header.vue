@@ -105,6 +105,7 @@ export default {
       linkActive: null,
       openLanguages: false,
       openMobileMenu: false,
+      openProducts: false,
     };
   },
   mounted() {

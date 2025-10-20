@@ -13,7 +13,7 @@
           <img
             :src="`${imageURL}${data?.fileUrl}`"
             :alt="data.slug"
-            @click="openModal(`${imageURL}${news?.fileUrl}`)"
+            @click="openModal(`${imageURL}${data?.fileUrl}`)"
           />
           <ImagePreviewModal
             :imageUrl="selectedImage"
@@ -36,7 +36,11 @@
         @click="showGallery(index)"
         :ref="index === gallery.length - 1 ? 'lastImage' : null"
       >
-        <img :src="`${imageURL}${item?.image}`" alt="" />
+        <img
+          :src="`${imageURL}${item?.image}`"
+          alt=""
+          @click="openModal(`${imageURL}${item?.image}`)"
+        />
       </div>
     </div>
   </div>
@@ -206,13 +210,14 @@ export default {
   }
 
   &__box {
-    max-width: 600px;
+    max-width: 1000px;
     margin: 0 auto;
   }
 
   &__image {
     width: 250px;
-    margin-bottom: 20px;
+    margin-top: 50px;
+    margin-bottom: 50px;
     img {
       width: 100%;
       height: 100%;

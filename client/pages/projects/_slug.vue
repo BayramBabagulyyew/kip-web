@@ -26,7 +26,7 @@
           </p>
           <p class="projects-id__project-text">
             <span class="projects-id__project-span">{{ $t('engineeringPeriod') }}:</span>
-            <span>
+            <span style="text-transform: capitalize">
               {{
                 new Date(project?.workDate).toLocaleString(translateLanguage(project), {
                   month: 'long',
@@ -38,6 +38,7 @@
                 project?.endDate &&
                 new Date(project?.workDate).getMonth() !== new Date(project?.endDate).getMonth()
               "
+              style="text-transform: capitalize"
             >
               -
               {{
@@ -201,12 +202,12 @@ export default {
 
   &__project-image {
     flex: 0 0 25%;
-    height: 155px;
     img {
+      max-height: 300px;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: center;
+      object-fit: contain;
+      // object-position: center;
       border-radius: 4px;
     }
     @media (max-width: 479px) {
@@ -330,6 +331,7 @@ export default {
     overflow-x: auto;
     max-width: 100%;
     padding-bottom: 10px;
+    margin-top: 50px;
 
     @media (min-width: 767px) {
       transition: 1s all;
@@ -348,9 +350,9 @@ export default {
 
   &__images-img {
     flex: 0 0 25%;
-    height: 155px;
+    // height: 250px;
     img {
-      width: 100%;
+      width: 350px;
       height: 100%;
       object-fit: cover;
       object-position: center;
