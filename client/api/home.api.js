@@ -35,4 +35,6 @@ export const GET_ALL_GALLERY = () => request({ url: `gallary/all`, method: 'PATC
 
 export const GET_PARTNERS = () => request({ url: `partners`, method: 'PATCH' });
 
+export const GET_REAL_PARTNERS = () => request({ url: `partner`, method: 'GET' });
+
 export const GET_EHS = () => request({ url: `ecology`, method: 'PATCH' });

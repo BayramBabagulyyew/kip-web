@@ -24,6 +24,7 @@ import {
   GET_PARTNERS,
   GET_PRODUCTS,
   GET_PROJECTS,
+  GET_REAL_PARTNERS,
 } from '~/api/home.api';
 
 export default {
@@ -40,6 +41,7 @@ export default {
         clients: [],
         projects: [],
       },
+      partners: [],
       isVideoPlaying: false, // To track if the video is playing
       isModalVisible: false, // For modal visibility
       selectedImage: '', // To store the clicked image URL
@@ -63,21 +65,29 @@ export default {
           id: 4,
           name: 'productsServices',
           url: '#products-services',
+          path: 'products-services/',
+          items: [],
         },
         {
           id: 5,
           name: 'partners',
           url: 'partners',
+          items: [],
+          path: 'partners/',
         },
         {
           id: 6,
           name: 'news',
           url: '#news',
+          path: 'news/',
+          items: [],
         },
         {
           id: 7,
           name: 'projects',
           url: '#projects',
+          path: 'projects/',
+          items: [],
         },
         {
           id: 8,
@@ -106,7 +116,46 @@ export default {
     await this.fetchNews();
     await this.fetchProjects();
     await this.fetchPartners();
+    await this.fetchRealPartners();
     await this.fetchGallery();
+  },
+  watch: {
+    projects: async function (val) {
+      this.links.find((link) => link.id === 7).items = val?.map((project) => {
+        return {
+          id: project.id,
+          name: project[`name${this.$i18n.locale === 'ru' ? 'Ru' : 'En'}`],
+          slug: project.slug,
+        };
+      });
+    },
+    partners: async function (val) {
+      this.links.find((link) => link.id === 5).items = val?.rows?.map((project) => {
+        return {
+          id: project.id,
+          name: project[`name${this.$i18n.locale === 'ru' ? 'Ru' : 'En'}`],
+          slug: project.slug,
+        };
+      });
+    },
+    products: async function (val) {
+      this.links.find((link) => link.id === 4).items = val?.services?.map((products) => {
+        return {
+          id: products.id,
+          name: products[`name${this.$i18n.locale === 'ru' ? 'Ru' : 'En'}`],
+          slug: products.slug,
+        };
+      });
+    },
+    news: async function (val) {
+      this.links.find((link) => link.id === 6).items = val?.news?.map((news) => {
+        return {
+          id: news.id,
+          name: news[`title${this.$i18n.locale === 'ru' ? 'Ru' : 'En'}`],
+          slug: news.slug,
+        };
+      });
+    },
   },
 
   methods: {
@@ -187,6 +236,17 @@ export default {
         console.error(error);
       }
     },
+
+    async fetchRealPartners() {
+      try {
+        const { data } = await GET_REAL_PARTNERS();
+        console.log(data);
+        this.partners = data || {};
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
     setVideoPlaying(value) {
       this.isVideoPlaying = value;
     },

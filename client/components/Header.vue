@@ -32,10 +32,95 @@
         <nav class="menu">
           <div class="menu__body">
             <ul class="menu__list">
-              <li class="menu__item" v-for="link in links" :key="link.id">
+              <li
+                class="menu__item"
+                v-for="link in links"
+                :key="link.id"
+                @mouseenter="linkActive = link.id"
+                @mouseleave="linkActive = null"
+              >
                 <a :href="link.url" :class="['menu__link', { active: link.id === link.url }]">
                   {{ $t(link.name) }}
                 </a>
+                <div
+                  style="
+                    position: absolute;
+                    display: inline-block;
+                    width: auto;
+                    vertical-align: top;
+                  "
+                >
+                  <div
+                    v-if="link.items && linkActive === link.id"
+                    class="dropdown-overlay"
+                    :style="{
+                      position: 'absolute',
+                      top: 'calc(100% + 1px)',
+                      left: '0',
+                      zIndex: 9999,
+                      pointerEvents: 'auto',
+                      minWidth: '220px',
+                      whiteSpace: 'nowrap',
+                      animation: 'dropdownFadeIn 0.25s ease-out',
+                    }"
+                  >
+                    <div
+                      class="dropdown-panel"
+                      :style="{
+                        background: 'linear-gradient(135deg, var(--primary) 0%, #1a4d7a 100%)',
+                        padding: '16px 18px',
+                        borderRadius: '14px',
+                        boxShadow: '0 12px 32px rgba(0,0,0,0.25), 0 2px 8px rgba(0,0,0,0.15)',
+                        border: '1px solid rgba(255, 255, 255, 0.15)',
+                      }"
+                    >
+                      <div
+                        class="dropdown-items"
+                        :style="{
+                          columnCount:
+                            link.items && link.items.length > 0
+                              ? Math.max(1, Math.ceil(link.items.length / 10))
+                              : 1,
+                          columnGap: '20px',
+                        }"
+                      >
+                        <div
+                          v-for="value in link.items"
+                          :key="value.id"
+                          class="dropdown-item"
+                          style="
+                            break-inside: avoid;
+                            display: block;
+                            margin-bottom: 8px;
+                            color: #fff;
+                            padding: 8px 12px;
+                            border-radius: 8px;
+                            transition: all 0.2s ease;
+                            cursor: pointer;
+                            font-size: 15px;
+                            font-weight: 500;
+                          "
+                          @mouseenter="
+                            $event.target.style.background = 'rgba(255, 255, 255, 0.15)';
+                            $event.target.style.transform = 'translateX(4px)';
+                          "
+                          @mouseleave="
+                            $event.target.style.background = 'transparent';
+                            $event.target.style.transform = 'translateX(0)';
+                          "
+                        >
+                          <a
+                            :href="link.path + value.slug"
+                            :key="value.id"
+                            style="text-decoration: none !important; color: inherit !important"
+                          >
+                            {{ $t(value.name) }}
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </li>
             </ul>
           </div>
@@ -186,21 +271,29 @@ ul li {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--primary);
+    background: linear-gradient(135deg, var(--primary) 0%, #1a4d7a 100%);
     min-width: 40px;
     height: 40px;
-    border-radius: 8px;
-    transition: 0.1s;
+    border-radius: 10px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
     &:hover {
-      transform: scale(1.1);
+      transform: scale(1.08) translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
     }
+
+    &:active {
+      transform: scale(1.02);
+    }
+
     &.open {
       .languages {
         transform: translate(0, 0);
         opacity: 1;
         pointer-events: auto;
-        transition: 0.2s all;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 10;
       }
     }
@@ -272,28 +365,64 @@ ul li {
 
   &__list {
     display: flex;
-    gap: 10px;
+    gap: 6px;
     justify-content: flex-end;
+    align-items: center;
+  }
+
+  &__item {
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%) scaleX(0);
+      width: 70%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      border-radius: 2px;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover::after {
+      transform: translateX(-50%) scaleX(1);
+    }
   }
 
   &__link {
-    padding: 10px;
-    border-radius: 99px;
+    padding: 12px 18px;
+    border-radius: 12px;
     color: var(--text);
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 500;
     display: block;
     white-space: nowrap;
-    transition: 0.2s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    letter-spacing: 0.02em;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.09);
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
+
+    &:active {
+      transform: translateY(0);
+    }
+
     &.nuxt-link-active,
     &.nuxt-link-exact-active {
-      background: rgba(255, 255, 255, 0.2);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15));
       color: var(--text);
+      font-weight: 600;
+      box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.1),
+        inset 0 1px 2px rgba(255, 255, 255, 0.3);
     }
+
     @media (max-width: 992px) {
       color: white;
     }
@@ -310,16 +439,20 @@ ul li {
   left: -20px;
   top: calc(100% + 25px);
   width: 248px;
-  padding: 10px 20px;
-  border-radius: 10px;
-  background: var(--primary);
+  padding: 14px 20px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--primary) 0%, #1a4d7a 100%);
   backdrop-filter: blur(30.5px);
   z-index: 10;
   transform: translate(-10px, -10px);
   opacity: 0;
   pointer-events: none;
-  box-shadow: 0.2px 0.2px 4px #fff;
-  transition: 0.1s all;
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.25),
+    0 2px 8px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
   &__icon {
     display: flex;
     justify-content: flex-end;
@@ -327,40 +460,53 @@ ul li {
   }
 
   &__block {
-    padding: 5px;
-    border-radius: 10px;
+    padding: 8px;
+    border-radius: 12px;
     background: rgba(255, 255, 255, 0.1);
   }
 
   &__title {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     color: #fff;
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
     text-transform: capitalize;
+    letter-spacing: 0.03em;
   }
 
   &__link-wrapper {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 12px;
   }
 
   &__link {
     color: #fff;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 500;
-    padding: 5px 10px;
-    border-radius: 14px;
-    transition: 0.2s;
+    padding: 8px 16px;
+    border-radius: 10px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.09);
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
+
+    &:active {
+      transform: translateY(0);
+    }
+
     &.nuxt-link-active,
     &.nuxt-link-exact-active {
-      background: rgba(255, 255, 255, 0.2);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15));
       color: #fff;
+      font-weight: 600;
+      box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.1),
+        inset 0 1px 2px rgba(255, 255, 255, 0.3);
     }
   }
 }
@@ -373,6 +519,10 @@ ul li {
     height: 100vh;
     left: -100%;
     top: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    transition: left 0.4s ease;
+
     &.active {
       left: 0;
       .mobile-menu__body {
@@ -387,34 +537,90 @@ ul li {
     width: 90%;
     height: 100vh;
     z-index: 1000;
-    background-color: var(--primary);
+    background: linear-gradient(180deg, var(--primary) 0%, #1a4d7a 100%);
     padding: 100px 40px 30px 40px;
     display: block;
-    transition: 0.4s all;
+    transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.3);
   }
 
   &__list {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 12px;
     flex: 1 1 auto;
     overflow-y: auto;
+    padding-right: 10px;
+
+    /* Custom scrollbar */
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+    }
   }
 
   &__link {
     color: #fff;
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 500;
     line-height: normal;
     text-transform: initial;
-    padding: 10px;
-    border-radius: 20px;
+    padding: 14px 18px;
+    border-radius: 12px;
     text-transform: capitalize;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    display: block;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%) scaleX(0);
+      width: 4px;
+      height: 60%;
+      background: #fff;
+      border-radius: 0 4px 4px 0;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateX(6px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    &:active {
+      transform: translateX(4px) scale(0.98);
+    }
 
     &.active {
-      background: rgba(255, 255, 255, 0.2);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15));
+      font-weight: 600;
+      box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.2),
+        inset 0 1px 2px rgba(255, 255, 255, 0.3);
+
+      &::before {
+        transform: translateY(-50%) scaleX(1);
+      }
     }
   }
 }
@@ -489,30 +695,61 @@ ul li {
   }
 }
 .mobile-languages {
-  padding: 10px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.1);
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 
   &__title {
     color: #fff;
     font-size: 16px;
     font-style: normal;
-    font-weight: 500;
-    margin-bottom: 10px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    letter-spacing: 0.03em;
   }
 
   &__link-wrapper {
     display: flex;
+    gap: 8px;
   }
 
   &__link {
-    border-radius: 99px;
+    border-radius: 10px;
     color: #fff;
-    padding: 5px 10px;
+    padding: 8px 16px;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
     &.nuxt-link-active,
     &.nuxt-link-exact-active {
-      background: rgba(255, 255, 255, 0.2);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15));
+      font-weight: 600;
+      box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.1),
+        inset 0 1px 2px rgba(255, 255, 255, 0.3);
     }
+  }
+}
+
+/* Dropdown animation keyframes */
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 </style>

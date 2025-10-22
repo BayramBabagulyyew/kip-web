@@ -44,6 +44,12 @@ export default {
           description: 'установка и пусконаладка туркменистан',
           keyword: 'установка и пусконаладка туркменистан',
         },
+        {
+          name: 'Bayram Babagulyyew',
+          keyword: 'Bayram Babagulyyew',
+          description: 'Programmer of KIP: Bayram Babagulyyew',
+          content: 'KIP',
+        },
         { property: 'og:title', content: 'KIP' },
         {
           name: 'author',
@@ -72,7 +78,8 @@ export default {
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/kip-logo.svg' },
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-         ...i18nHead.link],
+        ...i18nHead.link,
+      ],
     };
   },
 
