@@ -253,7 +253,7 @@ ul li {
     border-radius: 10px;
     backdrop-filter: blur(31px);
     padding: 10px;
-    max-width: 1300px;
+    max-width: 1500px;
     @media (max-width: 767px) {
       display: none;
     }
