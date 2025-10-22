@@ -66,9 +66,9 @@
     <popup-error :errorPupUp="errorPupUp">{{ errorMessage }}</popup-error>
     <popup-success :activePupUp="activePupUp">Success</popup-success>
     <pop-up-delete
-        :deletePupUp="deletePupUp"
-        @no="deletePupUp = false"
-        @confirm="confirm"
+      :deletePupUp="deletePupUp"
+      @no="deletePupUp = false"
+      @confirm="confirm"
     ></pop-up-delete>
   </div>
 </template>
@@ -127,7 +127,6 @@ export default {
     this.activeLang = key;
   },
 
-
   watch: {
     id: {
       immediate: true,
@@ -181,11 +180,16 @@ export default {
           },
           file: true,
         });
-        if (!success) return;
-        this.main.image = data.url;
+        this.main.fileUrl = data.url;
       } catch (error) {
         console.log(error);
+        this.errorMessage = error.message;
+        this.errorPupUp = true;
       }
+      setTimeout(() => {
+        this.activePupUp = false;
+        this.errorPupUp = false;
+      }, 2000);
     },
     async saveData() {
       try {
