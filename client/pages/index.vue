@@ -80,14 +80,14 @@ export default {
           name: 'news',
           url: '#news',
           path: 'news/',
-          items: [],
+          // items: [],
         },
         {
           id: 7,
           name: 'projects',
           url: '#projects',
           path: 'projects/',
-          items: [],
+          // items: [],
         },
         {
           id: 8,
@@ -120,15 +120,6 @@ export default {
     await this.fetchGallery();
   },
   watch: {
-    projects: async function (val) {
-      this.links.find((link) => link.id === 7).items = val?.map((project) => {
-        return {
-          id: project.id,
-          name: project[`name${this.$i18n.locale === 'ru' ? 'Ru' : 'En'}`],
-          slug: project.slug,
-        };
-      });
-    },
     partners: async function (val) {
       this.links.find((link) => link.id === 5).items = val?.rows?.map((project) => {
         return {
@@ -144,15 +135,6 @@ export default {
           id: products.id,
           name: products[`name${this.$i18n.locale === 'ru' ? 'Ru' : 'En'}`],
           slug: products.slug,
-        };
-      });
-    },
-    news: async function (val) {
-      this.links.find((link) => link.id === 6).items = val?.news?.map((news) => {
-        return {
-          id: news.id,
-          name: news[`title${this.$i18n.locale === 'ru' ? 'Ru' : 'En'}`],
-          slug: news.slug,
         };
       });
     },

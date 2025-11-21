@@ -50,6 +50,12 @@ export default {
           description: 'Programmer of KIP: Bayram Babagulyyew',
           content: 'KIP',
         },
+        {
+          name: 'Kerwen Garahanow',
+          keyword: 'Kerwen Garahanow',
+          description: 'CSS BUILDER',
+          content: 'KIP',
+        },
         { property: 'og:title', content: 'KIP' },
         {
           name: 'author',
