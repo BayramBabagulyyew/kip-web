@@ -142,6 +142,7 @@
               :href="link.url"
               @click="closeBody"
               :class="['mobile-menu__link', { active: link.id === link.url }]"
+              style="text-transform: capitalize"
             >
               <!-- {{ link.name }} -->
               {{ $t(link.name) }}
