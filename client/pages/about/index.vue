@@ -11,7 +11,7 @@
         </div>
         <div class="about-page__content" ref="images">
           <h1 class="about-page__title">
-            {{ aboutUs?.[translator("title")] }}
+            {{ aboutUs?.[translator('title')] }}
           </h1>
           <p
             class="about-page__description"
@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import { GET_ABOUT } from "@/api/home.api";
-import translate from "@/mixins/translate";
+import { GET_ABOUT } from '@/api/home.api';
+import translate from '@/mixins/translate';
 
 export default {
   data() {
@@ -42,13 +42,13 @@ export default {
     if (this.$refs.aos) {
       const options =
         {
-          rootMargin: "0px 0px 0px 0px",
+          rootMargin: '0px 0px 0px 0px',
           threshold: 0.4,
         } || {};
       this.observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry && entry.isIntersecting) {
-            this.$refs.images.classList.add("aos");
+            this.$refs.images.classList.add('aos');
           }
         });
       }, options);
@@ -147,14 +147,13 @@ export default {
     position: relative;
     padding-bottom: 5px;
     color: var(--primary);
-    font-family: "Oxanium";
+    font-family: 'Oxanium';
     font-size: 26px;
-    font-weight: 600;
     letter-spacing: 0.39px;
     display: inline-block;
     margin-bottom: 10px;
     &::after {
-      content: "";
+      content: '';
       bottom: 0;
       left: 0;
       width: 80%;
@@ -177,7 +176,6 @@ export default {
   &__description {
     color: var(--text-3);
     font-size: 18px;
-    font-weight: 500;
     line-height: 22px;
     @media (max-width: 479px) {
       font-size: 16px;
