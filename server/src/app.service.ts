@@ -166,7 +166,7 @@ export class AppService {
             createdAt: true,
             slug: true,
           },
-          orderBy: [{ [`${pagination.order_by}`]: pagination.order_direction }],
+          orderBy: { createdAt: 'desc' },
         });
       }
       const news = await this.prismaService.news.findMany({
@@ -187,7 +187,7 @@ export class AppService {
           contentEn: true,
           createdAt: true,
         },
-        orderBy: [{ [`${pagination.order_by}`]: pagination.order_direction }],
+        orderBy: { createdAt: 'desc' },
         take: pagination.limit,
         skip: pagination.skip,
       });
