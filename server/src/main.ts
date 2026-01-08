@@ -6,7 +6,13 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    cors: true /*httpsOptions: {ca: "", cert: "", key: "",}*/,
+    // cors: true /*httpsOptions: {ca: "", cert: "", key: "",}*/,
+    cors: {
+      origin: ['http://localhost', 'https://localhost', 'https://kip.tm'],
+      credentials: true,
+      allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    },
   });
   morgan.token('body', (req) => {
     return JSON.stringify(req.body);
