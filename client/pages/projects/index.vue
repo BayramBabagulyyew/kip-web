@@ -239,7 +239,7 @@ export default {
     font-weight: 700;
     line-height: normal;
     text-transform: initial;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: Verdana, Geneva, sans-serif;
   }
 }
 </style>

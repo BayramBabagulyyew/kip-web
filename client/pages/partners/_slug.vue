@@ -230,7 +230,7 @@ export default {
   &__title {
     margin-bottom: 10px;
     color: var(--primary);
-    font-family: 'Oxanium';
+    font-family: Verdana, Geneva, sans-serif;
     font-size: 24px;
     font-style: normal;
     font-weight: 600;

@@ -8,7 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     // cors: true /*httpsOptions: {ca: "", cert: "", key: "",}*/,
     cors: {
-      origin: ['http://localhost', 'https://localhost', 'https://kip.tm'],
+      origin: ['http://localhost:3333', 'https://localhost:3333', 'https://kip.tm'],
       credentials: true,
       allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],

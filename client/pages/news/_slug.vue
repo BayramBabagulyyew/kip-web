@@ -47,6 +47,19 @@ export default {
   computed: {
     ...mapGetters(['imageURL']),
   },
+  async asyncData({ params }) {
+    try {
+      const { data, statusCode } = await GET_NEWS_SLUG({
+        slug: params.slug,
+      });
+      if (statusCode) {
+        return { news: data };
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    return { news: {} };
+  },
   data() {
     return {
       news: {},
@@ -55,22 +68,30 @@ export default {
     };
   },
 
-  async mounted() {
-    await this.fetchNews();
+  head() {
+    const imageBase = process.env.IMAGE_URL || '';
+    const title = this.news?.titleRu || this.news?.titleEn || 'KIP';
+    const description = (this.news?.contentRu || this.news?.contentEn || '')
+      .replace(/<[^>]*>/g, '')
+      .substring(0, 200);
+    const image = this.news?.image ? `${imageBase}${this.news.image}` : '';
+
+    return {
+      title,
+      meta: [
+        { hid: 'og:title', property: 'og:title', content: title },
+        { hid: 'og:description', property: 'og:description', content: description },
+        { hid: 'og:image', property: 'og:image', content: image },
+        { hid: 'og:type', property: 'og:type', content: 'article' },
+        { hid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' },
+        { hid: 'twitter:title', name: 'twitter:title', content: title },
+        { hid: 'twitter:description', name: 'twitter:description', content: description },
+        { hid: 'twitter:image', name: 'twitter:image', content: image },
+      ],
+    };
   },
 
   methods: {
-    async fetchNews() {
-      try {
-        const { data, statusCode } = await GET_NEWS_SLUG({
-          slug: this.$route.params.slug,
-        });
-        if (statusCode) this.news = data;
-        // console.log(this.news);
-      } catch (error) {
-        console.error(error);
-      }
-    },
     openModal(imageUrl) {
       this.selectedImage = imageUrl;
       this.isModalVisible = true;
@@ -150,7 +171,7 @@ export default {
   &__title {
     margin-bottom: 10px;
     color: var(--primary);
-    font-family: 'Oxanium';
+    font-family: Verdana, Geneva, sans-serif;
     font-size: 24px;
     font-style: normal;
     font-weight: 600;

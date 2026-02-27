@@ -147,7 +147,7 @@ export default {
     position: relative;
     padding-bottom: 5px;
     color: var(--primary);
-    font-family: 'Oxanium';
+    font-family: Verdana, Geneva, sans-serif;
     font-size: 26px;
     letter-spacing: 0.39px;
     display: inline-block;

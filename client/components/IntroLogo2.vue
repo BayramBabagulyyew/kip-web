@@ -75,7 +75,7 @@ export default {
 
 <style lang="scss" scoped>
 body {
-  font-family: arial;
+  font-family: Verdana, Geneva, sans-serif;
   font-size: 16px;
   margin: 0;
   background-color: silver;
