@@ -79,6 +79,7 @@ export default {
         { name: 'mobile-web-app-capable', content: 'yes' },
         { name: 'apple-mobile-web-app-title', content: 'KIP' },
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
+        { name: 'google-site-verification', content: 'xu-yspm5heEMMoD95NndhaGERRHkGEs4xEQPYHLUgns' },
         ...i18nHead.meta,
       ],
       link: [
