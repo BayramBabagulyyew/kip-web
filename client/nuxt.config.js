@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head() {
@@ -109,7 +111,66 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/i18n',
     'cookie-universal-nuxt',
+    '@nuxtjs/sitemap',
   ],
+
+  sitemap: {
+    hostname: process.env.SITE_URL || 'https://kip.com.tm',
+    gzip: true,
+    i18n: true,
+    defaults: {
+      changefreq: 'weekly',
+      priority: 0.8,
+      lastmod: new Date(),
+    },
+    routes: async () => {
+      const baseAPI = process.env.BASE_API;
+      const routes = [];
+
+      try {
+        // Fetch news
+        const news = await axios({ url: `${baseAPI}news`, method: 'PATCH', params: { limit: 1000, page: 1 } });
+        if (news.data?.data?.rows) {
+          news.data.data.rows.forEach((item) => {
+            routes.push({ url: `/news/${item.slug}`, changefreq: 'weekly', priority: 0.7 });
+          });
+        }
+      } catch (e) {}
+
+      try {
+        // Fetch projects
+        const projects = await axios({ url: `${baseAPI}projects`, method: 'PATCH' });
+        if (projects.data?.data?.rows) {
+          projects.data.data.rows.forEach((item) => {
+            routes.push({ url: `/projects/${item.slug}`, changefreq: 'monthly', priority: 0.7 });
+          });
+        }
+      } catch (e) {}
+
+      try {
+        // Fetch products/services
+        const products = await axios({ url: `${baseAPI}products-services`, method: 'PATCH' });
+        if (products.data?.data?.services) {
+          products.data.data.services.forEach((item) => {
+            routes.push({ url: `/products-services/${item.slug}`, changefreq: 'monthly', priority: 0.7 });
+          });
+        }
+      } catch (e) {}
+
+      try {
+        // Fetch partners
+        const partners = await axios({ url: `${baseAPI}partner`, method: 'GET' });
+        if (partners.data?.data?.rows) {
+          partners.data.data.rows.forEach((item) => {
+            routes.push({ url: `/partners/${item.slug}`, changefreq: 'monthly', priority: 0.6 });
+          });
+        }
+      } catch (e) {}
+
+      return routes;
+    },
+    exclude: ['/admin', '/admin/**'],
+  },
 
   i18n: {
     strategy: 'prefix',

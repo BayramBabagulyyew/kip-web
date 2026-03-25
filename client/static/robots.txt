@@ -2,3 +2,5 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /api/
+
+Sitemap: https://kip.com.tm/sitemap.xml
