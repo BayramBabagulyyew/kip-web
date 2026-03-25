@@ -1,6 +1,7 @@
 <template>
   <header :class="['header', { 'header--white': isPlaying, 'header--scrolled': isScrolled }]">
     <div class="header__container" :style="{ '--shine-x': shineX + '%' }">
+      <div class="header__glass"></div>
       <div class="header__body">
         <div :class="['burger-wrapper', { open: openLanguages }]" @click="toggleLanguages">
           <div class="burger">
@@ -263,7 +264,7 @@ ul li {
   &__container {
     margin: 0 auto;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     background: linear-gradient(
       135deg,
       rgba(255, 255, 255, 0.45) 0%,
@@ -286,6 +287,18 @@ ul li {
       inset 0 1px 1px rgba(255, 255, 255, 0.8),
       inset 0 -1px 1px rgba(255, 255, 255, 0.15);
 
+    @media (max-width: 767px) {
+      display: none;
+    }
+  }
+
+  .header__glass {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: inherit;
+    pointer-events: none;
+
     // specular light sweep — moves with scroll via --shine-x
     &::before {
       content: '';
@@ -302,7 +315,6 @@ ul li {
         rgba(255, 255, 255, 0.4) 60%,
         transparent 100%
       );
-      pointer-events: none;
       z-index: 1;
       border-radius: inherit;
     }
@@ -316,13 +328,8 @@ ul li {
       right: 0;
       height: 50%;
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, transparent 100%);
-      pointer-events: none;
       border-radius: 20px 20px 0 0;
       z-index: 0;
-    }
-
-    @media (max-width: 767px) {
-      display: none;
     }
   }
 
