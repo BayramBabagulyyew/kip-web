@@ -17,67 +17,53 @@ export default {
           content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0',
         },
         {
-          hid: 'инжиниринговые услуги туркменистан',
-          name: 'инжиниринговые услуги туркменистан',
-          content: 'инжиниринговые услуги туркменистан',
-          description: 'инжиниринговые услуги туркменистан',
-          keyword: 'инжиниринговые услуги туркменистан',
+          hid: 'description',
+          name: 'description',
+          content:
+            'KIP Engineering — leading engineering company in Turkmenistan, Ashgabat. Professional engineering services, installation, commissioning, industrial solutions, oil and gas engineering, construction and project management.',
         },
+        {
+          hid: 'keywords',
+          name: 'keywords',
+          content:
+            'KIP, KIP engineering, engineering, engineering Turkmenistan, engineering Ashgabat, engineering companies, engineering companies Turkmenistan, engineering services, engineering services Ashgabat, industrial engineering Turkmenistan, oil and gas engineering, construction Turkmenistan, project management Turkmenistan, installation and commissioning, инжиниринг, инжиниринг Туркменистан, инжиниринг Ашхабад, инжиниринговые услуги, инжиниринговые услуги Туркменистан, инжиниринговые компании, установка и пусконаладка, нефтегазовый инжиниринг, строительство Туркменистан, KIP компания',
+        },
+        { name: 'author', content: 'KIP Engineering' },
+        { name: 'robots', content: 'index, follow' },
+
+        // Open Graph
+        { hid: 'og:type', property: 'og:type', content: 'website' },
+        { hid: 'og:title', property: 'og:title', content: 'KIP Engineering — Engineering Company in Turkmenistan' },
         {
           hid: 'og:description',
-          name: 'инжиниринговые услуги туркменистан',
-          content: 'инжиниринговые услуги туркменистан',
-          description: 'инжиниринговые услуги туркменистан',
-          keyword: 'инжиниринговые услуги туркменистан',
+          property: 'og:description',
+          content:
+            'KIP Engineering — leading engineering company in Turkmenistan. Professional engineering services, installation, commissioning, and industrial solutions in Ashgabat.',
         },
+        { hid: 'og:site_name', property: 'og:site_name', content: 'KIP Engineering' },
+        { property: 'og:image:width', content: '1350' },
+        { property: 'og:image:height', content: '1000' },
+
+        // Twitter Card
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { hid: 'twitter:title', name: 'twitter:title', content: 'KIP Engineering — Engineering Company in Turkmenistan' },
         {
-          hid: 'инжиниринг туркменистан',
-          name: 'инжиниринг туркменистан',
-          content: 'инжиниринг туркменистан',
-          description: 'инжиниринг туркменистан',
-          keyword: 'инжиниринг туркменистан',
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content:
+            'KIP Engineering — leading engineering company in Turkmenistan. Professional engineering services, installation, commissioning, and industrial solutions.',
         },
-        {
-          hid: 'установка и пусконаладка туркменистан',
-          name: 'установка и пусконаладка туркменистан',
-          content: 'установка и пусконаладка туркменистан',
-          description: 'установка и пусконаладка туркменистан',
-          keyword: 'установка и пусконаладка туркменистан',
-        },
-        {
-          name: 'Bayram Babagulyyew',
-          keyword: 'Bayram Babagulyyew',
-          description: 'Programmer of KIP: Bayram Babagulyyew',
-          content: 'KIP',
-        },
-        {
-          name: 'Kerwen Garahanow',
-          keyword: 'Kerwen Garahanow',
-          description: 'CSS BUILDER',
-          content: 'KIP',
-        },
-        { property: 'og:title', content: 'KIP' },
-        {
-          name: 'author',
-          content: 'Developer: KIP group',
-        },
-        {
-          itemprop: 'og:image:width',
-          content: `1350`,
-        },
-        {
-          itemprop: 'og:image:height',
-          content: `1000`,
-        },
+
+        // App / Theme
         { name: 'format-detection', content: 'telephone=no' },
         { name: 'theme-color', content: '#183A60' },
         { name: 'msapplication-navbutton-color', content: '#183A60' },
         { name: 'apple-mobile-web-app-status-bar-style', content: '#183A60' },
         { name: 'msapplication-TileColor', content: '#183A60' },
-        { name: 'application-name', content: 'KIP' },
-        { name: 'msapplication-tooltip', content: 'KIP' },
+        { name: 'application-name', content: 'KIP Engineering' },
+        { name: 'msapplication-tooltip', content: 'KIP Engineering' },
         { name: 'mobile-web-app-capable', content: 'yes' },
-        { name: 'apple-mobile-web-app-title', content: 'KIP' },
+        { name: 'apple-mobile-web-app-title', content: 'KIP Engineering' },
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
         { name: 'google-site-verification', content: 'xu-yspm5heEMMoD95NndhaGERRHkGEs4xEQPYHLUgns' },
         ...i18nHead.meta,

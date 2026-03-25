@@ -109,6 +109,72 @@ export default {
     };
   },
 
+  head() {
+    return {
+      title: 'KIP Engineering — Engineering Company in Turkmenistan, Ashgabat',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            'KIP Engineering — leading engineering company in Turkmenistan, Ashgabat. Engineering services, installation, commissioning, oil and gas engineering, industrial solutions, construction and project management.',
+        },
+        {
+          hid: 'keywords',
+          name: 'keywords',
+          content:
+            'KIP, KIP engineering, engineering, engineering Turkmenistan, engineering Ashgabat, engineering companies, engineering companies Turkmenistan, engineering services, oil and gas engineering, construction Turkmenistan, installation and commissioning, industrial solutions, project management, инжиниринг, инжиниринг Туркменистан, инжиниринг Ашхабад, инжиниринговые услуги, инжиниринговые компании Туркменистан, установка и пусконаладка, нефтегазовый инжиниринг, строительство Туркменистан',
+        },
+        { hid: 'og:title', property: 'og:title', content: 'KIP Engineering — Engineering Company in Turkmenistan, Ashgabat' },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content:
+            'KIP Engineering — leading engineering company in Turkmenistan. Professional engineering services, installation, commissioning, and industrial solutions in Ashgabat.',
+        },
+        { hid: 'og:type', property: 'og:type', content: 'website' },
+        { hid: 'twitter:title', name: 'twitter:title', content: 'KIP Engineering — Engineering Company in Turkmenistan' },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content:
+            'KIP Engineering — leading engineering company in Turkmenistan. Engineering services, installation, commissioning, and industrial solutions.',
+        },
+      ],
+      script: [
+        {
+          type: 'application/ld+json',
+          json: {
+            '@context': 'https://schema.org',
+            '@type': 'Organization',
+            name: 'KIP Engineering',
+            alternateName: 'KIP',
+            description:
+              'Leading engineering company in Turkmenistan providing engineering services, installation, commissioning, oil and gas engineering, and industrial solutions.',
+            address: {
+              '@type': 'PostalAddress',
+              addressLocality: 'Ashgabat',
+              addressCountry: 'Turkmenistan',
+            },
+            areaServed: {
+              '@type': 'Country',
+              name: 'Turkmenistan',
+            },
+            knowsAbout: [
+              'Engineering',
+              'Engineering Services',
+              'Oil and Gas Engineering',
+              'Installation and Commissioning',
+              'Industrial Solutions',
+              'Construction',
+              'Project Management',
+            ],
+          },
+        },
+      ],
+    };
+  },
+
   async mounted() {
     await this.fetchAbout();
     await this.fetchProducts();
