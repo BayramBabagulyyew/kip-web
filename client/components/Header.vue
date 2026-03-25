@@ -1,5 +1,5 @@
 <template>
-  <header :class="['header', { 'header--white': isPlaying }]">
+  <header :class="['header', { 'header--white': isPlaying, 'header--scrolled': isScrolled }]">
     <div class="header__container">
       <div class="header__body">
         <div :class="['burger-wrapper', { open: openLanguages }]" @click="toggleLanguages">
@@ -188,10 +188,14 @@ export default {
       openLanguages: false,
       openMobileMenu: false,
       openProducts: false,
+      isScrolled: false,
     };
   },
   mounted() {
-    // console.log(this.selectedLocale);
+    window.addEventListener('scroll', this.handleScroll, { passive: true });
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.handleScroll);
   },
   computed: {
     selectedLocale() {
@@ -207,6 +211,9 @@ export default {
   },
 
   methods: {
+    handleScroll() {
+      this.isScrolled = window.scrollY > 50;
+    },
     toggleLanguages() {
       this.openLanguages = !this.openLanguages;
     },
@@ -249,12 +256,14 @@ ul li {
 
   &__container {
     margin: 0 auto;
-    border: 1px solid var(--primary);
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-    backdrop-filter: blur(31px);
+    background: rgba(200, 220, 240, 0.45);
+    border-radius: 16px;
     padding: 10px;
     max-width: 1500px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(2px) saturate(180%);
+    -webkit-backdrop-filter: blur(2px) saturate(180%);
     @media (max-width: 767px) {
       display: none;
     }
