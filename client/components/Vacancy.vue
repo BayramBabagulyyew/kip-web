@@ -5,7 +5,15 @@
         <img src="@/assets/img/fb.svg" alt="" />
       </div>
       <div class="vacancy__form-wrapper" ref="form">
-        <h1 class="vacancy__title">{{ $t("contactUs") }}</h1>
+        <div class="vacancy__header">
+          <h1 class="vacancy__title">{{ $t('contactUs') }}</h1>
+          <a
+            href="tel:+99362991212"
+            class="vacancy__phone"
+            style="display: flex; align-items: center; gap: 5px text-decoration: none;"
+            ><base-icon icon="call" />+993 62 991212</a
+          >
+        </div>
         <form @submit.prevent class="vacancy__form">
           <base-input
             @updateValue="(val) => (this.send.name = val)"
@@ -33,7 +41,7 @@
             placeholder="-----"
           />
           <button @click="sendContact" class="vacancy__button">
-            <span class="vacancy__title-form">{{ $t("send") }}</span>
+            <span class="vacancy__title-form">{{ $t('send') }}</span>
           </button>
         </form>
       </div>
@@ -43,20 +51,20 @@
 </template>
 
 <script>
-import { request } from "@/api/generic.api";
-import { POST_MAIL } from "@/api/home.api";
+import { request } from '@/api/generic.api';
+import { POST_MAIL } from '@/api/home.api';
 
 export default {
   data() {
     return {
       observer: null,
-      fileName: "",
+      fileName: '',
       activePupUp: false,
       error: false,
       send: {
-        name: "",
-        email: "",
-        comment: "",
+        name: '',
+        email: '',
+        comment: '',
         fileUrl: null,
       },
     };
@@ -65,14 +73,14 @@ export default {
     if (this.$refs.aos) {
       const options =
         {
-          rootMargin: "0px 0px 0px 0px",
+          rootMargin: '0px 0px 0px 0px',
           threshold: 0.4,
         } || {};
       this.observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry && entry.isIntersecting) {
-            this.$refs.image.classList.add("aos");
-            this.$refs.form.classList.add("aos");
+            this.$refs.image.classList.add('aos');
+            this.$refs.form.classList.add('aos');
           }
         });
       }, options);
@@ -93,12 +101,7 @@ export default {
   },
   methods: {
     async sendContact() {
-      if (
-        !this.send.name ||
-        !this.send.email ||
-        !this.send.comment ||
-        !this.checkValidate
-      ) {
+      if (!this.send.name || !this.send.email || !this.send.comment || !this.checkValidate) {
         this.error = false;
         setTimeout(() => {
           this.error = true;
@@ -125,7 +128,7 @@ export default {
       this.fileName = files[0].name;
       try {
         const { success, data } = await request({
-          url: "upload",
+          url: 'upload',
           data: {
             fileUrl: files[0],
           },
@@ -150,7 +153,7 @@ export default {
     height: 100%;
   }
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     left: 0;
     top: 0;
@@ -214,6 +217,33 @@ export default {
     }
   }
 
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 25px;
+    @media (max-width: 479px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  &__phone {
+    color: #e24339;
+    font-size: 22px;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 479px) {
+      font-size: 18px;
+    }
+  }
+
   &__title {
     position: relative;
     padding-bottom: 7px;
@@ -225,10 +255,10 @@ export default {
     letter-spacing: 0.33px;
     text-transform: initial;
     display: inline-block;
-    margin-bottom: 25px;
+    margin-bottom: 0;
 
     &::after {
-      content: "";
+      content: '';
       bottom: 0;
       left: 0;
       width: 80%;
@@ -275,7 +305,7 @@ export default {
     transition: 0.1s;
 
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       left: -100%;
       top: -10%;
@@ -287,7 +317,7 @@ export default {
     &:active {
       transform: scale(1.04);
       &::before {
-        content: "";
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
