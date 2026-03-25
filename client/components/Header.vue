@@ -1,6 +1,6 @@
 <template>
   <header :class="['header', { 'header--white': isPlaying, 'header--scrolled': isScrolled }]">
-    <div class="header__container">
+    <div class="header__container" :style="{ '--shine-x': shineX + '%' }">
       <div class="header__body">
         <div :class="['burger-wrapper', { open: openLanguages }]" @click="toggleLanguages">
           <div class="burger">
@@ -189,6 +189,7 @@ export default {
       openMobileMenu: false,
       openProducts: false,
       isScrolled: false,
+      scrollY: 0,
     };
   },
   mounted() {
@@ -201,6 +202,10 @@ export default {
     selectedLocale() {
       return this.$i18n.locales;
     },
+    shineX() {
+      // light sweep moves across the glass as you scroll
+      return ((this.scrollY / 5) % 200) - 50;
+    },
   },
   watch: {
     $route(to, from) {
@@ -212,7 +217,8 @@ export default {
 
   methods: {
     handleScroll() {
-      this.isScrolled = window.scrollY > 50;
+      this.scrollY = window.scrollY;
+      this.isScrolled = this.scrollY > 50;
     },
     toggleLanguages() {
       this.openLanguages = !this.openLanguages;
@@ -256,14 +262,65 @@ ul li {
 
   &__container {
     margin: 0 auto;
-    background: rgba(200, 220, 240, 0.45);
-    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.45) 0%,
+      rgba(200, 220, 240, 0.3) 50%,
+      rgba(255, 255, 255, 0.4) 100%
+    );
+    border-radius: 20px;
     padding: 10px;
     max-width: 1500px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(2px) saturate(180%);
-    -webkit-backdrop-filter: blur(2px) saturate(180%);
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
+    border-top-color: rgba(255, 255, 255, 0.7);
+    border-left-color: rgba(255, 255, 255, 0.6);
+    border-bottom-color: rgba(255, 255, 255, 0.2);
+    border-right-color: rgba(255, 255, 255, 0.25);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.08),
+      0 2px 8px rgba(0, 0, 0, 0.04),
+      inset 0 1px 1px rgba(255, 255, 255, 0.8),
+      inset 0 -1px 1px rgba(255, 255, 255, 0.15);
+
+    // specular light sweep — moves with scroll via --shine-x
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: var(--shine-x, -50%);
+      width: 40%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.4) 40%,
+        rgba(255, 255, 255, 0.6) 50%,
+        rgba(255, 255, 255, 0.4) 60%,
+        transparent 100%
+      );
+      pointer-events: none;
+      z-index: 1;
+      border-radius: inherit;
+    }
+
+    // glass edge refraction highlight
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, transparent 100%);
+      pointer-events: none;
+      border-radius: 20px 20px 0 0;
+      z-index: 0;
+    }
+
     @media (max-width: 767px) {
       display: none;
     }
@@ -273,6 +330,8 @@ ul li {
     display: flex;
     gap: 14px;
     align-items: center;
+    position: relative;
+    z-index: 2;
   }
 
   .burger-wrapper {
