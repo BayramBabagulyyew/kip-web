@@ -16,7 +16,7 @@ export default {
   contactUsMin: 'Contact',
   downloadCatalog: 'Download',
   catalog: 'Presentation',
-  introTitle: 'ES "KOPUGURLY INZHENERCHILIK PAYHASLARY”',
+  introTitle: '"KOPUGURLY INZHENERCHILIK PAYHASLARY” ES',
   dealership: 'Dealership',
   readMore: 'Read more',
   information: 'Info',
