@@ -143,6 +143,24 @@ export default {
       ],
       script: [
         {
+          src: 'https://www.googletagmanager.com/gtag/js?id=G-R2MRRVG6Z1',
+          async: true,
+        },
+        {
+          innerHTML: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-R2MRRVG6Z1');
+            gtag('config', 'AW-18037765245');
+          `,
+          type: 'text/javascript',
+        },
+        {
+          src: 'https://www.googletagmanager.com/gtag/js?id=AW-18037765245',
+          async: true,
+        },
+        {
           type: 'application/ld+json',
           json: {
             '@context': 'https://schema.org',
@@ -172,6 +190,7 @@ export default {
           },
         },
       ],
+      __dangerouslyDisableSanitizers: ['script'],
     };
   },
 
