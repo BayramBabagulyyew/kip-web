@@ -35,7 +35,11 @@ export default {
 
         // Open Graph
         { hid: 'og:type', property: 'og:type', content: 'website' },
-        { hid: 'og:title', property: 'og:title', content: 'KIP Engineering — Engineering Company in Turkmenistan' },
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content: 'KIP Engineering — Engineering Company in Turkmenistan',
+        },
         {
           hid: 'og:description',
           property: 'og:description',
@@ -48,7 +52,11 @@ export default {
 
         // Twitter Card
         { name: 'twitter:card', content: 'summary_large_image' },
-        { hid: 'twitter:title', name: 'twitter:title', content: 'KIP Engineering — Engineering Company in Turkmenistan' },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: 'KIP Engineering — Engineering Company in Turkmenistan',
+        },
         {
           hid: 'twitter:description',
           name: 'twitter:description',
@@ -67,7 +75,6 @@ export default {
         { name: 'mobile-web-app-capable', content: 'yes' },
         { name: 'apple-mobile-web-app-title', content: 'KIP Engineering' },
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
-        { name: 'google-site-verification', content: 'xu-yspm5heEMMoD95NndhaGERRHkGEs4xEQPYHLUgns' },
         ...i18nHead.meta,
       ],
       link: [
@@ -75,6 +82,19 @@ export default {
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
         ...i18nHead.link,
       ],
+      script: [
+        {
+          src: 'https://www.googletagmanager.com/gtag/js?id=AW-18037765245',
+          async: true,
+        },
+        {
+          hid: 'gtag-init',
+          innerHTML: `window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'AW-18037765245');gtag('config', 'G-R2MRRVG6Z1');`,
+        },
+      ],
+      __dangerouslyDisableSanitizersByTagID: {
+        'gtag-init': ['innerHTML'],
+      },
     };
   },
 
@@ -129,7 +149,11 @@ export default {
 
       try {
         // Fetch news
-        const news = await axios({ url: `${baseAPI}news`, method: 'PATCH', params: { limit: 1000, page: 1 } });
+        const news = await axios({
+          url: `${baseAPI}news`,
+          method: 'PATCH',
+          params: { limit: 1000, page: 1 },
+        });
         if (news.data?.data?.rows) {
           news.data.data.rows.forEach((item) => {
             routes.push({ url: `/news/${item.slug}`, changefreq: 'weekly', priority: 0.7 });
@@ -152,7 +176,11 @@ export default {
         const products = await axios({ url: `${baseAPI}products-services`, method: 'PATCH' });
         if (products.data?.data?.services) {
           products.data.data.services.forEach((item) => {
-            routes.push({ url: `/products-services/${item.slug}`, changefreq: 'monthly', priority: 0.7 });
+            routes.push({
+              url: `/products-services/${item.slug}`,
+              changefreq: 'monthly',
+              priority: 0.7,
+            });
           });
         }
       } catch (e) {}
