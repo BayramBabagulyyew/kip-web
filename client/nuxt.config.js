@@ -22,13 +22,13 @@ export default {
           hid: 'description',
           name: 'description',
           content:
-            'KIP Engineering — leading engineering company in Turkmenistan, Ashgabat. Professional engineering services, installation, commissioning, industrial solutions, oil and gas engineering, construction and project management.',
+            'KIP Engineering - full-cycle engineering company in Turkmenistan. Technical project design, industrial equipment and parts supply, turnkey project implementation, high-end electronics & IT services, integrated industrial solutions.',
         },
         {
           hid: 'keywords',
           name: 'keywords',
           content:
-            'KIP, KIP engineering, engineering, engineering Turkmenistan, engineering Ashgabat, engineering companies, engineering companies Turkmenistan, engineering services, engineering services Ashgabat, industrial engineering Turkmenistan, oil and gas engineering, construction Turkmenistan, project management Turkmenistan, installation and commissioning, инжиниринг, инжиниринг Туркменистан, инжиниринг Ашхабад, инжиниринговые услуги, инжиниринговые услуги Туркменистан, инжиниринговые компании, установка и пусконаладка, нефтегазовый инжиниринг, строительство Туркменистан, KIP компания',
+            'engineering ashgabat, kip engineering, kip tm, kip, engineering, ashgabat engineer, Dovlet Kakabayev Bayram Babagulyyev, developer, KIP, engineering Turkmenistan, engineering Ashgabat, engineering companies, engineering companies Turkmenistan, engineering services, oil and gas engineering, construction Turkmenistan, installation and commissioning, industrial solutions, project management, инжиниринг, инжиниринг Туркменистан, инжиниринг Ашхабад, инжиниринговые услуги, инжиниринговые компании Туркменистан, установка и пусконаладка, нефтегазовый инжиниринг, строительство Туркменистан, Довлет Какабаев, Байрам Бабагулов, разработчик, КИП, инжиниринг, инженерные решения, промышленные решения, проектирование, поставка оборудования, реализация проектов под ключ, IT-услуги, интегрированные промышленные решения',
         },
         { name: 'author', content: 'KIP Engineering' },
         { name: 'robots', content: 'index, follow' },
@@ -44,7 +44,7 @@ export default {
           hid: 'og:description',
           property: 'og:description',
           content:
-            'KIP Engineering — leading engineering company in Turkmenistan. Professional engineering services, installation, commissioning, and industrial solutions in Ashgabat.',
+            'KIP Engineering - full-cycle engineering company in Turkmenistan. Technical project design, industrial equipment and parts supply, turnkey project implementation, high-end electronics & IT services, integrated industrial solutions.',
         },
         { hid: 'og:site_name', property: 'og:site_name', content: 'KIP Engineering' },
         { property: 'og:image:width', content: '1350' },
@@ -61,7 +61,7 @@ export default {
           hid: 'twitter:description',
           name: 'twitter:description',
           content:
-            'KIP Engineering — leading engineering company in Turkmenistan. Professional engineering services, installation, commissioning, and industrial solutions.',
+            'KIP Engineering - full-cycle engineering company in Turkmenistan. Technical project design, industrial equipment and parts supply, turnkey project implementation, high-end electronics & IT services, integrated industrial solutions.',
         },
 
         // App / Theme
