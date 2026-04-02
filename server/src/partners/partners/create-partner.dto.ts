@@ -45,4 +45,8 @@ export class CreatePartnerDto {
   @IsString()
   media: string;
 
+  @IsOptional()
+  @IsString()
+  catalogUrl: string;
+
 }

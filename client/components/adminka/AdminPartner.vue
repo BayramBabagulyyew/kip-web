@@ -33,6 +33,17 @@
         placeholder="..."
         type="number"
       />
+      <div class="left-item">
+        <label style="font-size: 13px; font-weight: 600; margin-bottom: 4px; display: block">Catalog (PDF)</label>
+        <base-file-input
+          @file="uploadCatalog"
+          :image="main.catalogUrl"
+          style="height: 80px"
+        />
+        <span v-if="main.catalogUrl" style="font-size: 12px; color: green; margin-top: 4px; display: block">
+          File uploaded: {{ main.catalogUrl }}
+        </span>
+      </div>
       <RichTextEditor
         :model-value="main[`text${activeLang}`]"
         @update="(val) => (main[`text${activeLang}`] = val)"
@@ -118,6 +129,7 @@ export default {
         website: '',
         priority: '',
         fileUrl: '',
+        catalogUrl: '',
         media: '',
         type: '',
       },
@@ -144,6 +156,7 @@ export default {
             website: '',
             priority: '',
             fileUrl: '',
+            catalogUrl: '',
             media: '',
             type: '',
           };
@@ -191,6 +204,23 @@ export default {
         this.errorPupUp = false;
       }, 2000);
     },
+    async uploadCatalog(file) {
+      try {
+        const { success, data } = await request({
+          url: 'upload',
+          data: { fileUrl: file },
+          file: true,
+        });
+        if (success) this.main.catalogUrl = data.url;
+      } catch (error) {
+        console.log(error);
+        this.errorMessage = error.message;
+        this.errorPupUp = true;
+      }
+      setTimeout(() => {
+        this.errorPupUp = false;
+      }, 2000);
+    },
     async saveData() {
       try {
         const id = this.$route.query.id;
@@ -214,6 +244,7 @@ export default {
             website: this.main.website,
             priority: this.main.priority,
             fileUrl: this.main.fileUrl,
+            catalogUrl: this.main.catalogUrl,
             media: this.main.media,
             type: this.main.type,
           },
@@ -230,6 +261,7 @@ export default {
             website: '',
             priority: '',
             fileUrl: '',
+            catalogUrl: '',
             media: '',
           };
           this.activePupUp = true;

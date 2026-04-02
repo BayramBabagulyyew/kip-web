@@ -85,8 +85,9 @@ model partners {
   textTm    String?
   textRu    String?
   textEn    String?
-  slug      String?         @unique
-  gallery   gallery[]
+  slug       String?         @unique
+  catalogUrl String?
+  gallery    gallery[]
 }
 
 model gallery {

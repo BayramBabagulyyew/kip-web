@@ -25,6 +25,15 @@
           {{ data?.[translator('name')] }}
         </h1>
         <p class="news-id__description" v-html="data?.[translator(`text`)]"></p>
+        <a
+          v-if="data.catalogUrl"
+          :href="`${imageURL}${data.catalogUrl}`"
+          target="_blank"
+          download
+          class="news-id__catalog-btn"
+        >
+          {{ $t('downloadCatalog') }}
+        </a>
       </div>
     </div>
 
@@ -247,6 +256,22 @@ export default {
     line-height: 1.5em;
     font-weight: 500;
     margin-bottom: 6px;
+  }
+
+  &__catalog-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 24px;
+    background-color: var(--primary);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.2s;
+    &:hover {
+      opacity: 0.85;
+    }
   }
 
   &__date {

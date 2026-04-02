@@ -117,13 +117,19 @@ export default {
           hid: 'description',
           name: 'description',
           content:
-            'KIP Engineering — IT & Industrial Engineering Company in Ashgabat, Turkmenistan.. Engineering services, installation, commissioning, oil and gas engineering, industrial solutions, construction and project management.',
+            'KIP Engineering - full-cycle engineering company in Turkmenistan. Technical project design, industrial equipment and parts supply, turnkey project implementation, high-end electronics & IT services, integrated industrial solutions.',
         },
         {
           hid: 'keywords',
           name: 'keywords',
           content:
-            'engineering ashgabat, kip engineering, kip tm, kip, engineering, ashgabat engineer, Dovlet Kakabayev Bayram Babagulyyev, developer, KIP, engineering Turkmenistan, engineering Ashgabat, engineering companies, engineering companies Turkmenistan, engineering services, oil and gas engineering, construction Turkmenistan, installation and commissioning, industrial solutions, project management, инжиниринг, инжиниринг Туркменистан, инжиниринг Ашхабад, инжиниринговые услуги, инжиниринговые компании Туркменистан, установка и пусконаладка, нефтегазовый инжиниринг, строительство Туркменистан, Довлет Какабаев, Байрам Бабагулов, разработчик, КИП, инжиниринг, инженерные решения, промышленные решения, проектирование, поставка оборудования, реализация проектов под ключ, IT-услуги, интегрированные промышленные решения',
+            'air compressors Turkmenistan, industrial parts supply, electronics repair, automation solutions, Delta Turkmenistan, RFID Turkmenistan, installation, commissioning, sensor calibration, PLC programming, industrial IT solutions, Lemmer document management',
+        },
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content:
+            'air compressors Turkmenistan, industrial parts supply, electronics repair, automation solutions, Delta Turkmenistan, RFID Turkmenistan, installation, commissioning, sensor calibration, PLC programming, industrial IT solutions, Lemmer document management',
         },
         {
           hid: 'og:title',

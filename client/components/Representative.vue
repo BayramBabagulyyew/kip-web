@@ -2,10 +2,10 @@
   <div class="representative" ref="aos">
     <div class="representative__columns" ref="images">
       <div class="representative__title-wrapper">
-        <h1 class="representative__title">{{ $t("achievements") }}</h1>
+        <h1 class="representative__title">{{ $t('achievements') }}</h1>
       </div>
       <div class="representative__column">
-        <div class="representative__subtitle">{{ $t("dealership") }}</div>
+        <p class="representative__subtitle">{{ $t('dealership') }}</p>
         <div v-swiper:mySwiper="options" class="representative__swiper swiper">
           <div class="representative__images swiper-wrapper">
             <a
@@ -19,21 +19,19 @@
             </a>
           </div>
           <div class="representative__swiper-navigations">
-            <div
-              class="representative__swiper-prev-navigation swiper-button-prev"
-            >
+            <div class="representative__swiper-prev-navigation swiper-button-prev">
               <base-icon icon="prevNavigation" />
             </div>
-            <div
-              class="representative__swiper-next-navigation swiper-button-next"
-            >
+            <div class="representative__swiper-next-navigation swiper-button-next">
               <base-icon icon="nextNavigation" />
             </div>
           </div>
         </div>
       </div>
       <div class="representative__column">
-        <div class="representative__subtitle">{{ $t("ourClients") }}</div>
+        <p class="representative__subtitle">
+          {{ $t('ourClients') }} <span style="color: red; font-weight: bold">*</span>
+        </p>
         <div v-swiper:mySwiper4="options" class="representative__swiper swiper">
           <div class="representative__images swiper-wrapper">
             <a
@@ -46,22 +44,31 @@
               <img :src="`${imageURL}${item?.fileUrl}`" alt="" />
             </a>
           </div>
+
           <div class="representative__swiper-navigations">
-            <div
-              class="representative__swiper-prev-navigation swiper-button-prev"
-            >
+            <div class="representative__swiper-prev-navigation swiper-button-prev">
               <base-icon icon="prevNavigation" />
             </div>
-            <div
-              class="representative__swiper-next-navigation swiper-button-next"
-            >
+            <div class="representative__swiper-next-navigation swiper-button-next">
               <base-icon icon="nextNavigation" />
             </div>
           </div>
         </div>
       </div>
+      <p
+        style="
+          color: red !important;
+          font-size: 12px;
+          font-weight: bold;
+          margin-top: 10px;
+          line-height: 1.4;
+        "
+      >
+        <span style="margin-right: 1%; font-weight: bold; font-size: large">*</span
+        >{{ $t('notPartner') }}
+      </p>
       <div class="representative__column">
-        <div class="representative__subtitle">{{ $t('ourProjects') }}</div>
+        <p class="representative__subtitle">{{ $t('ourProjects') }}</p>
         <div v-swiper:mySwiper1="options" class="representative__swiper swiper">
           <div class="representative__images swiper-wrapper">
             <a
@@ -75,14 +82,10 @@
             </a>
           </div>
           <div class="representative__swiper-navigations">
-            <div
-              class="representative__swiper-prev-navigation swiper-button-prev"
-            >
+            <div class="representative__swiper-prev-navigation swiper-button-prev">
               <base-icon icon="prevNavigation" />
             </div>
-            <div
-              class="representative__swiper-next-navigation swiper-button-next"
-            >
+            <div class="representative__swiper-next-navigation swiper-button-next">
               <base-icon icon="nextNavigation" />
             </div>
           </div>
@@ -93,7 +96,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 export default {
   props: {
     main: {
@@ -103,7 +106,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["imageURL"]),
+    ...mapGetters(['imageURL']),
   },
   data() {
     return {
@@ -118,8 +121,8 @@ export default {
           speed: 1000,
         },
         navigation: {
-          nextEl: ".representative__swiper-next-navigation",
-          prevEl: ".representative__swiper-prev-navigation",
+          nextEl: '.representative__swiper-next-navigation',
+          prevEl: '.representative__swiper-prev-navigation',
         },
         breakpoints: {
           320: {
@@ -142,14 +145,14 @@ export default {
     if (this.$refs.aos) {
       const options =
         {
-          rootMargin: "0px 0px 0px 0px",
+          rootMargin: '0px 0px 0px 0px',
           threshold: 0.4,
         } || {};
       this.observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry && entry.isIntersecting) {
-            this.$refs.images.classList.add("aos");
-            const elemAos = document.querySelectorAll(".aos");
+            this.$refs.images.classList.add('aos');
+            const elemAos = document.querySelectorAll('.aos');
           }
         });
       }, options);
@@ -194,7 +197,7 @@ export default {
     display: inline-block;
 
     &::after {
-      content: "";
+      content: '';
       bottom: 0;
       left: 0;
       width: 110%;

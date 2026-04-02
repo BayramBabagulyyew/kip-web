@@ -26,6 +26,8 @@ export default {
   pdfDownloadFile: 'download file',
   newsCompany: 'News of the company',
   ourClients: 'Our clients',
+  notPartner:
+    'KIP Engineering doest not act as the official representative of the listed manufacturers in Turkmenistan. The mention of the brands only indicates that engineering services are carried out in agreement with the equipment Owners.',
   ourProjects: 'Our projects',
   send: 'Send',
   company: 'Company',

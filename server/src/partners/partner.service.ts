@@ -28,6 +28,7 @@ export class PartnerService {
           textTm: dto?.textTm ? dto?.textTm : null,
           textEn: dto?.textEn ? dto?.textEn : null,
           textRu: dto?.textRu ? dto?.textRu : null,
+          catalogUrl: dto?.catalogUrl ? dto?.catalogUrl : null,
           slug: this.slugUtil.slugify(dto.nameEn)
         }
       });
@@ -151,6 +152,7 @@ export class PartnerService {
           textTm: dto?.textTm ? dto?.textTm : null,
           textEn: dto?.textEn ? dto?.textEn : null,
           textRu: dto?.textRu ? dto?.textRu : null,
+          catalogUrl: dto?.catalogUrl ? dto?.catalogUrl : null,
           slug: this.slugUtil.slugify(dto.nameEn)
         }
       });
