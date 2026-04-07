@@ -30,7 +30,7 @@
       </div>
       <div class="representative__column">
         <p class="representative__subtitle">
-          {{ $t('ourClients') }} <span style="color: red; font-weight: bold">*</span>
+          {{ $t('ourClients') }}
         </p>
         <div v-swiper:mySwiper4="options" class="representative__swiper swiper">
           <div class="representative__images swiper-wrapper">
@@ -55,20 +55,11 @@
           </div>
         </div>
       </div>
-      <p
-        style="
-          color: red !important;
-          font-size: 12px;
-          font-weight: bold;
-          margin-top: 10px;
-          line-height: 1.4;
-        "
-      >
-        <span style="margin-right: 1%; font-weight: bold; font-size: large">*</span
-        >{{ $t('notPartner') }}
-      </p>
       <div class="representative__column">
-        <p class="representative__subtitle">{{ $t('ourProjects') }}</p>
+        <p class="representative__subtitle">
+          {{ $t('ourProjects')
+          }}<span style="color: red; font-weight: bold; margin-left: 5px">*</span>
+        </p>
         <div v-swiper:mySwiper1="options" class="representative__swiper swiper">
           <div class="representative__images swiper-wrapper">
             <a
@@ -91,6 +82,18 @@
           </div>
         </div>
       </div>
+      <p
+        style="
+          color: red !important;
+          font-size: 12px;
+          font-weight: bold;
+          margin-top: 10px;
+          line-height: 1.4;
+        "
+      >
+        <span style="margin-right: 1%; font-weight: bold; font-size: large">*</span
+        >{{ $t('notPartner') }}
+      </p>
     </div>
   </div>
 </template>
