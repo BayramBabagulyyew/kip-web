@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { ImagesModule } from './images/images.module';
 import { NewsModule } from './news/news.module';
 import { PartnerModule } from './partners/partner.module';
+import { PresentationsModule } from './presentations/presentations.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ProjectsModule } from './projects/projects.module';
 import { TaglineModule } from './tagline/tagline.module';
@@ -30,7 +31,8 @@ import { UsersModule } from './users/users.module';
     ProjectsModule,
     ImagesModule,
     TaglineModule,
-    PartnerModule
+    PartnerModule,
+    PresentationsModule
   ],
   controllers: [AppController],
   providers: [AppService, SlugUtil],
