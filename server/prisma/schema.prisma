@@ -204,6 +204,14 @@ model taglines {
   updatedAt DateTime? @default(now()) @updatedAt @db.Timestamp(6)
 }
 
+model presentations {
+  presentationId String   @id @unique @default(cuid())
+  file           String
+  language       String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
 enum partnerTypeEnum {
   dealership
   clients
