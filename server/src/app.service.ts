@@ -59,6 +59,7 @@ export class AppService {
           addressEn: true,
           addressRu: true,
         },
+        orderBy: { createdAt: 'desc' },
       });
       /* const information= await this.prismaService.information.findFirst({
         select: {
@@ -511,6 +512,7 @@ export class AppService {
           addressEn: true,
           addressRu: true,
         },
+        orderBy: { createdAt: 'desc' },
       });
       const information = await this.prismaService.information.findFirst({
         select: {
