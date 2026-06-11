@@ -83,7 +83,7 @@
       </div>
       <div class="relative mobile-button-circle-white" ref="project">
         <base-button-circle
-          :url="`https://kip.tm/public/kip_eng_presentation_${$i18n.locale}.pdf`"
+          :url="catalogUrl"
           primary
         >
           {{ $t('catalog') }}
@@ -129,6 +129,7 @@
 <script>
 import translate from '@/mixins/translate';
 import { mapGetters } from 'vuex';
+import { GET_PRESENTATION_LATEST } from '@/api/presentations.api';
 export default {
   props: {
     intro: {
@@ -139,6 +140,12 @@ export default {
   mixins: [translate],
   computed: {
     ...mapGetters(['imageURL']),
+    catalogUrl() {
+      return (
+        this.presentationUrl ||
+        `https://kip.tm/public/kip_eng_presentation_${this.$i18n.locale}.pdf`
+      );
+    },
   },
   data() {
     return {
@@ -148,9 +155,31 @@ export default {
       isPlaying: false,
       isMuted: true,
       isStopped: false,
+      presentationUrl: '',
     };
   },
+  watch: {
+    '$i18n.locale': {
+      immediate: true,
+      handler() {
+        this.fetchPresentation();
+      },
+    },
+  },
   methods: {
+    async fetchPresentation() {
+      try {
+        const locale = this.$i18n.locale || '';
+        const language = locale
+          ? locale.charAt(0).toUpperCase() + locale.slice(1)
+          : '';
+        const { success, data } = await GET_PRESENTATION_LATEST({ language });
+        this.presentationUrl = success && data?.file ? `${this.imageURL}${data.file}` : '';
+      } catch (error) {
+        console.log(error);
+        this.presentationUrl = '';
+      }
+    },
     handleVideoLoaded() {
       this.isVideoLoaded = true;
       if (this.$refs.bgVideo) {
