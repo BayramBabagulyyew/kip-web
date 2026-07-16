@@ -2,6 +2,9 @@
   <div>
     <Header :links="links" :isPlaying="isVideoPlaying" />
     <main class="main">
+      <div class="iso-badge">
+        <img src="/iso.png" alt="ISO 9001:2015 certified" />
+      </div>
       <Intro id="home" url="#projects" :intro="intro" @isPlaying="setVideoPlaying" />
       <About id="about" :aboutUs="aboutUs" />
       <!-- <Ehs id="ehs" /> -->
@@ -350,3 +353,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.iso-badge {
+  position: absolute;
+  right: 20px;
+  bottom: 150px;
+  z-index: 1000;
+
+  img {
+    width: 200px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  // Hide on mobile — PC only
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+</style>

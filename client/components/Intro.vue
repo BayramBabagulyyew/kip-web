@@ -78,6 +78,10 @@
         </div>
       </div>
       <div class="intro__logo" ref="image">
+        <div class="intro__iso">
+          <span class="intro__iso-text">ISO 9001:2015 Certified</span>
+          <span class="intro__iso-line"></span>
+        </div>
         <intro-logo-2></intro-logo-2>
         <!-- <img src="@/assets/img/logo-last.png" alt="logo" /> -->
       </div>
@@ -127,9 +131,9 @@
 </template>
 
 <script>
+import { GET_PRESENTATION_LATEST } from '@/api/presentations.api';
 import translate from '@/mixins/translate';
 import { mapGetters } from 'vuex';
-import { GET_PRESENTATION_LATEST } from '@/api/presentations.api';
 export default {
   props: {
     intro: {
@@ -571,6 +575,55 @@ export default {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+    }
+  }
+
+  &__iso {
+    // Mobile-only ISO certified label at the top-left of the center logo
+    display: none;
+    @media (max-width: 767px) {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translate(-110%, 650%);
+      z-index: 3;
+      text-align: left;
+      pointer-events: none;
+    }
+  }
+
+  &__iso-text {
+    display: block;
+    white-space: nowrap;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  &__iso-line {
+    display: none;
+    @media (max-width: 767px) {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 1.2px;
+      margin-top: 2px;
+      // underline longer than the text...
+      background: #fff;
+      // ...that turns 45° down at its right end, toward the logo
+      &::after {
+        content: '';
+        position: absolute;
+        left: 100%;
+        top: 0;
+        width: 20px;
+        height: 1.2px;
+        background: #fff;
+        transform: rotate(45deg);
+        transform-origin: left center;
+      }
     }
   }
 
